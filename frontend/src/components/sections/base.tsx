@@ -1,7 +1,17 @@
 import Header from "./header";
 import Footer from "./footer";
+import { useEffect } from "react";
 
-export default function Base({ children }: { children: JSX.Element }) {
+interface baseProps {
+  pageTitle: string;
+  children: JSX.Element;
+}
+
+export default function Base({ pageTitle, children }: baseProps) {
+  useEffect(() => {
+    document.title = pageTitle + " | Task Management Application";
+  }, [pageTitle]);
+
   return (
     <div className="base">
       <Header />
