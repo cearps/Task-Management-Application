@@ -1,10 +1,183 @@
 {
   "boards": [
-    { "id": 1, "name": "Board 1" },
-    { "id": 2, "name": "Board 2" }
+    {
+      "id": 1,
+      "name": "Board 1",
+      "description": "This is a board description for board 1.",
+      "ownerId": 1,
+      "startDate": "2019-01-01",
+      "endDate": "2019-01-31"
+    },
+    {
+      "id": 2,
+      "name": "Board 2",
+      "description": "This is a board description for board 2.",
+      "ownerId": 2,
+      "startDate": "2019-02-01",
+      "endDate": "2019-02-28"
+    }
   ],
-  "accounts": [
-    { "id": 1, "username": "user1" },
-    { "id": 2, "username": "user2" }
+  "tasks": [
+    {
+      "id": 1,
+      "boardId": 1,
+      "name": "Task 1",
+      "description": "Description 1",
+      "state": "todo",
+      "dueDate": "2019-01-10",
+      "urgency": 1
+    },
+    {
+      "id": 2,
+      "boardId": 1,
+      "name": "Task 2",
+      "description": "Description 2",
+      "state": "inProgress",
+      "dueDate": "2019-01-15",
+      "urgency": 2
+    },
+    {
+      "id": 3,
+      "boardId": 1,
+      "name": "Task 3",
+      "description": "Description 3",
+      "state": "done",
+      "dueDate": "2019-01-20",
+      "urgency": 3
+    },
+    {
+      "id": 4,
+      "boardId": 2,
+      "name": "Task 4",
+      "description": "Description 4",
+      "state": "todo",
+      "dueDate": "2019-02-10",
+      "urgency": 1
+    },
+    {
+      "id": 5,
+      "boardId": 2,
+      "name": "Task 5",
+      "description": "Description 5",
+      "state": "inProgress",
+      "dueDate": "2019-02-15",
+      "urgency": 2
+    },
+    {
+      "id": 6,
+      "boardId": 2,
+      "name": "Task 6",
+      "description": "Description 6",
+      "state": "review",
+      "dueDate": "2019-02-20",
+      "urgency": 3
+    }
+  ],
+
+  "users": [
+    { "id": 1, "username": "user1", "passwordHash": "password1" },
+    { "id": 2, "username": "user2", "passwordHash": "password2" }
+  ],
+
+  "comments": [
+    {
+      "id": 1,
+      "taskId": 1,
+      "userId": 1,
+      "content": "Comment 1",
+      "createdAt": "2019-01-01"
+    },
+    {
+      "id": 2,
+      "taskId": 1,
+      "userId": 2,
+      "content": "Comment 2",
+      "createdAt": "2019-01-02"
+    },
+    {
+      "id": 3,
+      "taskId": 2,
+      "userId": 1,
+      "content": "Comment 3",
+      "createdAt": "2019-01-03"
+    },
+    {
+      "id": 4,
+      "taskId": 2,
+      "userId": 2,
+      "content": "Comment 4",
+      "createdAt": "2019-01-04"
+    },
+    {
+      "id": 5,
+      "taskId": 3,
+      "userId": 1,
+      "content": "Comment 5",
+      "createdAt": "2019-01-05"
+    },
+    {
+      "id": 6,
+      "taskId": 3,
+      "userId": 2,
+      "content": "Comment 6",
+      "createdAt": "2019-01-06"
+    },
+    {
+      "id": 7,
+      "taskId": 4,
+      "userId": 1,
+      "content": "Comment 7",
+      "createdAt": "2019-01-07"
+    },
+    {
+      "id": 8,
+      "taskId": 4,
+      "userId": 2,
+      "content": "Comment 8",
+      "createdAt": "2019-01-08"
+    },
+    {
+      "id": 9,
+      "taskId": 5,
+      "userId": 1,
+      "content": "Comment 9",
+      "createdAt": "2019-01-09"
+    },
+    {
+      "id": 10,
+      "taskId": 5,
+      "userId": 2,
+      "content": "Comment 10",
+      "createdAt": "2019-01-10"
+    },
+    {
+      "id": 11,
+      "taskId": 6,
+      "userId": 1,
+      "content": "Comment 11",
+      "createdAt": "2019-01-11"
+    },
+    {
+      "id": 12,
+      "taskId": 6,
+      "userId": 2,
+      "content": "Comment 12",
+      "createdAt": "2019-01-12"
+    }
+  ],
+
+  "taskAssignments": [
+    { "taskId": 1, "userId": 1 },
+    { "taskId": 1, "userId": 2 },
+    { "taskId": 2, "userId": 2 },
+    { "taskId": 3, "userId": 1 },
+    { "taskId": 4, "userId": 2 },
+    { "taskId": 5, "userId": 1 },
+    { "taskId": 6, "userId": 2 }
+  ],
+
+  "boardAssignments": [
+    { "boardId": 1, "userId": 1 },
+    { "boardId": 2, "userId": 2 }
   ]
 }
