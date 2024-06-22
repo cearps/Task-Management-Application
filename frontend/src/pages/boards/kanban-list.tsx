@@ -1,9 +1,9 @@
-import React from "react";
+import Base from "../../components/sections/base";
 
 export default function KanbanList() {
   return (
-    <div>
+    <Base>
       <h1>Kanban List</h1>
-    </div>
+    </Base>
   );
 }

@@ -1,7 +1,9 @@
+import Base from "../../components/sections/base";
+
 export default function Login() {
   return (
-    <div>
+    <Base>
       <h1>Log In</h1>
-    </div>
+    </Base>
   );
 }

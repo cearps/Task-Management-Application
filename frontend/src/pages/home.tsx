@@ -1,9 +1,9 @@
-import React from "react";
+import Base from "../components/sections/base";
 
 export default function Home() {
   return (
-    <div>
+    <Base>
       <h1>Home</h1>
-    </div>
+    </Base>
   );
 }

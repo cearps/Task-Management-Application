@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import KanbanList from "./kanban-list";
 import KanbanSingle from "./kanban-single";
