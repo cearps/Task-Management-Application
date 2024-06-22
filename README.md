@@ -14,10 +14,18 @@ docker-compose.yml - Contains docker compose logic for building the containerise
 
 ## Recommended/Required Software
 
-- IDE: VSCode/IntelliJ
-- Docker
+- IDE: VSCode/IntelliJ.
+- Docker.
 - Beekeeper (for viewing PostgreSQL Database in a UI).
+- Postman (for testing the backend API).
 
 ## TODO
 
 - Build better docker files for testing the backend and frontend.
+
+## Useful links
+
+- https://medium.com/@thearaseng/building-a-full-stack-product-app-with-react-spring-boot-and-docker-compose-64a47f4a1080
+- https://spring.io/
+- https://react.dev/
+- https://tailwindcss.com/
