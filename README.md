@@ -1,6 +1,6 @@
 # FIT3162
 
-This repo contains the files written proceeding the commencement of FIT3162 in an attempt to try get ahead in this godforsaken unit.
+This repo contains the files written proceeding the commencement of FIT3162 in an attempt to try get ahead in this GODFORSAKEN unit.
 
 ## File structure
 
