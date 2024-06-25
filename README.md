@@ -10,7 +10,7 @@ docker-compose.yml - Contains docker compose logic for building the containerise
 
 ## Building the Containerised application
 
-`docker-compose up --force-recreate --no-deps -d`
+`docker-compose up --force-recreate --build -d`
 
 ## Recommended/Required Software
 

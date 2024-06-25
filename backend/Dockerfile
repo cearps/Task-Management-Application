@@ -6,13 +6,16 @@ WORKDIR /app
 
 # Copy the build.gradle and any other necessary configuration files
 COPY ./build.gradle /app
+COPY ./settings.gradle /app
+COPY ./gradlew /app
+COPY ./gradle /app/gradle
 COPY ./src /app/src
 
 # Build the application
 RUN gradle clean build -x test
 
 # Create a new image for running the application
-FROM openjdk:22-jdk
+FROM openjdk:21-jdk
 
 # Set the working directory
 WORKDIR /app

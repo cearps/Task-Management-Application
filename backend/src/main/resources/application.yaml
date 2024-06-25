@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: backend
+  # datasource:
+  #   url: jdbc:postgresql://postgres:5432/mydatabase
+  #   username: myuser
+  #   password: eM^j@$KVn)!5ZC!N
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'health,info'
