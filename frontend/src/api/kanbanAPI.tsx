@@ -14,9 +14,7 @@ export default class KanbanAPI {
   }
 
   static async getKanbanBoardTasks(boardId: string, categoryId: string) {
-    return axios.get(
-      `${baseUrl}/boards/${boardId}/categories/${categoryId}/tasks`
-    );
+    return axios.get(`${baseUrl}/boards/${boardId}/tasks/${categoryId}`);
   }
 
   static getKanbanBoardsObservable(): Observable<any> {

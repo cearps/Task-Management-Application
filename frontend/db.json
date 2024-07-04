@@ -5,16 +5,16 @@
       "name": "Board 1",
       "description": "This is a board description for board 1.",
       "ownerId": 1,
-      "dueDate": "2019-01-01",
-      "endDate": "2019-01-31"
+      "startDate": "2019-01-01",
+      "dueDate": "2019-03-01"
     },
     {
       "id": 2,
       "name": "Board 2",
       "description": "This is a board description for board 2.",
       "ownerId": 2,
-      "dueDate": "2019-02-01",
-      "endDate": "2019-02-28"
+      "startDate": "2019-02-01",
+      "dueDate": "2019-04-01"
     }
   ],
   "tasks": [
