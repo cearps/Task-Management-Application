@@ -4,8 +4,6 @@ import { switchMap } from "rxjs/operators";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-console.log(baseUrl);
-
 export default class KanbanAPI {
   static async getKanbanBoards() {
     return axios.get(`${baseUrl}/boards`);
@@ -13,6 +11,12 @@ export default class KanbanAPI {
 
   static async getKanbanBoard(id: string) {
     return axios.get(`${baseUrl}/boards/${id}`);
+  }
+
+  static async getKanbanBoardTasks(boardId: string, categoryId: string) {
+    return axios.get(
+      `${baseUrl}/boards/${boardId}/categories/${categoryId}/tasks`
+    );
   }
 
   static getKanbanBoardsObservable(): Observable<any> {
@@ -27,6 +31,17 @@ export default class KanbanAPI {
     return interval(1000).pipe(
       switchMap(() => {
         return from(KanbanAPI.getKanbanBoard(id));
+      })
+    );
+  }
+
+  static getKanbanBoardTasksObservable(
+    boardId: string,
+    categoryId: string
+  ): Observable<any> {
+    return interval(1000).pipe(
+      switchMap(() => {
+        return from(KanbanAPI.getKanbanBoardTasks(boardId, categoryId));
       })
     );
   }
