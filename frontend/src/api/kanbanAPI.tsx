@@ -11,10 +11,22 @@ export default class KanbanAPI {
     return axios.get(`${baseUrl}/boards`);
   }
 
-  static getKanbanBoardObservable(): Observable<any> {
+  static async getKanbanBoard(id: string) {
+    return axios.get(`${baseUrl}/boards/${id}`);
+  }
+
+  static getKanbanBoardsObservable(): Observable<any> {
     return interval(1000).pipe(
       switchMap(() => {
         return from(KanbanAPI.getKanbanBoards());
+      })
+    );
+  }
+
+  static getKanbanBoardObservable(id: string): Observable<any> {
+    return interval(1000).pipe(
+      switchMap(() => {
+        return from(KanbanAPI.getKanbanBoard(id));
       })
     );
   }
