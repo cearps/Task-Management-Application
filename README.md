@@ -21,10 +21,7 @@ docker-compose.yml - Contains docker compose logic for building the containerise
 
 ## TODO
 
-- Build better docker files for testing the backend and frontend.
-- Write instructions for setting up testing database for backend.
-- Write code to populate database with some dummy data.
-- Write code to set up the database schema and add this to docker configuration files.
+Refer to: https://trello.com/b/xkcOj1Bp/pre-semester
 
 ## Useful links
 
