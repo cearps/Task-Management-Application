@@ -1,6 +1,12 @@
 import { Task } from "./types";
 
-export default function KanbanCard({ task }: { task: Task }) {
+export default function KanbanCard({
+  task,
+  setActiveTaskMethod,
+}: {
+  task: Task;
+  setActiveTaskMethod: (task: Task) => () => void;
+}) {
   const urgencyToColor = (urgency: number): string => {
     switch (urgency) {
       case 1:
@@ -14,7 +20,10 @@ export default function KanbanCard({ task }: { task: Task }) {
     }
   };
   return (
-    <div className="relative bg-[#2e223b] text-white rounded-lg p-4 shadow-md">
+    <div
+      className="relative bg-[#2e223b] text-white rounded-lg p-4 shadow-md"
+      onClick={setActiveTaskMethod(task)}
+    >
       <span
         className={`absolute top-2 right-2 w-3 h-3 rounded-full ${urgencyToColor(
           task.urgency

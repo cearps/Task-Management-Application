@@ -1,5 +1,5 @@
 import KanbanColumn from "./kanban-column";
-import { Kanban } from "./types";
+import { Kanban, Task } from "./types";
 
 export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
   const columns = [
@@ -8,6 +8,10 @@ export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
     { title: "In Review", taskCategoryId: "3" },
     { title: "Complete", taskCategoryId: "4" },
   ];
+
+  const setActiveTaskMethod = (task: Task) => () => {
+    console.log("Task clicked", task);
+  };
 
   return (
     <div>
@@ -26,6 +30,7 @@ export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
             title={column.title}
             taskCategoryId={column.taskCategoryId}
             kanbanId={kanban.id.toString()}
+            setActiveTaskMethod={setActiveTaskMethod}
           />
         ))}
       </div>
