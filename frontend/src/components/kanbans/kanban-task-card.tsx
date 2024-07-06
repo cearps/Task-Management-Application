@@ -21,7 +21,7 @@ export default function KanbanCard({
   };
   return (
     <div
-      className="relative bg-[#2e223b] text-white rounded-lg p-4 shadow-md"
+      className="relative bg-[#2e223b] text-white rounded-lg p-4 shadow-md cursor-pointer hover:bg-gray-100 hover:text-black hover:shadow-lg transition-transform transform hover:scale-105"
       onClick={setActiveTaskMethod(task)}
     >
       <span

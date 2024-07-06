@@ -28,13 +28,15 @@ export default function KanbanColumn({
   return (
     <div className="bg-yellow-400 rounded-lg p-4">
       <h2 className="text-lg font-bold mb-4">{title}</h2>
-      {tasks.map((task) => (
-        <KanbanCard
-          key={task.id}
-          task={task}
-          setActiveTaskMethod={setActiveTaskMethod}
-        />
-      ))}
+      <div className="space-y-4">
+        {tasks.map((task) => (
+          <KanbanCard
+            key={task.id}
+            task={task}
+            setActiveTaskMethod={setActiveTaskMethod}
+          />
+        ))}
+      </div>
     </div>
   );
 }
