@@ -1,4 +1,5 @@
 import { Task } from "./types";
+import { useEffect, useRef } from "react";
 
 const DetailedTaskView = ({
   task,
@@ -7,9 +8,28 @@ const DetailedTaskView = ({
   task: Task;
   onClose: () => void;
 }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#2e223b] text-white rounded-lg p-6 shadow-md w-3/4">
+      <div
+        ref={cardRef}
+        className="bg-[#2e223b] text-white rounded-lg p-6 shadow-md w-3/4"
+      >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-semibold">{task.name}</h2>
           <button className="text-red-500" onClick={onClose}>
