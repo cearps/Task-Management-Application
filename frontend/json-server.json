@@ -1,8 +1,0 @@
-{
-  "watch": "db.json",
-  "port": 3001,
-  "routes": {
-    "/api/boards": "/boards",
-    "/api/accounts": "/accounts"
-  }
-}

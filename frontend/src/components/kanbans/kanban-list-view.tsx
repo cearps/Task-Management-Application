@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import KanbanAPI from "../../api/kanbanAPI";
+import { useNavigate } from "react-router-dom";
 
 export default function KanbanListView() {
   const [kanbanBoards, setKanbanBoards] = useState([]);
 
   useEffect(() => {
-    KanbanAPI.getKanbanBoardObservable().subscribe((response) => {
+    KanbanAPI.getKanbanBoardsObservable().subscribe((response) => {
       console.log(response.data);
       setKanbanBoards(response.data);
     });
@@ -32,16 +33,38 @@ export default function KanbanListView() {
       </div>
       <div className="flex flex-wrap">
         {kanbanBoards.map((board: any) => (
-          <BoardCard title={board.name} dueDate={board.dueDate} />
+          <BoardCard
+            key={board.id}
+            id={board.id}
+            title={board.name}
+            dueDate={board.dueDate}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-const BoardCard = ({ title, dueDate }: { title: string; dueDate: string }) => {
+const BoardCard = ({
+  id,
+  title,
+  dueDate,
+}: {
+  id: string;
+  title: string;
+  dueDate: string;
+}) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = (id: string) => {
+    navigate(`/boards/${id}`);
+  };
+
   return (
-    <div className="bg-yellow-500 text-black rounded-lg shadow-md p-4 m-2 w-56 h-36 relative">
+    <div
+      className="bg-yellow-500 text-black rounded-lg shadow-md p-4 m-2 w-56 h-36 relative border rounded cursor-pointer hover:bg-gray-100 hover:shadow-lg transition-transform transform hover:scale-105"
+      onClick={() => handleCardClick(id)}
+    >
       <div className="flex justify-between">
         <h3 className="font-bold text-lg">{title}</h3>
         <button className="text-black">

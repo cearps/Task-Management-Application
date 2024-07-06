@@ -1,9 +1,13 @@
+import { useParams } from "react-router-dom";
 import Base from "../../components/sections/base";
+import KanbanSingularView from "../../components/kanbans/kanban-singular-view"; // Import the KanbanSingularView component
 
 export default function KanbanSingle() {
+  const { boardId } = useParams();
+
   return (
     <Base pageTitle="Kanban">
-      <h1>Kanban Single</h1>
+      <KanbanSingularView id={boardId ?? ""} />
     </Base>
   );
 }

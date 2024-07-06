@@ -32,3 +32,4 @@ docker-compose.yml - Contains docker compose logic for building the containerise
 - https://spring.io/
 - https://react.dev/
 - https://tailwindcss.com/
+- https://github.com/typicode/json-server/tree/v0?tab=readme-ov-file
