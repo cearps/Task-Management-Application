@@ -1,7 +1,11 @@
+import { useState } from "react";
 import KanbanColumn from "./kanban-column";
 import { Kanban, Task } from "./types";
+import DetailedTaskView from "./kanban-task-detail";
 
 export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
+  const [selectedTask, setSelectedTask] = useState(null as Task | null);
+
   const columns = [
     { title: "Task Backlog", taskCategoryId: "1" },
     { title: "In Progress", taskCategoryId: "2" },
@@ -10,7 +14,11 @@ export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
   ];
 
   const setActiveTaskMethod = (task: Task) => () => {
-    console.log("Task clicked", task);
+    setSelectedTask(task);
+  };
+
+  const handleTaskClose = () => {
+    setSelectedTask(null);
   };
 
   return (
@@ -34,6 +42,9 @@ export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
           />
         ))}
       </div>
+      {selectedTask && (
+        <DetailedTaskView task={selectedTask} onClose={handleTaskClose} />
+      )}
     </div>
   );
 }
