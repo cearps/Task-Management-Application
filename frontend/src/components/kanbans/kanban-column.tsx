@@ -26,9 +26,9 @@ export default function KanbanColumn({
   }, []);
 
   return (
-    <div className="bg-yellow-400 rounded-lg p-4">
-      <h2 className="text-lg font-bold mb-4">{title}</h2>
-      <div className="space-y-4">
+    <div className="bg-yellow-400 rounded-lg p-2">
+      <h2 className="text-lg font-bold mb-2">{title}</h2>
+      <div className="space-y-2">
         {tasks.map((task) => (
           <KanbanCard
             key={task.id}
