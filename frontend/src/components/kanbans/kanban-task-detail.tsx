@@ -43,18 +43,32 @@ const DetailedTaskView = ({
         className="bg-[#2e223b] text-white rounded-lg p-6 shadow-md w-3/4 text-left overflow-hidden"
         style={{ maxHeight: "95vh" }}
       >
+        {" "}
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-semibold">{task.name}</h2>
+          <button className="text-red-500" onClick={onClose}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
         <div
-          className="custom-scrollbar overflow-y-auto pb-5"
+          className="custom-scrollbar overflow-y-auto pb-5 mb-10"
           style={{
-            maxHeight: "90vh",
+            maxHeight: "80vh",
           }}
         >
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold">{task.name}</h2>
-            <button className="text-red-500" onClick={onClose}>
-              Close
-            </button>
-          </div>
           <div className="mb-4">
             <span className="font-semibold">Urgency:</span>
             <span
