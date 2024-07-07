@@ -66,7 +66,7 @@ const DetailedTaskView = ({
         <div
           className="custom-scrollbar overflow-y-auto pb-5 mb-10"
           style={{
-            maxHeight: "80vh",
+            maxHeight: "75vh",
           }}
         >
           <div className="mb-4">
