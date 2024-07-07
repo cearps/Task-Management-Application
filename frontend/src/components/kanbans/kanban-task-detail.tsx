@@ -1,5 +1,6 @@
 import { Task } from "./types";
 import { useEffect, useRef } from "react";
+import urgencyToColour from "../../utilities/urgency-colour-mapping";
 
 const DetailedTaskView = ({
   task,
@@ -28,7 +29,7 @@ const DetailedTaskView = ({
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div
         ref={cardRef}
-        className="bg-[#2e223b] text-white rounded-lg p-6 shadow-md w-3/4"
+        className="bg-[#2e223b] text-white rounded-lg p-6 shadow-md w-3/4 text-left"
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-semibold">{task.name}</h2>
@@ -37,8 +38,16 @@ const DetailedTaskView = ({
           </button>
         </div>
         <div className="mb-4">
-          <span className="font-semibold">Urgency:</span>{" "}
-          <span className="text-red-500">●</span>
+          <span className="font-semibold">Urgency:</span>
+          <span
+            className={`w-3 h-3 inline-block mx-2 rounded-full ${urgencyToColour(
+              task.urgency
+            )}`}
+          ></span>
+        </div>
+        <div className="mb-4">
+          <span className="font-semibold">Due date:</span>
+          <span className="ml-2">{task.dueDate}</span>
         </div>
         <div className="mb-4">
           <span className="font-semibold">Description:</span>

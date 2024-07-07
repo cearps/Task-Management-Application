@@ -1,4 +1,5 @@
 import { Task } from "./types";
+import urgencyToColour from "../../utilities/urgency-colour-mapping";
 
 export default function KanbanCard({
   task,
@@ -7,25 +8,13 @@ export default function KanbanCard({
   task: Task;
   setActiveTaskMethod: (task: Task) => () => void;
 }) {
-  const urgencyToColor = (urgency: number): string => {
-    switch (urgency) {
-      case 1:
-        return "bg-red-500";
-      case 2:
-        return "bg-yellow-500";
-      case 3:
-        return "bg-green-500";
-      default:
-        return "bg-gray-500";
-    }
-  };
   return (
     <div
       className="relative bg-[#2e223b] text-white rounded-lg p-4 shadow-md cursor-pointer hover:bg-gray-100 hover:text-black hover:shadow-lg transition-transform transform hover:scale-105"
       onClick={setActiveTaskMethod(task)}
     >
       <span
-        className={`absolute top-2 right-2 w-3 h-3 rounded-full ${urgencyToColor(
+        className={`absolute top-2 right-2 w-3 h-3 rounded-full ${urgencyToColour(
           task.urgency
         )}`}
       ></span>
