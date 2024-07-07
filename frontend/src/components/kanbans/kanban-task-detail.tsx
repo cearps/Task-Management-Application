@@ -1,7 +1,8 @@
-import { Task } from "./types";
-import { useEffect, useRef } from "react";
+import { Task, User } from "./types";
+import { useEffect, useRef, useState } from "react";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
 import { getTaskStatus } from "../../utilities/kanban-category-mapping";
+import TaskAPI from "../../api/taskAPI";
 
 const DetailedTaskView = ({
   task,
@@ -11,6 +12,15 @@ const DetailedTaskView = ({
   onClose: () => void;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const [assignedUsers, setAssignedUsers] = useState([] as User[]);
+
+  useEffect(() => {
+    TaskAPI.getTaskAssigneesObservable(`${task.id}`).subscribe((response) => {
+      console.log(response.data);
+      setAssignedUsers(response.data);
+    });
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -56,7 +66,13 @@ const DetailedTaskView = ({
         </div>
         <div className="mb-4">
           <span className="font-semibold">Assigned to:</span>{" "}
-          {/* <p>{task.assignedTo}</p> */}
+          <p>
+            {assignedUsers.map((user) => (
+              <span key={user.id} className="mx-2">
+                {user.username}
+              </span>
+            ))}
+          </p>
         </div>
         <div className="mb-4">
           <span className="font-semibold">Status:</span>{" "}

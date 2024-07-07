@@ -17,4 +17,9 @@ type Task = {
   taskCategoryId: number;
 };
 
-export type { Kanban, Task };
+type User = {
+  id: number;
+  username: string;
+};
+
+export type { Kanban, Task, User };

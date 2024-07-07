@@ -32,6 +32,25 @@ server.get("/boards/:id/tasks/:categoryId", (req, res) => {
   res.jsonp(tasks);
 });
 
+server.get("/tasks/:id/assignees", (req, res) => {
+  const { id } = req.params;
+  const taskAssignments = router.db
+    .get("taskAssignments")
+    .filter({ taskId: parseInt(id) })
+    .value();
+  const users = router.db
+    .get("users")
+    .filter((user) =>
+      taskAssignments.some((assignment) => assignment.userId === user.id)
+    )
+    .map((user) => {
+      const { passwordHash, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    })
+    .value();
+  res.jsonp(users);
+});
+
 // To handle POST, PUT and PATCH you need to use a body-parser
 // You can use the one used by JSON Server
 server.use(jsonServer.bodyParser);
