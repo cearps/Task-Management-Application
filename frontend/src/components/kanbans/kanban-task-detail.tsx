@@ -1,6 +1,7 @@
 import { Task } from "./types";
 import { useEffect, useRef } from "react";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
+import { getTaskStatus } from "../../utilities/kanban-category-mapping";
 
 const DetailedTaskView = ({
   task,
@@ -58,7 +59,8 @@ const DetailedTaskView = ({
           {/* <p>{task.assignedTo}</p> */}
         </div>
         <div className="mb-4">
-          {/* <span className="font-semibold">Status:</span> <p>{task.status}</p> */}
+          <span className="font-semibold">Status:</span>{" "}
+          <p>{getTaskStatus(task.taskCategoryId)}</p>
         </div>
         <div className="mb-4">
           <span className="font-semibold">Comments:</span>

@@ -14,6 +14,7 @@ type Task = {
   description: string;
   dueDate: string;
   urgency: number;
+  taskCategoryId: number;
 };
 
 export type { Kanban, Task };
