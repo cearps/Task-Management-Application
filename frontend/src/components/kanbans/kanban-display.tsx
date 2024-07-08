@@ -1,6 +1,6 @@
 import { useState } from "react";
 import KanbanColumn from "./kanban-column";
-import { Kanban, Task } from "./types";
+import { Kanban, Task } from "../../utilities/types";
 import DetailedTaskView from "./kanban-task-detail";
 import { kanbanColumns } from "../../utilities/kanban-category-mapping";
 

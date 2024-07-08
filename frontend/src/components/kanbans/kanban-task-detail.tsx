@@ -1,4 +1,4 @@
-import { Comment, Task, User } from "./types";
+import { Comment, Task, User } from "../../utilities/types";
 import { useEffect, useRef, useState } from "react";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
 import { getTaskStatus } from "../../utilities/kanban-category-mapping";

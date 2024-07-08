@@ -60,6 +60,13 @@ server.get("/tasks/:id/comments", (req, res) => {
   res.jsonp(comments);
 });
 
+server.get("/users/:id", (req, res) => {
+  const { id } = req.params;
+  const user = router.db.get("users").getById(id).value();
+  const { passwordHash, ...userWithoutPassword } = user;
+  res.jsonp(userWithoutPassword);
+});
+
 // To handle POST, PUT and PATCH you need to use a body-parser
 // You can use the one used by JSON Server
 server.use(jsonServer.bodyParser);

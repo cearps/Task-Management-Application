@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import KanbanAPI from "../../api/kanbanAPI";
 import KanbanCard from "./kanban-task-card";
-import { Task } from "./types";
+import { Task } from "../../utilities/types";
 
 export default function KanbanColumn({
   title,
