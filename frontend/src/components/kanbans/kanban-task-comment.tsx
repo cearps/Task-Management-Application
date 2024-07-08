@@ -15,16 +15,21 @@ const KanbanTaskComment = ({ comment }: { comment: Comment }) => {
   }, []);
 
   return (
-    <div>
+    <div className="p-4 bg-white rounded-lg shadow-md mb-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <div className="ml-2">
-            <h3 className="font-bold">{user?.username}</h3>
-            <p className="text-sm text-gray-500">{comment.createdAt}</p>
+          <div className="ml-3">
+            {/* Username */}
+            <h3 className="font-bold text-lg text-black">{user?.username}</h3>
+            {/* Comment timestamp */}
+            <p className="text-sm text-gray-500">
+              {new Date(comment.createdAt).toLocaleString()}
+            </p>
           </div>
         </div>
       </div>
-      <p className="mt-2">{comment.content}</p>
+      {/* Comment content */}
+      <p className="mt-3 text-gray-700">{comment.content}</p>
     </div>
   );
 };

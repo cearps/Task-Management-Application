@@ -110,18 +110,19 @@ const DetailedTaskView = ({
           </div>
           <div className="mb-4">
             <span className="font-semibold">Comments:</span>
-            <hr />
-            {comments.map((comment) => (
-              <KanbanTaskComment key={comment.id} comment={comment} />
-            ))}
+            <div className="p-2">
+              {comments.map((comment) => (
+                <KanbanTaskComment key={comment.id} comment={comment} />
+              ))}
+              <textarea
+                placeholder="Leave a comment..."
+                className="w-full p-2 rounded"
+              ></textarea>
+              <button className="mt-2 bg-orange-500 text-white p-2 rounded">
+                Comment
+              </button>
+            </div>
           </div>
-          <textarea
-            placeholder="Leave a comment..."
-            className="w-full p-2 rounded"
-          ></textarea>
-          <button className="mt-2 bg-orange-500 text-white p-2 rounded">
-            Comment
-          </button>
         </div>
       </div>
     </div>
