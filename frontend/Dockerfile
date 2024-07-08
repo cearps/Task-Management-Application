@@ -16,13 +16,12 @@ COPY . .
 RUN npm run build
 
 # Serve stage
-FROM nginx:1.25.1
+FROM nginx:1.21.6
 
 # Copy the custom nginx.conf file to the container
 COPY .docker/nginx.conf /etc/nginx/nginx.conf
 
 # Copy the built React app from the build stage to the nginx container
-COPY .env /usr/share/nginx/html
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Expose port 80
