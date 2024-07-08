@@ -1,13 +1,19 @@
+import { useState } from "react";
 import KanbanColumn from "./kanban-column";
-import { Kanban } from "./types";
+import { Kanban, Task } from "./types";
+import DetailedTaskView from "./kanban-task-detail";
+import { kanbanColumns } from "../../utilities/kanban-category-mapping";
 
 export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
-  const columns = [
-    { title: "Task Backlog", taskCategoryId: "1" },
-    { title: "In Progress", taskCategoryId: "2" },
-    { title: "In Review", taskCategoryId: "3" },
-    { title: "Complete", taskCategoryId: "4" },
-  ];
+  const [selectedTask, setSelectedTask] = useState(null as Task | null);
+
+  const setActiveTaskMethod = (task: Task) => () => {
+    setSelectedTask(task);
+  };
+
+  const handleTaskClose = () => {
+    setSelectedTask(null);
+  };
 
   return (
     <div>
@@ -20,15 +26,19 @@ export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
         </div>
       </header>
       <div className="grid grid-cols-4 gap-4">
-        {columns.map((column) => (
+        {kanbanColumns.map((column) => (
           <KanbanColumn
             key={column.taskCategoryId}
             title={column.title}
-            taskCategoryId={column.taskCategoryId}
+            taskCategoryId={`${column.taskCategoryId}`}
             kanbanId={kanban.id.toString()}
+            setActiveTaskMethod={setActiveTaskMethod}
           />
         ))}
       </div>
+      {selectedTask && (
+        <DetailedTaskView task={selectedTask} onClose={handleTaskClose} />
+      )}
     </div>
   );
 }

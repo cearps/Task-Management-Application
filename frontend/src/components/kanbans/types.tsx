@@ -14,6 +14,12 @@ type Task = {
   description: string;
   dueDate: string;
   urgency: number;
+  taskCategoryId: number;
 };
 
-export type { Kanban, Task };
+type User = {
+  id: number;
+  username: string;
+};
+
+export type { Kanban, Task, User };
