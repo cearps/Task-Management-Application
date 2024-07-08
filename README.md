@@ -14,7 +14,10 @@ Will start three containers: frontend nginx, backend java 21 spring app, backend
 
 `docker-compose up --force-recreate --build -d`
 
-## Recommended/Required Software
+Access the nginx on:                http://localhost:80/
+Check the backend server is up at:  http://localhost:8080/actuator/health
+
+## Required Software
 
 - IDE: VSCode/IntelliJ.
 - Docker.
