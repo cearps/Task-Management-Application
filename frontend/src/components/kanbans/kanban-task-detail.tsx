@@ -1,8 +1,9 @@
-import { Task, User } from "./types";
+import { Comment, Task, User } from "./types";
 import { useEffect, useRef, useState } from "react";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
 import { getTaskStatus } from "../../utilities/kanban-category-mapping";
 import TaskAPI from "../../api/taskAPI";
+import KanbanTaskComment from "./kanban-task-comment";
 
 const DetailedTaskView = ({
   task,
@@ -14,11 +15,19 @@ const DetailedTaskView = ({
   const cardRef = useRef<HTMLDivElement>(null);
 
   const [assignedUsers, setAssignedUsers] = useState([] as User[]);
+  const [comments, setComments] = useState([] as Comment[]);
 
   useEffect(() => {
     TaskAPI.getTaskAssigneesObservable(`${task.id}`).subscribe((response) => {
       console.log(response.data);
       setAssignedUsers(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    TaskAPI.getTaskCommentsObservable(`${task.id}`).subscribe((response) => {
+      console.log(response.data);
+      setComments(response.data);
     });
   }, []);
 
@@ -101,7 +110,10 @@ const DetailedTaskView = ({
           </div>
           <div className="mb-4">
             <span className="font-semibold">Comments:</span>
-            {/* <p>{task.comments}</p> */}
+            <hr />
+            {comments.map((comment) => (
+              <KanbanTaskComment key={comment.id} comment={comment} />
+            ))}
           </div>
           <textarea
             placeholder="Leave a comment..."

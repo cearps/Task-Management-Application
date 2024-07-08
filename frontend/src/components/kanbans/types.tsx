@@ -22,4 +22,12 @@ type User = {
   username: string;
 };
 
-export type { Kanban, Task, User };
+type Comment = {
+  id: number;
+  taskId: number;
+  userId: number;
+  content: string;
+  createdAt: string;
+};
+
+export type { Kanban, Task, User, Comment };
