@@ -50,3 +50,26 @@ jobs:
     # TODO add testing for frontend
     # - name: Run tests
     #   run: cd frontend && npm test
+  backend-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Build backend Docker container
+        working-directory: backend
+        run: |
+          docker build -t backend .
+      
+  frontend-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Build frontend Docker container
+        working-directory: frontend
+        run: |
+          docker build -t frontend .
