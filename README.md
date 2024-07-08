@@ -8,7 +8,9 @@ frontend - Contains the Typescript + React + Tailwind frontend code. Also contai
 backend - Contains the Java Spring backend Code.
 docker-compose.yml - Contains docker compose logic for building the containerised application.
 
-## Building the Containerised application
+## Running the application in docker containers:
+
+Will start three containers: frontend nginx, backend java 21 spring app, backend postgres db
 
 `docker-compose up --force-recreate --build -d`
 
