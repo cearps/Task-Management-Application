@@ -4,7 +4,7 @@ CREATE TABLE board (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     start_date DATE,
-    end_date DATE
+    due_date DATE
 );
 
 -- Insert some initial data into the "board" table
