@@ -1,4 +1,4 @@
-import { Task } from "./types";
+import { Task } from "../../utilities/types";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
 
 export default function KanbanCard({
