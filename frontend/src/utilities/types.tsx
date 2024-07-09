@@ -30,4 +30,6 @@ type Comment = {
   createdAt: string;
 };
 
-export type { Kanban, Task, User, Comment };
+type ButtonType = "button" | "submit" | "reset";
+
+export type { Kanban, Task, User, Comment, ButtonType };
