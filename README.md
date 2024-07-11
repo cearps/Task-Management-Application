@@ -4,9 +4,10 @@ This repo contains the files written proceeding the commencement of FIT3162 in a
 
 ## File structure
 
-frontend - Contains the Typescript + React + Tailwind frontend code. Also contains a mocked API for testing.
-backend - Contains the Java Spring backend Code.
-docker-compose.yml - Contains docker compose logic for building the containerised application.
+|- frontend: Typescript/React UI + API mock for testing.<br>
+|- backend - Contains the Java Spring backend Code.<br>
+|- db: startup sql scripts for postgres container<br>
+|- scripts: tooling scripts
 
 ## Running the application in docker containers:
 
