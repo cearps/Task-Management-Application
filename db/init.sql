@@ -8,7 +8,7 @@ CREATE TABLE board (
 );
 
 -- Insert some initial data into the "board" table
-INSERT INTO board (name, description, start_date, end_date)
+INSERT INTO board (name, description, start_date, due_date)
 VALUES
     ('Board 1', 'Description for Board 1', '2022-01-01', '2022-01-31'),
     ('Board 2', 'Description for Board 2', '2022-02-01', '2022-02-28'),
