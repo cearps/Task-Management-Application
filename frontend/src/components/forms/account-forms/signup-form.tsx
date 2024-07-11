@@ -2,16 +2,33 @@ import { useState } from "react";
 import FormBase from "../form-base";
 import Field from "../field";
 import Button from "../../buttons/button";
+import UserAPI from "../../../api/userAPI";
+import { NewUserData } from "../../../utilities/types";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: Implement signup logic
-    // onSignup({ username, email, password });
+
+    const data: NewUserData = {
+      username,
+      email,
+      password,
+    };
+
+    UserAPI.createUser(data)
+      .then((res) => {
+        localStorage.setItem("token", res.data.token);
+        navigate("/boards");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (

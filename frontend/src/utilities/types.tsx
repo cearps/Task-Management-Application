@@ -22,6 +22,12 @@ type User = {
   username: string;
 };
 
+type NewUserData = {
+  username: string;
+  email: string;
+  password: string;
+};
+
 type Comment = {
   id: number;
   taskId: number;
@@ -32,4 +38,4 @@ type Comment = {
 
 type ButtonType = "button" | "submit" | "reset";
 
-export type { Kanban, Task, User, Comment, ButtonType };
+export type { Kanban, Task, User, Comment, ButtonType, NewUserData };
