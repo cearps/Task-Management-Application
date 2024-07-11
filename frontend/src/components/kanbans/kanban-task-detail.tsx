@@ -1,8 +1,9 @@
-import { Task, User } from "./types";
+import { Comment, Task, User } from "../../utilities/types";
 import { useEffect, useRef, useState } from "react";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
 import { getTaskStatus } from "../../utilities/kanban-category-mapping";
 import TaskAPI from "../../api/taskAPI";
+import KanbanTaskComment from "./kanban-task-comment";
 
 const DetailedTaskView = ({
   task,
@@ -14,11 +15,19 @@ const DetailedTaskView = ({
   const cardRef = useRef<HTMLDivElement>(null);
 
   const [assignedUsers, setAssignedUsers] = useState([] as User[]);
+  const [comments, setComments] = useState([] as Comment[]);
 
   useEffect(() => {
     TaskAPI.getTaskAssigneesObservable(`${task.id}`).subscribe((response) => {
       console.log(response.data);
       setAssignedUsers(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    TaskAPI.getTaskCommentsObservable(`${task.id}`).subscribe((response) => {
+      console.log(response.data);
+      setComments(response.data);
     });
   }, []);
 
@@ -101,15 +110,19 @@ const DetailedTaskView = ({
           </div>
           <div className="mb-4">
             <span className="font-semibold">Comments:</span>
-            {/* <p>{task.comments}</p> */}
+            <div className="p-2">
+              {comments.map((comment) => (
+                <KanbanTaskComment key={comment.id} comment={comment} />
+              ))}
+              <textarea
+                placeholder="Leave a comment..."
+                className="w-full p-2 rounded"
+              ></textarea>
+              <button className="mt-2 bg-orange-500 text-white p-2 rounded">
+                Comment
+              </button>
+            </div>
           </div>
-          <textarea
-            placeholder="Leave a comment..."
-            className="w-full p-2 rounded"
-          ></textarea>
-          <button className="mt-2 bg-orange-500 text-white p-2 rounded">
-            Comment
-          </button>
         </div>
       </div>
     </div>
