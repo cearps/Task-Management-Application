@@ -4,26 +4,24 @@ This repo contains the files written proceeding the commencement of FIT3162 in a
 
 ## File structure
 
-frontend - Contains the Typescript + React + Tailwind frontend code. Also contains a mocked API for testing.
-backend - Contains the Java Spring backend Code.
-docker-compose.yml - Contains docker compose logic for building the containerised application.
+|- api - Contains the Java Spring backend Code.<br>
+|- db: startup sql scripts for postgres container<br>
+|- frontend: Typescript/React UI + API mock for testing.<br>
+|- scripts: tooling scripts
 
-## Running the application in docker containers:
+## Running the containerised application:
 
-Will start three containers: frontend nginx, backend java 21 spring app, backend postgres db
 
-`docker-compose up --force-recreate --build -d`
+`./scripts/start-containers.sh`
 
-Access the nginx on:                http://localhost:80/
+Will start three containers:
+- frontend nginx
+- backend java 21 spring app
+- backend postgres db
 
+Access the nginx on:                http://localhost:80/ <br>
 Check the backend server is up at:  http://localhost:8080/actuator/health
 
-## Required Software
-
-- IDE: VSCode/IntelliJ.
-- Docker.
-- Beekeeper (for viewing PostgreSQL Database in a UI).
-- Postman (for testing the backend API).
 
 ## TODO
 
