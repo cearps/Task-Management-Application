@@ -25,9 +25,9 @@ public class Task {
 
     @ManyToMany
     @JoinTable(
-            name = "user_task",
+            name = "users_task",
             joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
+            inverseJoinColumns = @JoinColumn(name = "users_id")
     )
     private Set<User> users = new HashSet<>();
 }
