@@ -23,8 +23,4 @@ public class BoardController {
     }
 
 
-    @GetMapping("/")
-    public ResponseEntity<>
-
-
 }
