@@ -1,0 +1,67 @@
+openapi: '3.0.3'
+info:
+  title: Task Manager API
+  version: '1.0'
+servers:
+  - url: http://localhost:8080
+    description: Local server
+
+paths:
+  /actuator/health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+  /auth/signup:
+    post:
+      summary: Signup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                fullName:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+  /auth/login:
+    post:
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+
+components:
+  schemas:
+    name:
+      type: object
+      properties:
+        property:
+          type: integer
+  

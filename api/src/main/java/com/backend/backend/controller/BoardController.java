@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/users")
+@RequestMapping("/board")
 @RestController
 public class BoardController {
-
 
     @GetMapping("/me")
     public ResponseEntity<User> authenticatedUser() {
@@ -22,5 +21,10 @@ public class BoardController {
 
         return ResponseEntity.ok(currentUser);
     }
+
+
+    @GetMapping("/")
+    public ResponseEntity<>
+
 
 }
