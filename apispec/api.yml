@@ -37,8 +37,31 @@ paths:
               schema:
                 type: object
                 properties:
-                  token:
+                  id:
+                    type: integer
+                  email:
                     type: string
+                  password:
+                    type: string
+                  fullName:
+                    type: string
+                  enabled:
+                    type: boolean
+                  username:
+                    type: string
+                  authorities:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        authority:
+                          type: string
+                  accountNonExpired:
+                    type: boolean
+                  accountNonLocked:
+                    type: boolean
+                  credentialsNonExpired:
+                    type: boolean
   /auth/login:
     post:
       summary: Login
@@ -56,6 +79,15 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  expiresIn:
+                    type: integer
 
 components:
   schemas:
