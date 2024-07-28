@@ -5,12 +5,26 @@ import Button from "../../buttons/button";
 import UserAPI from "../../../api/userAPI";
 import { NewUserData } from "../../../utilities/types";
 import { useNavigate } from "react-router-dom";
+import validateUsername from "./validation/username-validation";
+import validateEmail from "./validation/email-validation";
+import validatePassword from "./validation/password-validation";
 
 const SignUpForm = () => {
   const [username, setUsername] = useState("");
+  const [usernameErrors, setUsernameErrors] = useState("");
   const [email, setEmail] = useState("");
+  const [emailErrors, setEmailErrors] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordErrors, setPasswordErrors] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [passwordConfirmationErrors, setPasswordConfirmationErrors] =
+    useState("");
+  const allErrors = [
+    usernameErrors,
+    emailErrors,
+    passwordErrors,
+    passwordConfirmationErrors,
+  ];
   const navigate = useNavigate();
 
   const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,28 +54,40 @@ const SignUpForm = () => {
           label="Username"
           type="text"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => {
+            validateUsername(e.target.value, setUsernameErrors, setUsername);
+          }}
           placeholder="Enter your username"
         />
         <Field
           label="Email"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            validateEmail(e.target.value, setEmailErrors, setEmail);
+          }}
           placeholder="Enter your email"
         />
         <Field
           label="Password"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            validatePassword(e.target.value, setPasswordErrors, setPassword);
+          }}
           placeholder="Enter your password"
         />
         <Field
           label="Password Confirmation"
           type="password"
           value={passwordConfirmation}
-          onChange={(e) => setPasswordConfirmation(e.target.value)}
+          onChange={(e) => {
+            validatePassword(
+              e.target.value,
+              setPasswordConfirmationErrors,
+              setPasswordConfirmation
+            );
+          }}
           placeholder="Confirm your password"
         />
         <Button type="submit">Sign Up</Button>
