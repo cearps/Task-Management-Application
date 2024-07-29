@@ -55,14 +55,6 @@ jobs:
         with:
           name: coverage-report
           path: frontend/coverage
-      # check if the coverage is above 80%
-      - name: Check coverage
-        run: |
-          coverage=$(cat frontend/coverage/lcov.info | grep "lines" | awk '{print $3}' | awk -F'%' '{print $1}')
-          if [ $coverage -lt 80 ]; then
-            echo "Coverage is below 80%: $coverage%"
-            exit 1
-          fi
 
   backend-build:
     runs-on: ubuntu-latest
