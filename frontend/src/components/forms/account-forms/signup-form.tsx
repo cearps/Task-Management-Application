@@ -7,7 +7,10 @@ import { NewUserData } from "../../../utilities/types";
 import { useNavigate } from "react-router-dom";
 import validateUsername from "./validation/username-validation";
 import validateEmail from "./validation/email-validation";
-import validatePassword from "./validation/password-validation";
+import {
+  validatePassword,
+  validatePasswordConfirmation,
+} from "./validation/password-validation";
 
 const SignUpForm = () => {
   const [username, setUsername] = useState("");
@@ -67,6 +70,7 @@ const SignUpForm = () => {
             validateEmail(e.target.value, setEmailErrors, setEmail);
           }}
           placeholder="Enter your email"
+          errors={emailErrors}
         />
         <Field
           label="Password"
@@ -76,19 +80,22 @@ const SignUpForm = () => {
             validatePassword(e.target.value, setPasswordErrors, setPassword);
           }}
           placeholder="Enter your password"
+          errors={passwordErrors}
         />
         <Field
           label="Password Confirmation"
           type="password"
           value={passwordConfirmation}
           onChange={(e) => {
-            validatePassword(
+            validatePasswordConfirmation(
+              password,
               e.target.value,
               setPasswordConfirmationErrors,
               setPasswordConfirmation
             );
           }}
           placeholder="Confirm your password"
+          errors={passwordConfirmationErrors}
         />
         <Button type="submit">Sign Up</Button>
       </FormBase>
