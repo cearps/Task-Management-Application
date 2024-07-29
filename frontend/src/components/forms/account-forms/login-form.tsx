@@ -2,15 +2,17 @@ import { useState } from "react";
 import FormBase from "../form-base";
 import Field from "../field";
 import Button from "../../buttons/button";
+import validateEmail from "./validation/email-validation";
+import { validatePassword } from "./validation/password-validation";
 
 const LogInForm = () => {
   const [email, setEmail] = useState("");
+  const [emailErrors, setEmailErrors] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordErrors, setPasswordErrors] = useState("");
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: Implement login logic
-    // onLogin({ email, password });
   };
 
   return (
@@ -21,15 +23,21 @@ const LogInForm = () => {
           label="Email"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            validateEmail(e.target.value, setEmailErrors, setEmail);
+          }}
           placeholder="Enter your email"
+          errors={emailErrors}
         />
         <Field
           label="Password"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            validatePassword(e.target.value, setPasswordErrors, setPassword);
+          }}
           placeholder="Enter your password"
+          errors={passwordErrors}
         />
         <Button type="submit">Login</Button>
       </FormBase>

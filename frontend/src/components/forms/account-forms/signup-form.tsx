@@ -32,6 +32,9 @@ const SignUpForm = () => {
 
   const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (allErrors.some((error) => error)) {
+      return;
+    }
 
     const data: NewUserData = {
       username,
