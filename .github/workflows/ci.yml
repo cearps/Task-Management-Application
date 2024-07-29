@@ -55,6 +55,12 @@ jobs:
         with:
           name: coverage-report
           path: frontend/coverage
+      - name: Coverage Summary
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: frontend/coverage/lcov-report/index.html
+          format: markdown
+          output: both
 
   backend-build:
     runs-on: ubuntu-latest
