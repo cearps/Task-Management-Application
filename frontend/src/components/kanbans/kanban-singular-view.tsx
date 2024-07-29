@@ -8,10 +8,17 @@ export default function kanbanSingularView({ id }: { id: string }) {
   const [kanban, setKanban] = useState(undefined as Kanban | undefined);
 
   useEffect(() => {
-    KanbanAPI.getKanbanBoardObservable(id).subscribe((response) => {
-      console.log(response.data);
-      setKanban(response.data);
-    });
+    const subscription = KanbanAPI.getKanbanBoardObservable(id).subscribe(
+      (response) => {
+        console.log(response.data);
+        setKanban(response.data);
+      }
+    );
+
+    // prevent memory leak
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   return kanban ? <KanbanDisplay kanban={kanban} /> : <Loader />;

@@ -6,12 +6,17 @@ const KanbanTaskComment = ({ comment }: { comment: Comment }) => {
   const [user, setUser] = useState(null as User | null);
 
   useEffect(() => {
-    UserAPI.getUserObservable(comment.userId.toString()).subscribe(
-      (response) => {
-        console.log(response.data);
-        setUser(response.data);
-      }
-    );
+    const subscription = UserAPI.getUserObservable(
+      comment.userId.toString()
+    ).subscribe((response) => {
+      console.log(response.data);
+      setUser(response.data);
+    });
+
+    // prevent memory leak
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   return (
