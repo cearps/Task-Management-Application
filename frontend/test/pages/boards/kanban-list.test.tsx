@@ -1,12 +1,12 @@
 import { MemoryRouter } from "react-router-dom";
-import Header from "../../../src/components/sections/header";
+import KanbanList from "../../../src/pages/boards/kanban-list";
 import { render } from "@testing-library/react";
 
-describe("Header", () => {
+describe("KanbanList", () => {
   it("renders without crashing", () => {
     render(
       <MemoryRouter>
-        <Header />
+        <KanbanList />
       </MemoryRouter>
     );
   });

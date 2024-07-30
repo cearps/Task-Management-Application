@@ -1,12 +1,12 @@
 import { MemoryRouter } from "react-router-dom";
-import Header from "../../../src/components/sections/header";
+import SignUp from "../../../src/pages/accounts/signup";
 import { render } from "@testing-library/react";
 
-describe("Header", () => {
+describe("SignUp", () => {
   it("renders without crashing", () => {
     render(
       <MemoryRouter>
-        <Header />
+        <SignUp />
       </MemoryRouter>
     );
   });

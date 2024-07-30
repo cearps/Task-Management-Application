@@ -1,12 +1,12 @@
 import { MemoryRouter } from "react-router-dom";
-import Header from "../../../src/components/sections/header";
+import BoardRoutes from "../../../src/pages/boards/routes";
 import { render } from "@testing-library/react";
 
-describe("Header", () => {
+describe("BoardRoutes", () => {
   it("renders without crashing", () => {
     render(
       <MemoryRouter>
-        <Header />
+        <BoardRoutes />
       </MemoryRouter>
     );
   });

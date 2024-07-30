@@ -1,12 +1,14 @@
 import { MemoryRouter } from "react-router-dom";
-import Header from "../../../src/components/sections/header";
+import Base from "../../../src/components/sections/base";
 import { render } from "@testing-library/react";
 
-describe("Header", () => {
+describe("Base", () => {
   it("renders without crashing", () => {
     render(
       <MemoryRouter>
-        <Header />
+        <Base pageTitle={""}>
+          <h1>Test</h1>
+        </Base>
       </MemoryRouter>
     );
   });
