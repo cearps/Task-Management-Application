@@ -27,6 +27,10 @@ Check the backend server is up at:  http://localhost:8080/actuator/health
 
 Refer to: https://trello.com/b/xkcOj1Bp/pre-semester
 
+## Documentation
+
+https://student-team-sx2xae6w.atlassian.net/wiki/spaces/TMA/overview
+
 ## Useful links
 
 - https://medium.com/@thearaseng/building-a-full-stack-product-app-with-react-spring-boot-and-docker-compose-64a47f4a1080
