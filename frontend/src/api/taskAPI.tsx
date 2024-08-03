@@ -2,7 +2,7 @@ import axios from "axios";
 import { Observable, interval, from, concat, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
 
-const baseUrl = process.env.REACT_APP_API_BASE_URL;
+const baseUrl = window.api_url;
 
 export default class TaskAPI {
   static async getTaskComments(taskId: string) {
