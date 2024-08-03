@@ -80,6 +80,7 @@ server.use((req, res, next) => {
 
 // Use default router
 server.use(router);
-server.listen(3001, () => {
-  console.log("JSON Server is running");
+const port = 3001;
+server.listen(port, () => {
+  console.log("JSON Server is running on port " + port);
 });
