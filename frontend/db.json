@@ -199,12 +199,32 @@
       "taskCategoryId": 3
     }
   ],
-
   "users": [
-    { "id": 1, "username": "user1", "passwordHash": "password1" },
-    { "id": 2, "username": "user2", "passwordHash": "password2" }
+    {
+      "id": 1,
+      "username": "user1",
+      "passwordHash": "password1"
+    },
+    {
+      "id": 2,
+      "username": "user2",
+      "passwordHash": "password2"
+    },
+    {
+      "username": "test",
+      "email": "test@test.com",
+      "password": "test",
+      "createdAt": 1720696848663,
+      "id": 3
+    },
+    {
+      "username": "test",
+      "email": "test@test.com",
+      "password": "test",
+      "createdAt": 1720696850230,
+      "id": 4
+    }
   ],
-
   "comments": [
     {
       "id": 1,
@@ -291,26 +311,62 @@
       "createdAt": "2019-01-12"
     }
   ],
-
   "taskAssignments": [
-    { "taskId": 1, "userId": 1 },
-    { "taskId": 1, "userId": 2 },
-    { "taskId": 2, "userId": 2 },
-    { "taskId": 3, "userId": 1 },
-    { "taskId": 4, "userId": 2 },
-    { "taskId": 5, "userId": 1 },
-    { "taskId": 6, "userId": 2 }
+    {
+      "taskId": 1,
+      "userId": 1
+    },
+    {
+      "taskId": 1,
+      "userId": 2
+    },
+    {
+      "taskId": 2,
+      "userId": 2
+    },
+    {
+      "taskId": 3,
+      "userId": 1
+    },
+    {
+      "taskId": 4,
+      "userId": 2
+    },
+    {
+      "taskId": 5,
+      "userId": 1
+    },
+    {
+      "taskId": 6,
+      "userId": 2
+    }
   ],
-
   "boardAssignments": [
-    { "boardId": 1, "userId": 1 },
-    { "boardId": 2, "userId": 2 }
+    {
+      "boardId": 1,
+      "userId": 1
+    },
+    {
+      "boardId": 2,
+      "userId": 2
+    }
   ],
-
   "taskCategories": [
-    { "id": 1, "name": "backlog" },
-    { "id": 2, "name": "inProgress" },
-    { "id": 3, "name": "review" },
-    { "id": 4, "name": "done" }
+    {
+      "id": 1,
+      "name": "backlog"
+    },
+    {
+      "id": 2,
+      "name": "inProgress"
+    },
+    {
+      "id": 3,
+      "name": "review"
+    },
+    {
+      "id": 4,
+      "name": "done"
+    }
   ]
 }
