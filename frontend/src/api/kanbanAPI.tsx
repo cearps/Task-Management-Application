@@ -1,8 +1,8 @@
 import axios from "axios";
-import { Observable, interval, from } from "rxjs";
+import { Observable, interval, from, concat, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
 
-const baseUrl = process.env.REACT_APP_API_BASE_URL;
+const baseUrl = window.api_url;
 
 export default class KanbanAPI {
   static async getKanbanBoards() {
@@ -18,7 +18,7 @@ export default class KanbanAPI {
   }
 
   static getKanbanBoardsObservable(): Observable<any> {
-    return interval(1000).pipe(
+    return concat(of(0), interval(1000)).pipe(
       switchMap(() => {
         return from(KanbanAPI.getKanbanBoards());
       })
@@ -26,7 +26,7 @@ export default class KanbanAPI {
   }
 
   static getKanbanBoardObservable(id: string): Observable<any> {
-    return interval(1000).pipe(
+    return concat(of(0), interval(1000)).pipe(
       switchMap(() => {
         return from(KanbanAPI.getKanbanBoard(id));
       })
@@ -37,7 +37,7 @@ export default class KanbanAPI {
     boardId: string,
     categoryId: string
   ): Observable<any> {
-    return interval(1000).pipe(
+    return concat(of(0), interval(1000)).pipe(
       switchMap(() => {
         return from(KanbanAPI.getKanbanBoardTasks(boardId, categoryId));
       })

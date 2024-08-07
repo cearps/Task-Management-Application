@@ -17,12 +17,18 @@ export default function KanbanColumn({
   const [tasks, setTasks] = useState([] as Task[]);
 
   useEffect(() => {
-    KanbanAPI.getKanbanBoardTasksObservable(kanbanId, taskCategoryId).subscribe(
-      (response) => {
-        console.log(response.data);
-        setTasks(response.data);
-      }
-    );
+    const subsciption = KanbanAPI.getKanbanBoardTasksObservable(
+      kanbanId,
+      taskCategoryId
+    ).subscribe((response) => {
+      console.log(response.data);
+      setTasks(response.data);
+    });
+
+    // prevent memory leak
+    return () => {
+      subsciption.unsubscribe();
+    };
   }, []);
 
   return (

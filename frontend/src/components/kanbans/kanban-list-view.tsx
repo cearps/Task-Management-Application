@@ -6,10 +6,17 @@ export default function KanbanListView() {
   const [kanbanBoards, setKanbanBoards] = useState([]);
 
   useEffect(() => {
-    KanbanAPI.getKanbanBoardsObservable().subscribe((response) => {
-      console.log(response.data);
-      setKanbanBoards(response.data);
-    });
+    const subscription = KanbanAPI.getKanbanBoardsObservable().subscribe(
+      (response) => {
+        console.log(response.data);
+        setKanbanBoards(response.data);
+      }
+    );
+
+    // prevent memory leak
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   return (

@@ -18,17 +18,29 @@ const DetailedTaskView = ({
   const [comments, setComments] = useState([] as Comment[]);
 
   useEffect(() => {
-    TaskAPI.getTaskAssigneesObservable(`${task.id}`).subscribe((response) => {
+    const subscription = TaskAPI.getTaskAssigneesObservable(
+      `${task.id}`
+    ).subscribe((response) => {
       console.log(response.data);
       setAssignedUsers(response.data);
     });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
-    TaskAPI.getTaskCommentsObservable(`${task.id}`).subscribe((response) => {
+    const subscription = TaskAPI.getTaskCommentsObservable(
+      `${task.id}`
+    ).subscribe((response) => {
       console.log(response.data);
       setComments(response.data);
     });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {

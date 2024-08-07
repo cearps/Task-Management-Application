@@ -1,9 +1,9 @@
 import axios from "axios";
-import { Observable, interval, from } from "rxjs";
+import { Observable, interval, from, concat, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { NewUserData } from "../utilities/types";
 
-const baseUrl = process.env.REACT_APP_API_BASE_URL;
+const baseUrl = window.api_url;
 
 export default class UserAPI {
   static async getUser(id: string) {
@@ -15,7 +15,7 @@ export default class UserAPI {
   }
 
   static getUserObservable(id: string): Observable<any> {
-    return interval(1000).pipe(
+    return concat(of(0), interval(1000)).pipe(
       switchMap(() => {
         return from(UserAPI.getUser(id));
       })

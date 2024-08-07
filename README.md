@@ -1,6 +1,6 @@
 # FIT3162
 
-This repo contains the files written proceeding the commencement of FIT3162 in an attempt to try get ahead in this GODFORSAKEN unit.
+This repo contains the project files for our task management application built as part of FIT3162.
 
 ## File structure
 
@@ -26,6 +26,10 @@ Check the backend server is up at:  http://localhost:8080/actuator/health
 ## TODO
 
 Refer to: https://trello.com/b/xkcOj1Bp/pre-semester
+
+## Documentation
+
+https://student-team-sx2xae6w.atlassian.net/wiki/spaces/TMA/overview
 
 ## Useful links
 

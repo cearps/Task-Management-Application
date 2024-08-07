@@ -1,8 +1,8 @@
 import axios from "axios";
-import { Observable, interval, from } from "rxjs";
+import { Observable, interval, from, concat, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
 
-const baseUrl = process.env.REACT_APP_API_BASE_URL;
+const baseUrl = window.api_url;
 
 export default class TaskAPI {
   static async getTaskComments(taskId: string) {
@@ -14,7 +14,7 @@ export default class TaskAPI {
   }
 
   static getTaskCommentsObservable(taskId: string): Observable<any> {
-    return interval(1000).pipe(
+    return concat(of(0), interval(1000)).pipe(
       switchMap(() => {
         return from(TaskAPI.getTaskComments(taskId));
       })
@@ -22,7 +22,7 @@ export default class TaskAPI {
   }
 
   static getTaskAssigneesObservable(taskId: string): Observable<any> {
-    return interval(1000).pipe(
+    return concat(of(), interval(1000)).pipe(
       switchMap(() => {
         return from(TaskAPI.getTaskAssignees(taskId));
       })
