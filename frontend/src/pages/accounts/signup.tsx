@@ -1,9 +1,10 @@
+import SignUpForm from "../../components/forms/account-forms/signup-form";
 import Base from "../../components/sections/base";
 
 export default function SignUp() {
   return (
     <Base pageTitle="Sign Up">
-      <h1>Sign Up</h1>
+      <SignUpForm />
     </Base>
   );
 }
