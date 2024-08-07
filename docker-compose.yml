@@ -33,4 +33,4 @@ services:
     ports:
       - "80:80"
     environment:
-      NODE_ENV: production
+      - REACT_APP_API_URL=http://localhost:8080

@@ -6,7 +6,7 @@
   "scripts": {
     "start:mock-api": "nodemon mock-server.js",
     "start:react": "vite",
-    "dev": "npm-run-all --parallel start:mock-api start:react",
+    "dev": "vite --port 5173 --host",
     "build": "tsc && vite build",
     "test": "jest",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
