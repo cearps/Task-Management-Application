@@ -14,7 +14,7 @@ export default class UserAPI {
   }
 
   static async createUser(data: NewUserData) {
-    return axios.post(`${baseUrl}/users`, data);
+    return axios.post(`${API_URL}/users`, data);
   }
 
   static getUserObservable(id: string): Observable<any> {
