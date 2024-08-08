@@ -13,6 +13,10 @@ export default class UserAPI {
     return axios.post(`${API_URL}/users`, data);
   }
 
+  static async createUser(data: NewUserData) {
+    return axios.post(`${baseUrl}/users`, data);
+  }
+
   static getUserObservable(id: string): Observable<any> {
     return concat(of(0), interval(1000)).pipe(
       switchMap(() => {
