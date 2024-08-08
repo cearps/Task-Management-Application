@@ -1,20 +1,19 @@
 import axios from "axios";
 import { Observable, interval, from, concat, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
-
-const baseUrl = window.api_url;
+import { API_URL } from "./apiConfig";
 
 export default class KanbanAPI {
   static async getKanbanBoards() {
-    return axios.get(`${baseUrl}/boards`);
+    return axios.get(`${API_URL}/boards`);
   }
 
   static async getKanbanBoard(id: string) {
-    return axios.get(`${baseUrl}/boards/${id}`);
+    return axios.get(`${API_URL}/boards/${id}`);
   }
 
   static async getKanbanBoardTasks(boardId: string, categoryId: string) {
-    return axios.get(`${baseUrl}/boards/${boardId}/tasks/${categoryId}`);
+    return axios.get(`${API_URL}/boards/${boardId}/tasks/${categoryId}`);
   }
 
   static getKanbanBoardsObservable(): Observable<any> {

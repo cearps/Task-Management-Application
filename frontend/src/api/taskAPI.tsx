@@ -1,16 +1,15 @@
 import axios from "axios";
 import { Observable, interval, from, concat, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
-
-const baseUrl = window.api_url;
+import { API_URL } from "./apiConfig";
 
 export default class TaskAPI {
   static async getTaskComments(taskId: string) {
-    return axios.get(`${baseUrl}/tasks/${taskId}/comments`);
+    return axios.get(`${API_URL}/tasks/${taskId}/comments`);
   }
 
   static async getTaskAssignees(taskId: string) {
-    return axios.get(`${baseUrl}/tasks/${taskId}/assignees`);
+    return axios.get(`${API_URL}/tasks/${taskId}/assignees`);
   }
 
   static getTaskCommentsObservable(taskId: string): Observable<any> {
