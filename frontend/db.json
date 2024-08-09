@@ -5,8 +5,8 @@
       "name": "Board 1",
       "description": "This is a board description for board 1.",
       "ownerId": 1,
-      "startDate": "2019-01-01",
-      "dueDate": "2019-03-01"
+      "startDate": "2024-08-01",
+      "dueDate": "2024-08-30"
     },
     {
       "id": 2,
