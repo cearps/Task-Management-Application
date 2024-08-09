@@ -11,7 +11,7 @@ declare global {
 }
 
 // set the api url
-window.api_url = process.env.REACT_APP_API_URL || "http://localhost:8080";
+window.api_url = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
