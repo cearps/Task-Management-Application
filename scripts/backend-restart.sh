@@ -6,4 +6,4 @@ docker compose down -v
 # Optionally, remove dangling volumes not associated with any container
 docker volume prune -f
 
-docker compose up -f docker-compose.backend.yml --force-recreate --build -d
+docker compose -f docker-compose.backend.yml up --force-recreate --build -d
