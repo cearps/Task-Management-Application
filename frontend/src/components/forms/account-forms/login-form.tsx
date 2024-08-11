@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FormBase from "../form-base";
 import Field from "../field";
 import Button from "../../buttons/button";
@@ -24,24 +24,26 @@ const LogInForm = () => {
       return;
     }
 
-    UserAPI.loginUserObservable({ email, password }).subscribe({
-      next: (response) => {
-        if (response.status === 200) {
-          console.log("User logged in successfully");
-          // set the token in local storage
-          localStorage.setItem("token", response.data.token);
-          // redirect to the boards page
-          navigate("/boards");
-        }
-      },
-      error: (error) => {
-        if (error.response.status === 401) {
-          setLoginErrors(error.response.data.description);
-        } else {
-          setLoginErrors("An error occurred. Please try again later.");
-        }
-      },
-    });
+    UserAPI.loginUserObservable({ email, password })
+      .pipe(take(1))
+      .subscribe({
+        next: (response) => {
+          if (response.status === 200) {
+            console.log("User logged in successfully");
+            // set the token in local storage
+            localStorage.setItem("token", response.data.token);
+            // redirect to the boards page
+            navigate("/boards");
+          }
+        },
+        error: (error) => {
+          if (error.response.status === 401) {
+            setLoginErrors(error.response.data.description);
+          } else {
+            setLoginErrors("An error occurred. Please try again later.");
+          }
+        },
+      });
   };
 
   return (

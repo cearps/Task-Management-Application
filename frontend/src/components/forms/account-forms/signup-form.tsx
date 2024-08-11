@@ -48,18 +48,18 @@ const SignUpForm = () => {
 
     return UserAPI.createUserObservable(data)
       .pipe(take(1))
-      .subscribe(
-        () => {
+      .subscribe({
+        next: () => {
           navigate("/accounts/login");
         },
-        (error) => {
+        error: (error) => {
           if (error.response.status) {
             setSignupErrors(error.response.data.description);
           } else {
             setSignupErrors("An error occurred. Please try again later.");
           }
-        }
-      );
+        },
+      });
   };
 
   return (
