@@ -29,5 +29,3 @@ services:
       - spring-boot-app
     ports:
       - "80:80"
-    environment:
-      - REACT_APP_API_URL=http://localhost:8080

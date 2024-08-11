@@ -13,6 +13,7 @@ RUN npm install
 COPY . .
 
 # Build the React app using Vite
+ENV REACT_APP_API_URL=http://localhost:8080
 RUN npm run build
 
 # Serve stage
