@@ -10,7 +10,30 @@ export default class UserAPI {
   }
 
   static async createUser(data: NewUserData) {
-    return axios.post(`${API_URL}/users`, data);
+    const jsonData = JSON.stringify({
+      fullName: data.username,
+      email: data.email,
+      password: data.password,
+    });
+
+    // headers are required for POST requests
+    return axios.post(`${API_URL}/users`, jsonData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  static async loginUser(data: { email: string; password: string }) {
+    const jsonData = JSON.stringify({
+      email: data.email,
+      password: data.password,
+    });
+    return axios.post(`${API_URL}/auth/login`, jsonData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 
   static getUserObservable(id: string): Observable<any> {
@@ -19,5 +42,16 @@ export default class UserAPI {
         return from(UserAPI.getUser(id));
       })
     );
+  }
+
+  static createUserObservable(data: NewUserData): Observable<any> {
+    return from(UserAPI.createUser(data));
+  }
+
+  static loginUserObservable(data: {
+    email: string;
+    password: string;
+  }): Observable<any> {
+    return from(UserAPI.loginUser(data));
   }
 }

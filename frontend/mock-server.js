@@ -67,6 +67,33 @@ server.get("/users/:id", (req, res) => {
   res.jsonp(userWithoutPassword);
 });
 
+server.post("/auth/signup", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  const { email, password, username } = req.body;
+  const user = router.db
+    .get("users")
+    .push({ email, passwordHash: password, username })
+    .write();
+  res.jsonp(user);
+});
+
+server.post("/auth/login", (req, res) => {
+  const { email, password } = req.body;
+  const user = router.db
+    .get("users")
+    .find({ email, passwordHash: password })
+    .value();
+  if (!user) {
+    res.status(401).jsonp({ message: "Invalid email or password" });
+  } else {
+    const tokenResponse = {
+      token: "fake-jwt",
+      expiresIn: 3600,
+    };
+    res.jsonp(tokenResponse);
+  }
+});
+
 // To handle POST, PUT and PATCH you need to use a body-parser
 // You can use the one used by JSON Server
 server.use(jsonServer.bodyParser);

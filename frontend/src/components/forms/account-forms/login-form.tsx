@@ -4,15 +4,46 @@ import Field from "../field";
 import Button from "../../buttons/button";
 import validateEmail from "./validation/email-validation";
 import { validatePassword } from "./validation/password-validation";
+import UserAPI from "../../../api/userAPI";
+import { take } from "rxjs";
+import { useNavigate } from "react-router-dom";
 
 const LogInForm = () => {
   const [email, setEmail] = useState("");
   const [emailErrors, setEmailErrors] = useState("");
   const [password, setPassword] = useState("");
   const [passwordErrors, setPasswordErrors] = useState("");
+  const [loginErrors, setLoginErrors] = useState("");
+
+  const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (emailErrors || passwordErrors) {
+      return;
+    }
+
+    UserAPI.loginUserObservable({ email, password })
+      .pipe(take(1)) // automatically unsubscribe after the first value is emitted
+      .subscribe(
+        (response) => {
+          if (response.status === 200) {
+            console.log("User logged in successfully");
+            // set the token in local storage
+            localStorage.setItem("token", response.data.token);
+            // redirect to the boards page
+            navigate("/boards");
+          } else if (response.status === 401) {
+            setLoginErrors(response.data.description);
+          } else {
+            console.error(response);
+          }
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
   };
 
   return (

@@ -223,6 +223,27 @@
       "password": "test",
       "createdAt": 1720696850230,
       "id": 4
+    },
+    {
+      "username": "cooper",
+      "email": "cooper@test.com",
+      "password": "1!qQazws",
+      "createdAt": 1723361235379,
+      "id": 5
+    },
+    {
+      "fullName": "cooper",
+      "email": "cooper@cooper.com",
+      "password": "Abc123$$",
+      "createdAt": 1723363403470,
+      "id": 6
+    },
+    {
+      "fullName": "cooper",
+      "email": "cooper@cooper.com",
+      "password": "test123$T",
+      "createdAt": 1723363633575,
+      "id": 7
     }
   ],
   "comments": [

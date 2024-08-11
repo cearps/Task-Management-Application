@@ -42,14 +42,14 @@ const SignUpForm = () => {
       password,
     };
 
-    UserAPI.createUser(data)
-      .then((res) => {
-        localStorage.setItem("token", res.data.token);
-        navigate("/boards");
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    return UserAPI.createUserObservable(data).subscribe(
+      (response) => {
+        navigate("/accounts/login");
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   };
 
   return (
