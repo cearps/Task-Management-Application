@@ -203,7 +203,8 @@
     {
       "id": 1,
       "username": "user1",
-      "passwordHash": "password1"
+      "email": "user1@email.com",
+      "passwordHash": "Abc123$$"
     },
     {
       "id": 2,
@@ -211,39 +212,12 @@
       "passwordHash": "password2"
     },
     {
-      "username": "test",
       "email": "test@test.com",
-      "password": "test",
-      "createdAt": 1720696848663,
-      "id": 3
+      "passwordHash": "123$123334hH"
     },
     {
-      "username": "test",
-      "email": "test@test.com",
-      "password": "test",
-      "createdAt": 1720696850230,
-      "id": 4
-    },
-    {
-      "username": "cooper",
       "email": "cooper@test.com",
-      "password": "1!qQazws",
-      "createdAt": 1723361235379,
-      "id": 5
-    },
-    {
-      "fullName": "cooper",
-      "email": "cooper@cooper.com",
-      "password": "Abc123$$",
-      "createdAt": 1723363403470,
-      "id": 6
-    },
-    {
-      "fullName": "cooper",
-      "email": "cooper@cooper.com",
-      "password": "test123$T",
-      "createdAt": 1723363633575,
-      "id": 7
+      "passwordHash": "Abc123$$"
     }
   ],
   "comments": [

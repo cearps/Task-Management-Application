@@ -5,6 +5,7 @@ const middlewares = jsonServer.defaults();
 
 // Set default middlewares (logger, static, cors and no-cache)
 server.use(middlewares);
+server.use(jsonServer.bodyParser);
 
 // Add custom routes before JSON Server router
 server.get("/echo", (req, res) => {
@@ -70,11 +71,20 @@ server.get("/users/:id", (req, res) => {
 server.post("/auth/signup", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   const { email, password, username } = req.body;
+  const existingUser = router.db.get("users").find({ email }).value();
+  if (existingUser) {
+    res.status(400).jsonp({ description: "User already exists" });
+    return;
+  }
   const user = router.db
     .get("users")
     .push({ email, passwordHash: password, username })
     .write();
-  res.jsonp(user);
+  res.jsonp({
+    id: user.id,
+    email: user.email,
+    username: user.username,
+  });
 });
 
 server.post("/auth/login", (req, res) => {
@@ -84,7 +94,7 @@ server.post("/auth/login", (req, res) => {
     .find({ email, passwordHash: password })
     .value();
   if (!user) {
-    res.status(401).jsonp({ message: "Invalid email or password" });
+    res.status(401).jsonp({ description: "Invalid email or password" });
   } else {
     const tokenResponse = {
       token: "fake-jwt",

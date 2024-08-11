@@ -17,7 +17,7 @@ export default class UserAPI {
     });
 
     // headers are required for POST requests
-    return axios.post(`${API_URL}/users`, jsonData, {
+    return axios.post(`${API_URL}/auth/signup`, jsonData, {
       headers: {
         "Content-Type": "application/json",
       },
