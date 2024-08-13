@@ -29,6 +29,7 @@ export default class UserAPI {
       email: data.email,
       password: data.password,
     });
+
     return axios.post(`${API_URL}/auth/login`, jsonData, {
       headers: {
         "Content-Type": "application/json",
