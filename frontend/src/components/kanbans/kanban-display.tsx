@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import KanbanColumn from "./kanban-column";
 import { Kanban, Task } from "../../utilities/types";
 import DetailedTaskView from "./kanban-task-detail";
 import { kanbanColumns } from "../../utilities/kanban-category-mapping";
+import AddTaskModal from "./add-task-modal";  // Import the AddTaskModal component
 
 export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [progress, setProgress] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);  // State to control modal visibility
 
   useEffect(() => {
     const startDate = new Date(kanban.startDate);
@@ -28,6 +30,10 @@ export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
     setSelectedTask(null);
   };
 
+  const handleAddTask = () => {
+    setIsModalOpen(true);  // Open the modal when button is clicked
+  };
+
   return (
     <div style={{ padding: '0 20px' }}>
       <header className="flex flex-col items-start mb-6 w-full">
@@ -39,6 +45,17 @@ export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
         </div>
         <ProgressBar progress={progress} />
       </header>
+      
+      {/* Add Task Button */}
+      <div className="mb-4">
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+          onClick={handleAddTask}
+        >
+          Add Task
+        </button>
+      </div>
+
       <div className="grid grid-cols-4 gap-4">
         {kanbanColumns.map((column) => (
           <KanbanColumn
@@ -53,10 +70,16 @@ export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
       {selectedTask && (
         <DetailedTaskView task={selectedTask} onClose={handleTaskClose} />
       )}
+
+      {/* Render AddTaskModal */}
+      <AddTaskModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        boardId={kanban.id}
+      />
     </div>
   );
 }
-
 
 function ProgressBar({ progress }: { progress: number }) {
   return (
@@ -73,4 +96,3 @@ function ProgressBar({ progress }: { progress: number }) {
     </div>
   );
 }
-
