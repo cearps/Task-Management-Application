@@ -1,5 +1,6 @@
 package com.backend.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -14,6 +15,7 @@ public class Board {
     private String title;
 
     @OneToMany(mappedBy = "board")
+    @JsonIgnore
     private Set<UserBoard> userBoards;
 
     // Getters and Setters
