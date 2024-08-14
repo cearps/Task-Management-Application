@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Table(name="users")
 @Entity
@@ -17,6 +18,9 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String fullName;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserBoard> userBoards;
 
     public String getFullName() {
         return fullName;
