@@ -31,7 +31,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, boardId })
 
     TaskAPI.createTask(newTask)
       .then(() => {
-        onClose(); // Close the modal after adding the task
+        onClose(); 
       })
       .catch((err) => console.error(err));
   };
@@ -74,7 +74,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, boardId })
 
         {/* Urgency Dropdown */}
         <div className="mb-4">
-          <label className="block text-gray-700 font-semibold mb-2">Urgency</label>
+          <label className="block text-black-700 font-semibold mb-2">Urgency</label>
           <select
             value={urgency}
             onChange={(e) => setUrgency(Number(e.target.value))}
