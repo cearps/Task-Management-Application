@@ -11,6 +11,7 @@ import {
   validatePassword,
   validatePasswordConfirmation,
 } from "./validation/password-validation";
+import { take } from "rxjs";
 
 const SignUpForm = () => {
   const [username, setUsername] = useState("");
@@ -28,6 +29,9 @@ const SignUpForm = () => {
     passwordErrors,
     passwordConfirmationErrors,
   ];
+
+  const [signupErrors, setSignupErrors] = useState("");
+
   const navigate = useNavigate();
 
   const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,13 +46,19 @@ const SignUpForm = () => {
       password,
     };
 
-    UserAPI.createUser(data)
-      .then((res) => {
-        localStorage.setItem("token", res.data.token);
-        navigate("/boards");
-      })
-      .catch((err) => {
-        console.error(err);
+    return UserAPI.createUserObservable(data)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          navigate("/accounts/login");
+        },
+        error: (error) => {
+          if (error.response.status) {
+            setSignupErrors(error.response.data.description);
+          } else {
+            setSignupErrors("An error occurred. Please try again later.");
+          }
+        },
       });
   };
 
@@ -101,6 +111,9 @@ const SignUpForm = () => {
           errors={passwordConfirmationErrors}
         />
         <Button type="submit">Sign Up</Button>
+        {signupErrors && (
+          <p className="text-red-500 text-sm mt-2">{signupErrors}</p>
+        )}
       </FormBase>
     </div>
   );

@@ -203,7 +203,8 @@
     {
       "id": 1,
       "username": "user1",
-      "passwordHash": "password1"
+      "email": "user1@email.com",
+      "passwordHash": "Abc123$$"
     },
     {
       "id": 2,
@@ -211,18 +212,12 @@
       "passwordHash": "password2"
     },
     {
-      "username": "test",
       "email": "test@test.com",
-      "password": "test",
-      "createdAt": 1720696848663,
-      "id": 3
+      "passwordHash": "123$123334hH"
     },
     {
-      "username": "test",
-      "email": "test@test.com",
-      "password": "test",
-      "createdAt": 1720696850230,
-      "id": 4
+      "email": "cooper@test.com",
+      "passwordHash": "Abc123$$"
     }
   ],
   "comments": [
