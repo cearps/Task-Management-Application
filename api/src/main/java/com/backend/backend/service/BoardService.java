@@ -6,7 +6,10 @@ import com.backend.backend.model.UserBoard;
 import com.backend.backend.repository.BoardRepository;
 import com.backend.backend.repository.UserBoardRepository;
 import com.backend.backend.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class BoardService {
@@ -27,6 +30,11 @@ public class BoardService {
         userBoard.setBoard(board);
         userBoardRepository.save(userBoard);
         return board;
+    }
+
+    public Board getBoardByIdAndUser(Long boardId, Long userId) {
+        return boardRepository.findByIdAndUserId(boardId, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Board not found with id " + boardId.toString()));
     }
 
 }
