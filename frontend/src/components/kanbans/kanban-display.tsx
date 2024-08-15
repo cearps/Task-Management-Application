@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import KanbanColumn from "./kanban-column";
 import { Kanban, Task } from "../../utilities/types";
 import DetailedTaskView from "./kanban-task-detail";
 import { kanbanColumns } from "../../utilities/kanban-category-mapping";
-import AddTaskModal from "./add-task-modal";  // Import the AddTaskModal component
+import AddTaskModal from "./add-task-modal"; 
 
 export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [progress, setProgress] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);  // State to control modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   useEffect(() => {
     const startDate = new Date(kanban.startDate);
@@ -31,7 +31,7 @@ export default function KanbanDisplay({ kanban }: { kanban: Kanban }) {
   };
 
   const handleAddTask = () => {
-    setIsModalOpen(true);  // Open the modal when button is clicked
+    setIsModalOpen(true); 
   };
 
   return (
