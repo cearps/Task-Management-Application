@@ -1,11 +1,15 @@
 package com.backend.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
 @Entity
 public class Task {
 
@@ -17,17 +21,14 @@ public class Task {
     private String name;
     private String description;
     private String state;
-    private Date dueDate;
-    private String urgency;
+    private LocalDate dueDate;
+    private Integer urgency;
+    private Integer taskCategory;
 
-    @OneToMany(mappedBy = "task")
-    private Set<Comment> comments;
+    @ManyToOne
+    @JoinColumn(name = "board_id", nullable = false)
+    @JsonIgnore
+    private Board board;
 
-    @ManyToMany
-    @JoinTable(
-            name = "users_task",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "users_id")
-    )
-    private Set<User> users = new HashSet<>();
+
 }

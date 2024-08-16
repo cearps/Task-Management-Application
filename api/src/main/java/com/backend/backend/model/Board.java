@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,5 +28,8 @@ public class Board {
     @OneToMany(mappedBy = "board")
     @JsonIgnore
     private Set<UserBoard> userBoards;
+
+    @OneToMany(mappedBy = "board")
+    private List<Task> tasks;
 
 }
