@@ -1,6 +1,8 @@
 package com.backend.backend.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,6 +12,8 @@ import java.util.Set;
 
 @Table(name="users")
 @Entity
+@Data
+@Accessors(chain = true)
 public class User implements UserDetails {
 
     @Id
@@ -22,23 +26,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<UserBoard> userBoards;
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public User setFullName(String fullName) {
-        this.fullName = fullName;
-        return this;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
 
-    public String getPassword() {
-        return password;
-    }
 
     @Override
     public String getUsername() {
@@ -47,28 +39,6 @@ public class User implements UserDetails {
 
     public User setUsername(String username) {
         this.email = username;
-        return this;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public User setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public User setPassword(String hashedPassword) {
-        this.password = hashedPassword;
         return this;
     }
 
