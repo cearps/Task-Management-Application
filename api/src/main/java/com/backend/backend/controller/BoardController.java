@@ -1,10 +1,12 @@
 package com.backend.backend.controller;
 
 
+import com.backend.backend.dto.UpdateBoardRequest;
 import com.backend.backend.model.Board;
 import com.backend.backend.model.User;
 import com.backend.backend.service.BoardService;
 import com.backend.backend.service.UserBoardService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -46,9 +48,14 @@ public class BoardController {
         User currentUser = (User) authentication.getPrincipal();
 
         return ResponseEntity.ok(boardService.getBoardByIdAndUser(id, currentUser.getId()));
+    }
 
+    @PostMapping("/{id}")
+    public ResponseEntity<Board> getBoardById(@PathVariable Long id, @RequestBody UpdateBoardRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
 
-
+        return ResponseEntity.ok(userBoardService.updateBoardForUser(currentUser, id, request));
     }
 
 }

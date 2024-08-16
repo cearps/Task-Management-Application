@@ -2,45 +2,29 @@ package com.backend.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
+@Data
 public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    private String name;
+
+    private String description;
+
+    private LocalDate startDate;
+
+    private LocalDate dueDate;
 
     @OneToMany(mappedBy = "board")
     @JsonIgnore
     private Set<UserBoard> userBoards;
 
-    // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Set<UserBoard> getUserBoards() {
-        return userBoards;
-    }
-
-    public void setUserBoards(Set<UserBoard> userBoards) {
-        this.userBoards = userBoards;
-    }
 }
