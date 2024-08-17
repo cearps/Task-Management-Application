@@ -1,5 +1,6 @@
 package com.backend.backend.controller;
 
+import com.backend.backend.dto.CommentRequest;
 import com.backend.backend.dto.CreateTaskRequest;
 import com.backend.backend.dto.UpdateTaskRequest;
 import com.backend.backend.model.Board;
@@ -49,6 +50,17 @@ public class TaskController {
 
         taskService.deleteTask(currentUser, boardId, taskId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{boardId}/tasks/{taskId}/comment")
+    public ResponseEntity<Task> commentOnTask(@PathVariable Long boardId, @PathVariable Long taskId,
+                                                   @RequestBody CommentRequest request) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+
+        return ResponseEntity.ok(taskService.commentOnTask(currentUser, boardId, taskId, request));
+
     }
 
 }
