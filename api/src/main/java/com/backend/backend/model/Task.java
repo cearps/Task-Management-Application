@@ -22,7 +22,7 @@ public class Task {
     private String description;
     private LocalDate dueDate;
     private Integer urgency;
-    private Integer taskCategory;
+    private Integer taskCategory = 1;
 
     @ManyToOne
     @JoinColumn(name = "board_id", nullable = false)
