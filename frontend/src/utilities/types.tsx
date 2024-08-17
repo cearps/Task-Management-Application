@@ -1,31 +1,48 @@
-type Kanban = {
+type KanbanBoard = {
   id: number;
   name: string;
   description: string;
-  ownerId: number;
   startDate: string;
   dueDate: string;
+  userIds: number[];
+  tasks: KanbanTask[];
 };
 
-type Task = {
+type KanbanTask = {
   id: number;
-  boardId: number;
   name: string;
   description: string;
   dueDate: string;
   urgency: number;
-  taskCategoryId: number;
-};
-
-type User = {
-  id: number;
-  username: string;
+  taskCategory: number;
 };
 
 type NewUserData = {
-  username: string;
+  userTag: string;
   email: string;
   password: string;
+};
+
+type User = {
+  // TODO
+};
+
+type SignUpResponse = {
+  id: number;
+  email: string;
+  password?: string;
+  fullName: string;
+  enabled: boolean;
+  username: string;
+  authorities: { authority: string }[];
+  accountNonExpired: boolean;
+  accountNonLocked: boolean;
+  credentialsNonExpired: boolean;
+};
+
+type LoginResponse = {
+  token: string;
+  expiresIn: number;
 };
 
 type Comment = {
@@ -38,4 +55,13 @@ type Comment = {
 
 type ButtonType = "button" | "submit" | "reset";
 
-export type { Kanban, Task, User, Comment, ButtonType, NewUserData };
+export type {
+  KanbanBoard,
+  KanbanTask,
+  User,
+  Comment,
+  ButtonType,
+  NewUserData,
+  LoginResponse,
+  SignUpResponse,
+};

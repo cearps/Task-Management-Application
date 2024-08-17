@@ -7,12 +7,11 @@ describe("DetailedTaskView", () => {
       <DetailedTaskView
         task={{
           id: 0,
-          boardId: 0,
           name: "",
           description: "",
           dueDate: "",
           urgency: 0,
-          taskCategoryId: 0,
+          taskCategory: 0,
         }}
         onClose={function (): void {
           throw new Error("Function not implemented.");

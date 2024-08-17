@@ -28,20 +28,11 @@ const LogInForm = () => {
       .pipe(take(1))
       .subscribe({
         next: (response) => {
-          if (response.status === 200) {
-            console.log("User logged in successfully");
-            // set the token in local storage
-            localStorage.setItem("token", response.data.token);
-            // redirect to the boards page
-            navigate("/boards");
-          }
+          localStorage.setItem("token", response.token);
+          navigate("/boards");
         },
         error: (error) => {
-          if (error.response.status === 401) {
-            setLoginErrors(error.response.data.description);
-          } else {
-            setLoginErrors("An error occurred. Please try again later.");
-          }
+          setLoginErrors(error.response.data.message);
         },
       });
   };

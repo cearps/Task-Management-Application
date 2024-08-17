@@ -41,7 +41,7 @@ const SignUpForm = () => {
     }
 
     const data: NewUserData = {
-      username,
+      userTag: username,
       email,
       password,
     };

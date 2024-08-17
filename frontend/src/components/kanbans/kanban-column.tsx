@@ -1,35 +1,26 @@
 import { useEffect, useState } from "react";
-import KanbanAPI from "../../api/kanbanAPI";
 import KanbanCard from "./kanban-task-card";
-import { Task } from "../../utilities/types";
+import { KanbanBoard, KanbanTask } from "../../utilities/types";
 
 export default function KanbanColumn({
   title,
   taskCategoryId,
-  kanbanId,
+  kanban,
   setActiveTaskMethod,
 }: {
   title: string;
   taskCategoryId: string;
-  kanbanId: string;
-  setActiveTaskMethod: (task: Task) => () => void;
+  kanban: KanbanBoard;
+  setActiveTaskMethod: (task: KanbanTask) => () => void;
 }) {
-  const [tasks, setTasks] = useState([] as Task[]);
+  const [tasks, setTasks] = useState([] as KanbanTask[]);
 
   useEffect(() => {
-    const subsciption = KanbanAPI.getKanbanBoardTasksObservable(
-      kanbanId,
-      taskCategoryId
-    ).subscribe((response) => {
-      console.log(response.data);
-      setTasks(response.data);
-    });
-
-    // prevent memory leak
-    return () => {
-      subsciption.unsubscribe();
-    };
-  }, []);
+    const tasks = kanban.tasks.filter(
+      (task) => task.taskCategory === parseInt(taskCategoryId)
+    );
+    setTasks(tasks);
+  }, [kanban.tasks, taskCategoryId]);
 
   return (
     <div className="bg-yellow-400 rounded-lg p-2">
