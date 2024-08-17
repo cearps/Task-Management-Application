@@ -12,6 +12,7 @@ describe("DetailedTaskView", () => {
           dueDate: "",
           urgency: 0,
           taskCategory: 0,
+          users: [],
         }}
         onClose={function (): void {
           throw new Error("Function not implemented.");

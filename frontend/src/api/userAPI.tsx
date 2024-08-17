@@ -1,12 +1,24 @@
 import axios from "axios";
 import { Observable, interval, from, concat, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
-import { LoginResponse, NewUserData, SignUpResponse } from "../utilities/types";
+import {
+  LoginResponse,
+  NewUserData,
+  SignUpResponse,
+  User,
+} from "../utilities/types";
 import { API_URL } from "./apiConfig";
 
 export default class UserAPI {
-  static async getUser(id: string) {
-    return axios.get(`${API_URL}/users/${id}`);
+  static async getUser() {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${API_URL}/user/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
   }
 
   static async createUser(data: NewUserData) {
@@ -41,11 +53,10 @@ export default class UserAPI {
     return response.data as LoginResponse;
   }
 
-  static getUserObservable(id: string): Observable<any> {
-    // TODO
+  static getUserObservable(): Observable<User> {
     return concat(of(0), interval(1000)).pipe(
       switchMap(() => {
-        return from(UserAPI.getUser(id));
+        return from(UserAPI.getUser());
       })
     );
   }

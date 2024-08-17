@@ -29,7 +29,7 @@ const LogInForm = () => {
       .subscribe({
         next: (response) => {
           localStorage.setItem("token", response.token);
-          navigate("/boards");
+          navigate("/");
         },
         error: (error) => {
           setLoginErrors(error.response.data.message);

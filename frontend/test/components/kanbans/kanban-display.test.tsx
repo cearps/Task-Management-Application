@@ -11,7 +11,7 @@ describe("KanbanDisplay", () => {
           description: "",
           startDate: "",
           dueDate: "",
-          userIds: [],
+          users: [],
           tasks: [],
         }}
       />

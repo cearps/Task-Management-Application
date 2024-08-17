@@ -13,6 +13,7 @@ describe("KanbanCard", () => {
           dueDate: "",
           urgency: 0,
           taskCategory: 0,
+          users: [],
         }}
         setActiveTaskMethod={(task: KanbanTask) => () => task}
       />

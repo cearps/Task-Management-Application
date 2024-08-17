@@ -16,7 +16,7 @@ describe("KanbanColumn", () => {
             description: "",
             startDate: "",
             dueDate: "",
-            userIds: [],
+            users: [],
           } as KanbanBoard
         }
         setActiveTaskMethod={(task: KanbanTask) => () => task}

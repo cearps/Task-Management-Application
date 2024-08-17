@@ -107,11 +107,11 @@ const DetailedTaskView = ({
           <div className="mb-4">
             <span className="font-semibold">Assigned to:</span>{" "}
             <p>
-              {/* {assignedUsers.map((user) => (
+              {task.users.map((user) => (
                 <span key={user.id} className="mx-2">
-                  {user.username}
+                  {user.userTag}
                 </span>
-              ))} */}
+              ))}
             </p>
           </div>
           <div className="mb-4">
