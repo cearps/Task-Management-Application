@@ -21,7 +21,7 @@ public class User implements UserDetails {
     private Long id;
     private String email;
     private String password;
-    private String fullName;
+    private String userTag;
 
     @OneToMany(mappedBy = "user")
     private Set<UserBoard> userBoards;
@@ -37,8 +37,8 @@ public class User implements UserDetails {
         return email;
     }
 
-    public User setUsername(String username) {
-        this.email = username;
+    public User setUsername(String email) {
+        this.email = email;
         return this;
     }
 

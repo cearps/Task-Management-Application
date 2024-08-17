@@ -19,7 +19,7 @@ public class UserController {
         User currentUser = (User) authentication.getPrincipal();
         CurrentUserDto response = new CurrentUserDto();
         response.setEmail(currentUser.getEmail());
-        response.setFullName(currentUser.getFullName());
+        response.setUserTag(currentUser.getUserTag());
         response.setId(currentUser.getId());
         return ResponseEntity.ok(response);
     }
