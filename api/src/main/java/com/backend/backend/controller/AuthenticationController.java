@@ -1,5 +1,6 @@
 package com.backend.backend.controller;
 
+import com.backend.backend.dto.CurrentUserDto;
 import com.backend.backend.dto.LoginResponse;
 import com.backend.backend.dto.LoginUserDto;
 import com.backend.backend.dto.RegisterUserDto;
@@ -7,10 +8,9 @@ import com.backend.backend.model.User;
 import com.backend.backend.service.AuthenticationService;
 import com.backend.backend.service.JwtService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/auth")
 @RestController
