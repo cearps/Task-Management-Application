@@ -1,44 +1,46 @@
 import axios from "axios";
 import { Observable, interval, from, concat, of } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { switchMap, catchError } from "rxjs/operators";
 import { API_URL } from "./apiConfig";
+import { KanbanBoard } from "../utilities/types";
 
 export default class KanbanAPI {
-  static async getKanbanBoards() {
-    return axios.get(`${API_URL}/boards`);
+  static async getKanbanBoards(): Promise<KanbanBoard[]> {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${API_URL}/kanbans`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data as KanbanBoard[];
   }
 
-  static async getKanbanBoard(id: string) {
-    return axios.get(`${API_URL}/boards/${id}`);
+  static async getKanbanBoard(id: string): Promise<KanbanBoard> {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${API_URL}/kanbans/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data as KanbanBoard;
   }
 
-  static async getKanbanBoardTasks(boardId: string, categoryId: string) {
-    return axios.get(`${API_URL}/boards/${boardId}/tasks/${categoryId}`);
-  }
-
-  static getKanbanBoardsObservable(): Observable<any> {
+  static getKanbanBoardsObservable(): Observable<KanbanBoard[]> {
     return concat(of(0), interval(1000)).pipe(
-      switchMap(() => {
-        return from(KanbanAPI.getKanbanBoards());
+      switchMap(() => from(KanbanAPI.getKanbanBoards())),
+      catchError((error) => {
+        console.error("Error fetching Kanban boards:", error);
+        return of([]); // Return an empty array in case of error
       })
     );
   }
 
-  static getKanbanBoardObservable(id: string): Observable<any> {
+  static getKanbanBoardObservable(id: string): Observable<KanbanBoard | null> {
     return concat(of(0), interval(1000)).pipe(
-      switchMap(() => {
-        return from(KanbanAPI.getKanbanBoard(id));
-      })
-    );
-  }
-
-  static getKanbanBoardTasksObservable(
-    boardId: string,
-    categoryId: string
-  ): Observable<any> {
-    return concat(of(0), interval(1000)).pipe(
-      switchMap(() => {
-        return from(KanbanAPI.getKanbanBoardTasks(boardId, categoryId));
+      switchMap(() => from(KanbanAPI.getKanbanBoard(id))),
+      catchError((error) => {
+        console.error(`Error fetching Kanban board with id ${id}:`, error);
+        return of(null); // Return null or some fallback value in case of error
       })
     );
   }

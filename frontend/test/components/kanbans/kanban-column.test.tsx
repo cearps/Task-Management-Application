@@ -1,6 +1,6 @@
 import KanbanColumn from "../../../src/components/kanbans/kanban-column";
 import { render } from "@testing-library/react";
-import { Task } from "../../../src/utilities/types";
+import { KanbanBoard, KanbanTask } from "../../../src/utilities/types";
 
 describe("KanbanColumn", () => {
   it("renders without crashing", () => {
@@ -8,8 +8,18 @@ describe("KanbanColumn", () => {
       <KanbanColumn
         title={""}
         taskCategoryId={""}
-        kanbanId={""}
-        setActiveTaskMethod={(task: Task) => () => task}
+        kanban={
+          {
+            tasks: [],
+            id: 0,
+            name: "",
+            description: "",
+            startDate: "",
+            dueDate: "",
+            userIds: [],
+          } as KanbanBoard
+        }
+        setActiveTaskMethod={(task: KanbanTask) => () => task}
       />
     );
   });

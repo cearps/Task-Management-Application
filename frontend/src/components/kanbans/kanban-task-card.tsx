@@ -1,12 +1,12 @@
-import { Task } from "../../utilities/types";
+import { KanbanTask } from "../../utilities/types";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
 
 export default function KanbanCard({
   task,
   setActiveTaskMethod,
 }: {
-  task: Task;
-  setActiveTaskMethod: (task: Task) => () => void;
+  task: KanbanTask;
+  setActiveTaskMethod: (task: KanbanTask) => () => void;
 }) {
   return (
     <div

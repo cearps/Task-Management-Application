@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
 import KanbanAPI from "../../api/kanbanAPI";
 import Loader from "../loaders/loader";
-import { Kanban } from "../../utilities/types";
+import { KanbanBoard } from "../../utilities/types";
 import KanbanDisplay from "./kanban-display";
 
-export default function kanbanSingularView({ id }: { id: string }) {
-  const [kanban, setKanban] = useState<Kanban | undefined>(undefined);
+export default function KanbanSingularView({ id }: { id: string }) {
+  const [kanban, setKanban] = useState<KanbanBoard | undefined>(undefined);
 
   useEffect(() => {
-    const subscription = KanbanAPI.getKanbanBoardObservable(id).subscribe(
-      (response) => {
-        console.log(response.data);
-        setKanban(response.data);
-      }
-    );
+    const subscription = KanbanAPI.getKanbanBoardObservable(id).subscribe({
+      next: (board) => {
+        if (board === null) {
+          return;
+        }
+        setKanban(board);
+      },
+      error: (error) => {
+        console.error(`Error fetching Kanban board with id ${id}:`, error);
+      },
+    });
 
     // prevent memory leak
     return () => {

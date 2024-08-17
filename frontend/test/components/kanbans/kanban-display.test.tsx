@@ -9,9 +9,10 @@ describe("KanbanDisplay", () => {
           id: 0,
           name: "",
           description: "",
-          ownerId: 0,
           startDate: "",
           dueDate: "",
+          userIds: [],
+          tasks: [],
         }}
       />
     );
