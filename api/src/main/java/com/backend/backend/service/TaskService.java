@@ -43,9 +43,6 @@ public class TaskService {
         if (request.getDescription() != null) {
             task.setDescription(request.getDescription());
         }
-        if (request.getState() != null) {
-            task.setState(request.getState());
-        }
         if (request.getDueDate() != null) {
             task.setDueDate(request.getDueDate());
         }
