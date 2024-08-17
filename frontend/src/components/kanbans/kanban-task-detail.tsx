@@ -1,47 +1,45 @@
-import { Comment, Task, User } from "../../utilities/types";
-import { useEffect, useRef, useState } from "react";
+import { KanbanTask } from "../../utilities/types";
+import { useEffect, useRef } from "react";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
 import { getTaskStatus } from "../../utilities/kanban-category-mapping";
-import TaskAPI from "../../api/taskAPI";
-import KanbanTaskComment from "./kanban-task-comment";
+// import TaskAPI from "../../api/taskAPI";
+// import KanbanTaskComment from "./kanban-task-comment";
 
 const DetailedTaskView = ({
   task,
   onClose,
 }: {
-  task: Task;
+  task: KanbanTask;
   onClose: () => void;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const [assignedUsers, setAssignedUsers] = useState([] as User[]);
-  const [comments, setComments] = useState([] as Comment[]);
+  // const [assignedUsers, setAssignedUsers] = useState([] as User[]);
+  // const [comments, setComments] = useState([] as Comment[]);
 
   useEffect(() => {
-    const subscription = TaskAPI.getTaskAssigneesObservable(
-      `${task.id}`
-    ).subscribe((response) => {
-      console.log(response.data);
-      setAssignedUsers(response.data);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+    // const subscription = TaskAPI.getTaskAssigneesObservable(
+    //   `${task.id}`
+    // ).subscribe((response) => {
+    //   console.log(response.data);
+    //   setAssignedUsers(response.data);
+    // });
+    // return () => {
+    //   subscription.unsubscribe();
+    // };
+  });
 
   useEffect(() => {
-    const subscription = TaskAPI.getTaskCommentsObservable(
-      `${task.id}`
-    ).subscribe((response) => {
-      console.log(response.data);
-      setComments(response.data);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+    // const subscription = TaskAPI.getTaskCommentsObservable(
+    //   `${task.id}`
+    // ).subscribe((response) => {
+    //   console.log(response.data);
+    //   setComments(response.data);
+    // });
+    // return () => {
+    //   subscription.unsubscribe();
+    // };
+  });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -109,23 +107,23 @@ const DetailedTaskView = ({
           <div className="mb-4">
             <span className="font-semibold">Assigned to:</span>{" "}
             <p>
-              {assignedUsers.map((user) => (
+              {/* {assignedUsers.map((user) => (
                 <span key={user.id} className="mx-2">
                   {user.username}
                 </span>
-              ))}
+              ))} */}
             </p>
           </div>
           <div className="mb-4">
             <span className="font-semibold">Status:</span>{" "}
-            <p>{getTaskStatus(task.taskCategoryId)}</p>
+            <p>{getTaskStatus(task.taskCategory)}</p>
           </div>
           <div className="mb-4">
             <span className="font-semibold">Comments:</span>
             <div className="p-2">
-              {comments.map((comment) => (
+              {/* {comments.map((comment) => (
                 <KanbanTaskComment key={comment.id} comment={comment} />
-              ))}
+              ))} */}
               <textarea
                 placeholder="Leave a comment..."
                 className="w-full p-2 rounded"

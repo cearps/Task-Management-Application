@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 import KanbanAPI from "../../api/kanbanAPI";
 import { useNavigate } from "react-router-dom";
+import { KanbanBoard } from "../../utilities/types";
 
 export default function KanbanListView() {
-  const [kanbanBoards, setKanbanBoards] = useState([]);
+  const [kanbanBoards, setKanbanBoards] = useState([] as KanbanBoard[]);
 
   useEffect(() => {
-    const subscription = KanbanAPI.getKanbanBoardsObservable().subscribe(
-      (response) => {
-        console.log(response.data);
-        setKanbanBoards(response.data);
-      }
-    );
+    const subscription = KanbanAPI.getKanbanBoardsObservable().subscribe({
+      next: (boards) => {
+        if (boards === null) {
+          return;
+        }
+        setKanbanBoards(boards);
+      },
+      error: (error) => {
+        console.error("Error fetching Kanban boards:", error);
+      },
+    });
 
     // prevent memory leak
     return () => {
@@ -39,10 +45,10 @@ export default function KanbanListView() {
         </svg>
       </div>
       <div className="flex flex-wrap">
-        {kanbanBoards.map((board: any) => (
+        {kanbanBoards.map((board: KanbanBoard) => (
           <BoardCard
             key={board.id}
-            id={board.id}
+            id={board.id.toString()}
             title={board.name}
             dueDate={board.dueDate}
           />

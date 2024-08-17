@@ -1,6 +1,6 @@
 import KanbanCard from "../../../src/components/kanbans/kanban-task-card";
 import { render } from "@testing-library/react";
-import { Task } from "../../../src/utilities/types";
+import { KanbanTask } from "../../../src/utilities/types";
 
 describe("KanbanCard", () => {
   it("renders without crashing", () => {
@@ -8,14 +8,13 @@ describe("KanbanCard", () => {
       <KanbanCard
         task={{
           id: 0,
-          boardId: 0,
           name: "",
           description: "",
           dueDate: "",
           urgency: 0,
-          taskCategoryId: 0,
+          taskCategory: 0,
         }}
-        setActiveTaskMethod={(task: Task) => () => task}
+        setActiveTaskMethod={(task: KanbanTask) => () => task}
       />
     );
   });
