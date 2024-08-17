@@ -4,8 +4,13 @@ type KanbanBoard = {
   description: string;
   startDate: string;
   dueDate: string;
-  userIds: number[];
+  users: UserInfo[];
   tasks: KanbanTask[];
+};
+
+type UserInfo = {
+  id: number;
+  userTag: string;
 };
 
 type KanbanTask = {
@@ -15,6 +20,7 @@ type KanbanTask = {
   dueDate: string;
   urgency: number;
   taskCategory: number;
+  users: UserInfo[];
 };
 
 type NewUserData = {
@@ -24,7 +30,9 @@ type NewUserData = {
 };
 
 type User = {
-  // TODO
+  id: number;
+  email: string;
+  userTag: string;
 };
 
 type SignUpResponse = {
@@ -64,4 +72,5 @@ export type {
   NewUserData,
   LoginResponse,
   SignUpResponse,
+  UserInfo,
 };
