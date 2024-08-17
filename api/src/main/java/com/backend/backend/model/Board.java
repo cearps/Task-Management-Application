@@ -25,11 +25,10 @@ public class Board {
 
     private LocalDate dueDate;
 
-    @OneToMany(mappedBy = "board")
-    @JsonIgnore
-    private Set<UserBoard> userBoards;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserBoard> userBoards;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
 
 }

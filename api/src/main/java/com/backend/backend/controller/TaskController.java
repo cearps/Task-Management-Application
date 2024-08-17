@@ -42,4 +42,13 @@ public class TaskController {
 
     }
 
+    @DeleteMapping("/{boardId}/tasks/{taskId}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long boardId, @PathVariable Long taskId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+
+        taskService.deleteTask(currentUser, boardId, taskId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

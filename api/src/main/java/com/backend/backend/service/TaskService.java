@@ -56,4 +56,12 @@ public class TaskService {
         taskRepository.save(task);
         return task;
     }
+
+    public void deleteTask(User user, Long boardId, Long taskId) {
+        Task task = taskRepository.findByIdAndUserIdAndTaskId(boardId, user.getId(), taskId)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with id " + taskId.toString() +
+                        " with board id " + boardId.toString() + " and user id " + user.getId().toString()));
+
+        taskRepository.delete(task);
+    }
 }

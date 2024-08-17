@@ -8,8 +8,7 @@ import com.backend.backend.repository.UserBoardRepository;
 import com.backend.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BoardService {
@@ -35,6 +34,17 @@ public class BoardService {
     public Board getBoardByIdAndUser(Long boardId, Long userId) {
         return boardRepository.findByIdAndUserId(boardId, userId)
                 .orElseThrow(() -> new EntityNotFoundException("Board not found with id " + boardId.toString()));
+    }
+
+    @Transactional
+    public void deleteBoard(User user, Long boardId) {
+        Board board = boardRepository.findByIdAndUserId(boardId, user.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Board not found with id " + boardId.toString()));
+
+        for (UserBoard userBoard : board.getUserBoards()) {
+            userBoardRepository.delete(userBoard);
+        }
+        boardRepository.delete(board);
     }
 
 }
