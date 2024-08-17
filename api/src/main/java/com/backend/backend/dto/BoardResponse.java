@@ -17,7 +17,7 @@ public class BoardResponse {
     private final String description;
     private final LocalDate startDate;
     private final LocalDate dueDate;
-    private final List<Long> userIds;
+    private final List<ShortUserResponse> users;
     private final List<Task> tasks;
 
     public BoardResponse(Board board) {
@@ -26,9 +26,9 @@ public class BoardResponse {
         description = board.getDescription();
         startDate = board.getStartDate();
         dueDate = board.getDueDate();
-        userIds = new ArrayList<>();
+        users = new ArrayList<>();
         for (UserBoard ub : board.getUserBoards()) {
-            userIds.add(ub.getUser().getId());
+            users.add(new ShortUserResponse(ub.getUser().getId(), ub.getUser().getUserTag()));
         }
         tasks = board.getTasks();
     }
