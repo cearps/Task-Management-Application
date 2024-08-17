@@ -1,5 +1,6 @@
 package com.backend.backend.service;
 
+import com.backend.backend.dto.BoardResponse;
 import com.backend.backend.model.Board;
 import com.backend.backend.model.User;
 import com.backend.backend.model.UserBoard;
@@ -9,6 +10,10 @@ import com.backend.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardService {
@@ -21,19 +26,23 @@ public class BoardService {
         this.userBoardRepository = userBoardRepository;
     }
 
-    public Board createBoardForUser(User user) {
+    public BoardResponse createBoardForUser(User user) {
         Board board = new Board();
         boardRepository.save(board);
         UserBoard userBoard = new UserBoard();
         userBoard.setUser(user);
         userBoard.setBoard(board);
         userBoardRepository.save(userBoard);
-        return board;
+        return new BoardResponse(board);
     }
 
-    public Board getBoardByIdAndUser(Long boardId, Long userId) {
-        return boardRepository.findByIdAndUserId(boardId, userId)
+    public BoardResponse getBoardByIdAndUser(Long boardId, Long userId) {
+        Board board = boardRepository.findByIdAndUserId(boardId, userId)
                 .orElseThrow(() -> new EntityNotFoundException("Board not found with id " + boardId.toString()));
+
+        BoardResponse response = new BoardResponse(board);
+        return response;
+
     }
 
     @Transactional

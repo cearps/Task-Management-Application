@@ -1,12 +1,12 @@
 package com.backend.backend.controller;
 
 
+import com.backend.backend.dto.BoardResponse;
 import com.backend.backend.dto.UpdateBoardRequest;
 import com.backend.backend.model.Board;
 import com.backend.backend.model.User;
 import com.backend.backend.service.BoardService;
 import com.backend.backend.service.UserBoardService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -26,7 +26,7 @@ public class BoardController {
     BoardService boardService;
 
     @GetMapping("")
-    public ResponseEntity<List<Board>> getBoards() {
+    public ResponseEntity<List<BoardResponse>> getBoards() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
@@ -35,7 +35,7 @@ public class BoardController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Board> createBoardForUser() {
+    public ResponseEntity<BoardResponse> createBoardForUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
 
@@ -43,7 +43,7 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Board> getBoardById(@PathVariable Long id) {
+    public ResponseEntity<BoardResponse> getBoardById(@PathVariable Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
 
@@ -51,7 +51,7 @@ public class BoardController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<Board> getBoardById(@PathVariable Long id, @RequestBody UpdateBoardRequest request) {
+    public ResponseEntity<BoardResponse> getBoardById(@PathVariable Long id, @RequestBody UpdateBoardRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
 
