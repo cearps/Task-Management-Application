@@ -20,7 +20,6 @@ public class Task {
     @Column
     private String name;
     private String description;
-    private String state;
     private LocalDate dueDate;
     private Integer urgency;
     private Integer taskCategory;
