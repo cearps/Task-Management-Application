@@ -18,7 +18,7 @@ type KanbanTask = {
 };
 
 type NewUserData = {
-  username: string;
+  userTag: string;
   email: string;
   password: string;
 };

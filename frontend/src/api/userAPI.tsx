@@ -11,7 +11,7 @@ export default class UserAPI {
 
   static async createUser(data: NewUserData) {
     const jsonData = JSON.stringify({
-      fullName: data.username,
+      userTag: data.userTag,
       email: data.email,
       password: data.password,
     });
