@@ -6,5 +6,5 @@ import lombok.Data;
 public class CurrentUserDto {
     private Long id;
     private String email;
-    private String fullName;
+    private String userTag;
 }
