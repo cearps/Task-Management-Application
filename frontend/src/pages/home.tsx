@@ -5,7 +5,6 @@ export default function Home() {
   return (
     <Base pageTitle="Home">
       <>
-        <h1>Home</h1>
         <WelcomeDisplay />
       </>
     </Base>

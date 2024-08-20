@@ -26,8 +26,14 @@ export default function WelcomeDisplay() {
   }, []);
 
   return (
-    <div>
-      <h1>Welcome {user?.userTag}</h1>
-    </div>
+    <>
+      {user && (
+        <div className="text-center">
+          <h1 className="text-3xl font-bold mb-4">Welcome {user.userTag}</h1>
+          <p className="text-lg">ID: {user.id}</p>
+          <p className="text-lg">Email: {user.email}</p>
+        </div>
+      )}
+    </>
   );
 }
