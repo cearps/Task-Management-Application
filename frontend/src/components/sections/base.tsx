@@ -13,9 +13,9 @@ export default function Base({ pageTitle, children }: baseProps) {
   }, [pageTitle]);
 
   return (
-    <div className="base">
+    <div className="base flex flex-col min-h-screen">
       <Header />
-      <div className="base__container">{children}</div>
+      <div className="base__container flex-grow">{children}</div>
       <Footer />
     </div>
   );
