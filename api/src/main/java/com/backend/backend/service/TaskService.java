@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -72,9 +73,10 @@ public class TaskService {
 
         Comment comment = new Comment();
         comment.setComment(request.getComment());
-//        comment.setUser(user);
+        comment.setUser(user);
         comment.setTask(task);
-        LocalDateTime now = LocalDateTime.now();
+        ZoneId zoneId = ZoneId.of("Australia/Melbourne");
+        LocalDateTime now = LocalDateTime.now(zoneId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
         comment.setTimestamp(now.format(formatter));
         commentRepository.save(comment);

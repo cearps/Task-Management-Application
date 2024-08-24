@@ -30,6 +30,6 @@ public class Board {
     private List<UserBoard> userBoards = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
 }
