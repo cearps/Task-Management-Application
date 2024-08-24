@@ -3,7 +3,7 @@ package com.backend.backend.service;
 import com.backend.backend.dto.CommentRequest;
 import com.backend.backend.dto.UpdateTaskRequest;
 import com.backend.backend.model.Board;
-import com.backend.backend.model.Comments;
+import com.backend.backend.model.Comment;
 import com.backend.backend.model.Task;
 import com.backend.backend.model.User;
 import com.backend.backend.repository.BoardRepository;
@@ -70,9 +70,9 @@ public class TaskService {
                 .orElseThrow(() -> new EntityNotFoundException("Task not found with id " + taskId.toString() +
                         " with board id " + boardId.toString() + " and user id " + user.getId().toString()));
 
-        Comments comment = new Comments();
+        Comment comment = new Comment();
         comment.setComment(request.getComment());
-        comment.setUser(user);
+//        comment.setUser(user);
         comment.setTask(task);
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");

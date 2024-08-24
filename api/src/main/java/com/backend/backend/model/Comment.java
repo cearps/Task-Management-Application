@@ -6,14 +6,13 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Comments {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String comment;
-    private User user;
 
     private String timestamp;
 
