@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class CommentRequest {
 
-    @NotNull(message = "Board id cannot be empty")
+    @NotNull(message = "Comment cannot be empty")
     private String comment;
 }
