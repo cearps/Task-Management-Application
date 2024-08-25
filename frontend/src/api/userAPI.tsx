@@ -71,4 +71,12 @@ export default class UserAPI {
   }): Observable<LoginResponse> {
     return from(UserAPI.loginUser(data));
   }
+
+  static isAuthenticated() {
+    return localStorage.getItem("token") !== null;
+  }
+
+  static logout() {
+    localStorage.removeItem("token");
+  }
 }

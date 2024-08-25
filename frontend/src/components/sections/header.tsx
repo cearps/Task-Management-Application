@@ -1,6 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import UserAPI from "../../api/userAPI";
 
 const Header = () => {
+  const isAuthenticated = UserAPI.isAuthenticated();
+  const navigate = useNavigate();
+
+  const logout = () => {
+    UserAPI.logout();
+    navigate("/accounts/login");
+  };
+
   return (
     <header className="bg-blue-500 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -8,15 +17,25 @@ const Header = () => {
           <Link to="/">Kanban App</Link>
         </div>
         <nav className="space-x-4">
-          <Link to="/accounts/signup" className="hover:underline">
-            Signup
-          </Link>
-          <Link to="/accounts/login" className="hover:underline">
-            Login
-          </Link>
-          <Link to="/boards" className="hover:underline">
-            Boards
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/boards" className="hover:underline">
+                Boards
+              </Link>
+              <button onClick={logout} className="hover:underline">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/accounts/signup" className="hover:underline">
+                Signup
+              </Link>
+              <Link to="/accounts/login" className="hover:underline">
+                Login
+              </Link>
+            </>
+          )}
         </nav>
       </div>
     </header>
