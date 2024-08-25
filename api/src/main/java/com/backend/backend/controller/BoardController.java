@@ -47,7 +47,7 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
 
-        return ResponseEntity.ok(boardService.getBoardByIdAndUser(id, currentUser.getId()));
+        return ResponseEntity.ok(boardService.getBoardByIdAndUserNew(id, currentUser.getId()));
     }
 
     @PostMapping("/{id}")

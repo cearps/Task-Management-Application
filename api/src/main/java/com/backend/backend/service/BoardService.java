@@ -45,6 +45,19 @@ public class BoardService {
 
     }
 
+    public BoardResponse getBoardByIdAndUserNew(Long boardId, Long userId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new EntityNotFoundException("Board not found with id " + boardId.toString()));
+
+        if ( board.getUserBoards().stream().anyMatch(userBoard -> userBoard.getUser().getId() == userId)) {
+            return new BoardResponse(board);
+        }
+        else {
+            throw new EntityNotFoundException("Board not found with id " + boardId.toString());
+        }
+
+    }
+
     @Transactional
     public void deleteBoard(User user, Long boardId) {
         Board board = boardRepository.findByIdAndUserId(boardId, user.getId())
