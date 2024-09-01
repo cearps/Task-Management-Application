@@ -6,7 +6,7 @@ export default function KanbanSingle() {
   const { boardId } = useParams();
 
   return (
-    <Base pageTitle="Kanban">
+    <Base pageTitle="Kanban123">
       <KanbanSingularView id={boardId ?? ""} />
     </Base>
   );
