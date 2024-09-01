@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import KanbanAPI from "../../api/kanbanAPI";
 import { useNavigate } from "react-router-dom";
 import { KanbanBoard } from "../../utilities/types";
@@ -29,7 +29,6 @@ export default function KanbanListView() {
 
   const handleAddBoard = (name: string, dueDate: string) => {
     console.log("Board Name:", name, "Due Date:", dueDate);
-    // Here, you can implement the logic to add the new board to your state or API
   };
 
   return (
@@ -68,8 +67,8 @@ export default function KanbanListView() {
       {/* AddBoardForm Modal */}
       <AddBoardForm
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)} // Close the modal
-        onSubmit={handleAddBoard} // Handle form submission
+        onClose={() => setIsModalOpen(false)} 
+        onSubmit={handleAddBoard} 
       />
     </div>
   );
