@@ -34,7 +34,7 @@ export default function KanbanListView() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">YOUR PROJECTSssss</h1>
+      <h1 className="text-3xl font-bold mb-6">YOUR PROJECTS</h1>
       <div
         className="bg-yellow-500 rounded-full w-14 h-14 flex items-center justify-center m-2 cursor-pointer"
         onClick={() => setIsModalOpen(true)} // Open the modal when clicking the add button
