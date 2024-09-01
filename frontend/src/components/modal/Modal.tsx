@@ -1,5 +1,3 @@
-import React from 'react';
-
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
