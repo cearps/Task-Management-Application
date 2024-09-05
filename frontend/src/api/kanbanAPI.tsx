@@ -15,6 +15,24 @@ export default class KanbanAPI {
     return response.data as KanbanBoard[];
   }
 
+    // Step 1: Create an empty board (no details yet)
+    static async createKanbanBoard(): Promise<KanbanBoard> {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`${API_URL}/kanbans`, {}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data as KanbanBoard;
+    }
+  
+    // Step 2: Use the returned board ID to populate the details
+    static async updateKanbanBoard(id: number, data: Partial<KanbanBoard>): Promise<KanbanBoard> {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`${API_URL}/kanbans/${id}`, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data as KanbanBoard;
+    }
+
   static async getKanbanBoard(id: string): Promise<KanbanBoard> {
     const token = localStorage.getItem("token");
     const response = await axios.get(`${API_URL}/kanbans/${id}`, {
@@ -25,19 +43,6 @@ export default class KanbanAPI {
     return response.data as KanbanBoard;
   }
 
-  static async createKanbanBoard(name: string, startDate: string, dueDate: string, description: string): Promise<KanbanBoard> {
-    const token = localStorage.getItem("token");
-    const response = await axios.post(
-      `${API_URL}/kanbans`, 
-      { name, startDate, dueDate, description },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return response.data as KanbanBoard;
-  }
   
 
   static getKanbanBoardsObservable(): Observable<KanbanBoard[]> {
@@ -59,4 +64,7 @@ export default class KanbanAPI {
       })
     );
   }
+
 }
+
+
