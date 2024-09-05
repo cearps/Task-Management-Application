@@ -31,10 +31,15 @@ export default function KanbanListView() {
   const handleAddBoard = (name: string, dueDate: string, description: string) => {
     // Start date can be added by the user, or you can default it to today's date
     const startDate = new Date().toISOString().split("T")[0]; // Defaults to today's date
+
+    console.log("Board Data:", { name, startDate, dueDate, description }); // Check the data
   
     KanbanAPI.createKanbanBoard(name, startDate, dueDate, description)
       .then((newBoard) => {
         // Update the local state with the new board
+
+        console.log("New Board Created:", newBoard); // Log the response from the API
+
         setKanbanBoards((prevBoards) => [...prevBoards, newBoard]);
         setIsModalOpen(false); // Close the modal after adding the board
       })
@@ -94,7 +99,7 @@ export default function KanbanListView() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)} 
         onSubmit={handleAddBoard}  // Now it also takes description as an argument
-      />
+    />
 
     </div>
   );
