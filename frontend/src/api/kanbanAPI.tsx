@@ -25,6 +25,21 @@ export default class KanbanAPI {
     return response.data as KanbanBoard;
   }
 
+  static async createKanbanBoard(name: string, startDate: string, dueDate: string, description: string): Promise<KanbanBoard> {
+    const token = localStorage.getItem("token");
+    const response = await axios.post(
+      `${API_URL}/kanbans`, 
+      { name, startDate, dueDate, description },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data as KanbanBoard;
+  }
+  
+
   static getKanbanBoardsObservable(): Observable<KanbanBoard[]> {
     return concat(of(0), interval(1000)).pipe(
       switchMap(() => from(KanbanAPI.getKanbanBoards())),

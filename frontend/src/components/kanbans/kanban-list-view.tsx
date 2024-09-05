@@ -7,6 +7,7 @@ import AddBoardForm from "../forms/add-board-form"; // Import the AddBoardForm c
 export default function KanbanListView() {
   const [kanbanBoards, setKanbanBoards] = useState([] as KanbanBoard[]);
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal visibility
+  const [isButtonClicked, setIsButtonClicked] = useState(false); // New state for button click effect
 
   useEffect(() => {
     const subscription = KanbanAPI.getKanbanBoardsObservable().subscribe({
@@ -27,16 +28,40 @@ export default function KanbanListView() {
     };
   }, []);
 
-  const handleAddBoard = (name: string, dueDate: string) => {
-    console.log("Board Name:", name, "Due Date:", dueDate);
+  const handleAddBoard = (name: string, dueDate: string, description: string) => {
+    // Start date can be added by the user, or you can default it to today's date
+    const startDate = new Date().toISOString().split("T")[0]; // Defaults to today's date
+  
+    KanbanAPI.createKanbanBoard(name, startDate, dueDate, description)
+      .then((newBoard) => {
+        // Update the local state with the new board
+        setKanbanBoards((prevBoards) => [...prevBoards, newBoard]);
+        setIsModalOpen(false); // Close the modal after adding the board
+      })
+      .catch((error) => {
+        console.error("Error creating new Kanban board:", error);
+      });
+  };
+  
+
+  const handleButtonClick = () => {
+    setIsButtonClicked(true);
+    setIsModalOpen(true);
+
+    // Reset the button click effect after a short delay
+    setTimeout(() => {
+      setIsButtonClicked(false);
+    }, 200);
   };
 
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">YOUR PROJECTS</h1>
       <div
-        className="bg-yellow-500 rounded-full w-14 h-14 flex items-center justify-center m-2 cursor-pointer"
-        onClick={() => setIsModalOpen(true)} // Open the modal when clicking the add button
+        className={`bg-yellow-500 rounded-full w-14 h-14 flex items-center justify-center m-2 cursor-pointer transition-transform ${
+          isButtonClicked ? "scale-95" : "hover:scale-110"
+        }`}
+        onClick={handleButtonClick} // Trigger button click handler
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -68,8 +93,9 @@ export default function KanbanListView() {
       <AddBoardForm
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)} 
-        onSubmit={handleAddBoard} 
+        onSubmit={handleAddBoard}  // Now it also takes description as an argument
       />
+
     </div>
   );
 }
