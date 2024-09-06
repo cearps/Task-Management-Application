@@ -65,6 +65,13 @@ export default class KanbanAPI {
     );
   }
 
+    // Add a function to delete a Kanban board
+    static async deleteKanbanBoard(id: number): Promise<void> {
+      const token = localStorage.getItem("token");
+      await axios.delete(`${API_URL}/kanbans/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
 }
 
-
+}

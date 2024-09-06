@@ -22,27 +22,21 @@ export default function KanbanListView() {
     fetchBoards();
   }, []);
 
-  // First, create an empty board and then update its details
+  // Function to handle deleting a board
+  const handleDeleteBoard = async (id: number) => {
+    try {
+      await KanbanAPI.deleteKanbanBoard(id);
+      setKanbanBoards((prevBoards) => prevBoards.filter((board) => board.id !== id));
+    } catch (error) {
+      console.error("Error deleting Kanban board:", error);
+    }
+  };
+
   const handleAddBoard = async (name: string, dueDate: string, description: string) => {
     try {
-      // Step 1: Create an empty board and get its ID
       const newBoard = await KanbanAPI.createKanbanBoard();
-
-      console.log("Empty board created:", newBoard);
-
-      // Step 2: Use the returned board ID to send the name, description, and dates
-      const updatedBoard = await KanbanAPI.updateKanbanBoard(newBoard.id, {
-        name,
-        dueDate,
-        description,
-      });
-
-      console.log("Updated board:", updatedBoard);
-
-      // Step 3: Update the local state to include the new board
+      const updatedBoard = await KanbanAPI.updateKanbanBoard(newBoard.id, { name, dueDate, description });
       setKanbanBoards((prevBoards) => [...prevBoards, updatedBoard]);
-
-      // Close the modal
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error creating or updating the Kanban board:", error);
@@ -70,7 +64,7 @@ export default function KanbanListView() {
       </div>
       <div className="flex flex-wrap">
         {kanbanBoards.map((board: KanbanBoard) => (
-          <BoardCard key={board.id} id={board.id.toString()} title={board.name} dueDate={board.dueDate} />
+          <BoardCard key={board.id} id={board.id} title={board.name} dueDate={board.dueDate} onDelete={handleDeleteBoard} />
         ))}
       </div>
 
@@ -80,10 +74,20 @@ export default function KanbanListView() {
   );
 }
 
-const BoardCard = ({ id, title, dueDate }: { id: string; title: string; dueDate: string }) => {
+const BoardCard = ({
+  id,
+  title,
+  dueDate,
+  onDelete,
+}: {
+  id: number;
+  title: string;
+  dueDate: string;
+  onDelete: (id: number) => void;
+}) => {
   const navigate = useNavigate();
 
-  const handleCardClick = (id: string) => {
+  const handleCardClick = (id: number) => {
     navigate(`/boards/${id}`);
   };
 
@@ -94,7 +98,10 @@ const BoardCard = ({ id, title, dueDate }: { id: string; title: string; dueDate:
     >
       <div className="flex justify-between">
         <h3 className="font-bold text-lg">{title}</h3>
-        <button className="text-black">
+        <button className="text-black" onClick={(e) => {
+          e.stopPropagation(); // Prevent navigating to board when clicking delete
+          onDelete(id);
+        }}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
           </svg>
