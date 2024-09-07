@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Button from "../buttons/button"; 
 
 const AddBoardForm = ({
   isOpen,
@@ -9,13 +10,12 @@ const AddBoardForm = ({
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (name: string, dueDate: string, description: string) => void;
-  defaultValues?: { name: string; dueDate: string; description: string }; // Optional type for defaultValues
+  defaultValues?: { name: string; dueDate: string; description: string };
 }) => {
   const [name, setName] = useState(defaultValues?.name || "");
   const [dueDate, setDueDate] = useState(defaultValues?.dueDate || "");
   const [description, setDescription] = useState(defaultValues?.description || "");
 
-  // Whenever defaultValues change update the form fields
   useEffect(() => {
     setName(defaultValues?.name || "");
     setDueDate(defaultValues?.dueDate || "");
@@ -71,12 +71,10 @@ const AddBoardForm = ({
             />
           </div>
           <div className="flex justify-end">
-            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-              {defaultValues ? "Update Board" : "Create Board"}
-            </button>
-            <button onClick={onClose} className="ml-2 px-4 py-2 bg-gray-300 text-black rounded-md shadow hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400">
+            <Button type="submit">{defaultValues ? "Update Board" : "Create Board"}</Button>
+            <Button onClick={onClose} className="ml-2 bg-gray-300 hover:bg-gray-400 text-black">
               Cancel
-            </button>
+            </Button>
           </div>
         </form>
       </div>
