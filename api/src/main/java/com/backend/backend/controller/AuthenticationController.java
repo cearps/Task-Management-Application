@@ -1,19 +1,18 @@
 package com.backend.backend.controller;
 
-import com.backend.backend.dto.CurrentUserDto;
 import com.backend.backend.dto.LoginResponse;
 import com.backend.backend.dto.LoginUserDto;
 import com.backend.backend.dto.RegisterUserDto;
 import com.backend.backend.model.User;
 import com.backend.backend.service.AuthenticationService;
 import com.backend.backend.service.JwtService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/auth")
 @RestController
+@Slf4j
 public class AuthenticationController {
     private final JwtService jwtService;
 
@@ -26,6 +25,7 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
+        log.info("Call to /signup for email {} and user {}", registerUserDto.getEmail(), registerUserDto.getUserTag());
         User registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
@@ -33,6 +33,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
+        log.info("Call to /login for email {}", loginUserDto.getEmail());
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
