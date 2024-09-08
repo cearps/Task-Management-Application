@@ -27,6 +27,7 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
 
         // Store the correlation ID in MDC (Mapped Diagnostic Context)
         MDC.put("correlationId", correlationId);
+        response.setHeader("Correlation-ID", correlationId);
 
         try {
             // Continue with the filter chain
