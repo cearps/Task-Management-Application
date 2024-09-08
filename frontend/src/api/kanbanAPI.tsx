@@ -15,6 +15,24 @@ export default class KanbanAPI {
     return response.data as KanbanBoard[];
   }
 
+    // Step 1: Create an empty board (no details yet)
+    static async createKanbanBoard(): Promise<KanbanBoard> {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`${API_URL}/kanbans`, {}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data as KanbanBoard;
+    }
+  
+    // Step 2: Use the returned board ID to populate the details
+    static async updateKanbanBoard(id: number, data: Partial<KanbanBoard>): Promise<KanbanBoard> {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`${API_URL}/kanbans/${id}`, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data as KanbanBoard;
+    }
+
   static async getKanbanBoard(id: string): Promise<KanbanBoard> {
     const token = localStorage.getItem("token");
     const response = await axios.get(`${API_URL}/kanbans/${id}`, {
@@ -24,6 +42,8 @@ export default class KanbanAPI {
     });
     return response.data as KanbanBoard;
   }
+
+  
 
   static getKanbanBoardsObservable(): Observable<KanbanBoard[]> {
     return concat(of(0), interval(1000)).pipe(
@@ -44,4 +64,14 @@ export default class KanbanAPI {
       })
     );
   }
+
+    // Add a function to delete a Kanban board
+    static async deleteKanbanBoard(id: number): Promise<void> {
+      const token = localStorage.getItem("token");
+      await axios.delete(`${API_URL}/kanbans/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+}
+
 }
