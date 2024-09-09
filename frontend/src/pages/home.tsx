@@ -1,18 +1,15 @@
 import Base from "../components/sections/base";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import UserAPI from "../api/userAPI";
 // import WelcomeDisplay from "../components/user/welcome-display";
 
 export default function Home() {
-  const [user, setUser] = useState(null as User | null);
-
   const navigate = useNavigate();
 
   useEffect(() => {
     const subscription = UserAPI.getUserObservable().subscribe({
-      next: (response) => {
-        setUser(response);
+      next: () => {
         navigate("/boards");
       },
       error: (error) => {
@@ -27,7 +24,7 @@ export default function Home() {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [navigate]);
   return (
     <Base pageTitle="Home">
       <>
