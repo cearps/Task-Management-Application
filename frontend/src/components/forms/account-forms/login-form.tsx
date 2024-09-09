@@ -32,7 +32,8 @@ const LogInForm = () => {
           navigate("/");
         },
         error: (error) => {
-          setLoginErrors(error.response.data.message);
+          console.error("Error logging in:", error);
+          setLoginErrors(error.response.data.description);
         },
       });
   };

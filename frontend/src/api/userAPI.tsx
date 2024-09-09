@@ -8,6 +8,7 @@ import {
   User,
 } from "../utilities/types";
 import { API_URL } from "./apiConfig";
+import { ApiError } from "../utilities/errors";
 
 export default class UserAPI {
   static async getUser() {
@@ -35,6 +36,10 @@ export default class UserAPI {
       },
     });
 
+    if (response.status !== 201) {
+      throw new ApiError(response.data.description, response.status);
+    }
+
     return response.data as SignUpResponse;
   }
 
@@ -49,6 +54,12 @@ export default class UserAPI {
         "Content-Type": "application/json",
       },
     });
+
+    if (response.status === 200 && response.data.token) {
+      localStorage.setItem("token", response.data.token);
+    } else {
+      throw new ApiError(response.data.description, response.status);
+    }
 
     return response.data as LoginResponse;
   }

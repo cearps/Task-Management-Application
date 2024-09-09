@@ -1,13 +1,18 @@
 package com.backend.backend.service;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 import com.backend.backend.dto.LoginUserDto;
 import com.backend.backend.dto.RegisterUserDto;
 import com.backend.backend.model.User;
 import com.backend.backend.repository.UserRepository;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.backend.backend.exceptions.UserAlreadyExistsException;
 
 @Service
 public class AuthenticationService {
@@ -34,7 +39,11 @@ public class AuthenticationService {
                 .setEmail(input.getEmail())
                 .setPassword(passwordEncoder.encode(input.getPassword()));
 
-        return userRepository.save(user);
+        try {
+            return userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new UserAlreadyExistsException("Username or email already exists. Please choose a different one.");
+        }
     }
 
     public User authenticate(LoginUserDto input) {
