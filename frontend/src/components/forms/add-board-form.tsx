@@ -1,14 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Button from "../buttons/button";
 
 const AddBoardForm = ({
-  isOpen,
   onClose,
   onSubmit,
   errors,
   defaultValues,
 }: {
-  isOpen: boolean;
   onClose: () => void;
   onSubmit: (name: string, dueDate: string, description: string) => void;
   errors?: string;
@@ -20,22 +18,39 @@ const AddBoardForm = ({
     defaultValues?.description || ""
   );
 
+  const cardRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     setName(defaultValues?.name || "");
     setDueDate(defaultValues?.dueDate || "");
     setDescription(defaultValues?.description || "");
   }, [defaultValues]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(name, dueDate, description);
   };
 
-  if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+      <div
+        className="bg-white rounded-lg shadow-lg w-full max-w-md p-6"
+        ref={cardRef}
+      >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">
             {defaultValues ? "Edit Board" : "Create New Board"}

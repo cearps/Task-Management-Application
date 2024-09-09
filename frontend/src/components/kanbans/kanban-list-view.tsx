@@ -131,24 +131,25 @@ export default function KanbanListView() {
       </div>
 
       {/* AddBoardForm Modal */}
-      <AddBoardForm
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setEditingBoard(null);
-        }}
-        onSubmit={handleAddBoard}
-        errors={formErrors}
-        defaultValues={
-          editingBoard
-            ? {
-                name: editingBoard.name,
-                dueDate: editingBoard.dueDate,
-                description: editingBoard.description,
-              }
-            : undefined
-        } // Use undefined when editingBoard is null
-      />
+      {isModalOpen && (
+        <AddBoardForm
+          onClose={() => {
+            setIsModalOpen(false);
+            setEditingBoard(null);
+          }}
+          onSubmit={handleAddBoard}
+          errors={formErrors}
+          defaultValues={
+            editingBoard
+              ? {
+                  name: editingBoard.name,
+                  dueDate: editingBoard.dueDate,
+                  description: editingBoard.description,
+                }
+              : undefined
+          } // Use undefined when editingBoard is null
+        />
+      )}
     </div>
   );
 }
