@@ -1,14 +1,21 @@
 package com.backend.backend.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.backend.backend.dto.LoginResponse;
 import com.backend.backend.dto.LoginUserDto;
 import com.backend.backend.dto.RegisterUserDto;
+import com.backend.backend.exceptions.UserAlreadyExistsException;
 import com.backend.backend.model.User;
 import com.backend.backend.service.AuthenticationService;
 import com.backend.backend.service.JwtService;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/auth")
 @RestController
@@ -24,11 +31,18 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<?> register(@RequestBody RegisterUserDto registerUserDto) {
         log.info("Call to /signup for email {} and user {}", registerUserDto.getEmail(), registerUserDto.getUserTag());
-        User registeredUser = authenticationService.signup(registerUserDto);
-
-        return ResponseEntity.ok(registeredUser);
+        try {
+            User registeredUser = authenticationService.signup(registerUserDto);
+            return ResponseEntity.ok(registeredUser);
+        } catch (UserAlreadyExistsException e) {
+            HttpStatus status = HttpStatus.CONFLICT;
+            return ResponseEntity.status(status).body(e.getMessage());
+        } catch (Exception e) {
+            log.error("Error while registering user", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("/login")

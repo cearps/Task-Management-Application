@@ -53,11 +53,10 @@ const SignUpForm = () => {
           navigate("/accounts/login");
         },
         error: (error) => {
-          if (error.response.status) {
-            setSignupErrors(error.response.data.description);
-          } else {
-            setSignupErrors("An error occurred. Please try again later.");
-          }
+          console.error("Error signing up:", error);
+          setSignupErrors(
+            error.response.data.toString() || "An error occurred"
+          );
         },
       });
   };

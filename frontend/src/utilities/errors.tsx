@@ -7,4 +7,10 @@ class BoardApiError extends Error {
   }
 }
 
-export { BoardApiError };
+class ApiError extends Error {
+  constructor(message: string, public status: number) {
+    super(message);
+  }
+}
+
+export { ApiError, BoardApiError };
