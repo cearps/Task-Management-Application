@@ -36,7 +36,7 @@ export default class UserAPI {
       },
     });
 
-    if (response.status !== 201) {
+    if (response.status !== 200) {
       throw new ApiError(response.data.description, response.status);
     }
 
