@@ -5,11 +5,13 @@ const AddBoardForm = ({
   isOpen,
   onClose,
   onSubmit,
+  errors,
   defaultValues,
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (name: string, dueDate: string, description: string) => void;
+  errors?: string;
   defaultValues?: { name: string; dueDate: string; description: string };
 }) => {
   const [name, setName] = useState(defaultValues?.name || "");
@@ -104,6 +106,7 @@ const AddBoardForm = ({
               Cancel
             </Button>
           </div>
+          {errors && <p className="text-red-500">{errors}</p>}
         </form>
       </div>
     </div>
