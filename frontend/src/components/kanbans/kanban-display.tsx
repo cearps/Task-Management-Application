@@ -2,11 +2,15 @@ import { useState, useEffect } from "react";
 import KanbanColumn from "./kanban-column";
 import { KanbanBoard, KanbanTask } from "../../utilities/types";
 import DetailedTaskView from "./kanban-task-detail";
+import AddTaskForm from "../forms/add-task-form";
+import TaskAPI from "../../api/taskAPI";
 import { kanbanColumns } from "../../utilities/kanban-category-mapping";
 
 export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
   const [selectedTask, setSelectedTask] = useState<KanbanTask | null>(null);
   const [progress, setProgress] = useState(0);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [tasks, setTasks] = useState<KanbanTask[]>(kanban.tasks); // Maintain local state for tasks
 
   useEffect(() => {
     const startDate = new Date(kanban.startDate);
@@ -31,6 +35,23 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
     setSelectedTask(null);
   };
 
+  // Define handleAddTask to send task data to the backend and update the task list
+  const handleAddTask = async (taskData: {
+    name: string;
+    description: string;
+    dueDate: string;
+    urgency: number;
+    boardId: number;
+  }) => {
+    try {
+      const newTask = await TaskAPI.createTask(taskData.boardId.toString(), taskData); // Convert boardId to string
+      setTasks((prevTasks) => [...prevTasks, newTask]); // Update the tasks state
+      setIsTaskModalOpen(false); // Close modal after task is created
+    } catch (error) {
+      console.error("Error adding task:", error);
+    }
+  };
+
   return (
     <div style={{ padding: "0 20px" }}>
       <header className="flex flex-col items-start mb-6 w-full">
@@ -41,21 +62,39 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
           <span>DUE DATE: {kanban.dueDate}</span>
         </div>
         <ProgressBar progress={progress} />
+        {/* Ensure the button stays under the progress bar */}
+        <div className="mt-4 w-full flex justify-start">
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            onClick={() => setIsTaskModalOpen(true)}
+          >
+            Add Task
+          </button>
+        </div>
       </header>
       <div className="grid grid-cols-4 gap-4">
         {kanbanColumns.map((column) => (
           <KanbanColumn
             key={column.taskCategoryId}
             title={column.title}
-            taskCategoryId={`${column.taskCategoryId}`}
+            taskCategoryId={`${column.taskCategoryId}`} // Convert number to string if necessary
             kanban={kanban}
             setActiveTaskMethod={setActiveTaskMethod}
           />
         ))}
       </div>
+
       {selectedTask && (
         <DetailedTaskView task={selectedTask} onClose={handleTaskClose} />
       )}
+
+      {/* AddTaskForm Modal */}
+      <AddTaskForm
+        isOpen={isTaskModalOpen}
+        onClose={() => setIsTaskModalOpen(false)}
+        onSubmit={handleAddTask}
+        boardId={kanban.id} // Pass boardId as number
+      />
     </div>
   );
 }
