@@ -10,7 +10,7 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
   const [selectedTask, setSelectedTask] = useState<KanbanTask | null>(null);
   const [progress, setProgress] = useState(0);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-  const [tasks, setTasks] = useState<KanbanTask[]>(kanban.tasks); // Maintain local state for tasks
+  // const [tasks, setTasks] = useState<KanbanTask[]>(kanban.tasks); 
 
   useEffect(() => {
     const startDate = new Date(kanban.startDate);
