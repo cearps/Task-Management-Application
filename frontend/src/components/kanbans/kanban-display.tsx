@@ -10,7 +10,6 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
   const [selectedTask, setSelectedTask] = useState<KanbanTask | null>(null);
   const [progress, setProgress] = useState(0);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-  const [tasks, setTasks] = useState<KanbanTask[]>(kanban.tasks); // Maintain local state for tasks
 
   useEffect(() => {
     const startDate = new Date(kanban.startDate);
@@ -35,7 +34,6 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
     setSelectedTask(null);
   };
 
-  // Define handleAddTask to send task data to the backend and update the task list
   const handleAddTask = async (taskData: {
     name: string;
     description: string;
@@ -53,9 +51,6 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
       const updatedTask = await TaskAPI.updateTask(newTask.id, taskData);
   
       console.log("Updated task response from backend:", updatedTask);
-  
-      // Update the task state with the new task
-      setTasks((prevTasks) => [...prevTasks, updatedTask]);
   
       setIsTaskModalOpen(false); // Close modal after task is created
     } catch (error) {
@@ -99,7 +94,6 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
         <DetailedTaskView task={selectedTask} onClose={handleTaskClose} />
       )}
 
-      {/* AddTaskForm Modal */}
       <AddTaskForm
         isOpen={isTaskModalOpen}
         onClose={() => setIsTaskModalOpen(false)}
