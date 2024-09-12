@@ -4,12 +4,12 @@ const AddTaskForm = ({
   isOpen,
   onClose,
   onSubmit,
-  boardId, // Accept boardId as number
+  boardId, 
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (taskData: any) => void;
-  boardId: number; // Expect boardId as a number
+  boardId: number; 
 }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -18,13 +18,15 @@ const AddTaskForm = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // Log the form values before submitting
+  console.log("Submitting task form with values:", { name, description, dueDate, urgency })
     const taskData = {
       name,
       description,
       dueDate,
       urgency,
       taskCategory: 1, // default to backlog
-      boardId, // Use boardId as number
+      boardId, 
     };
     onSubmit(taskData);
   };

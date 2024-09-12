@@ -44,9 +44,22 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
     boardId: number;
   }) => {
     try {
-      const newTask = await TaskAPI.createTask(taskData.boardId.toString(), taskData); // Convert boardId to string
-      setTasks((prevTasks) => [...prevTasks, newTask]); // Update the tasks state
-      setIsTaskModalOpen(false); // Close modal after task is created
+      // Log the task data being sent
+      console.log("Task data being sent to backend:", taskData);
+  
+      //Call the API to create the task
+      const newTask = await TaskAPI.createTask(taskData.boardId.toString(), {});
+
+      //update the task with the proper details
+      const updatedTask = await TaskAPI.updateTask(newTask.id, taskData);
+  
+      //Log the response from the backend
+      console.log("Updated task response from backend:", updatedTask);
+  
+      // Update the task state with the new task
+      setTasks((prevTasks) => [...prevTasks, updatedTask]);
+  
+      setIsTaskModalOpen(false); 
     } catch (error) {
       console.error("Error adding task:", error);
     }
@@ -62,7 +75,7 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
           <span>DUE DATE: {kanban.dueDate}</span>
         </div>
         <ProgressBar progress={progress} />
-        {/* Ensure the button stays under the progress bar */}
+        
         <div className="mt-4 w-full flex justify-start">
           <button
             className="px-4 py-2 bg-blue-500 text-white rounded-md"
@@ -77,7 +90,7 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
           <KanbanColumn
             key={column.taskCategoryId}
             title={column.title}
-            taskCategoryId={`${column.taskCategoryId}`} // Convert number to string if necessary
+            taskCategoryId={`${column.taskCategoryId}`} 
             kanban={kanban}
             setActiveTaskMethod={setActiveTaskMethod}
           />
@@ -88,12 +101,12 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
         <DetailedTaskView task={selectedTask} onClose={handleTaskClose} />
       )}
 
-      {/* AddTaskForm Modal */}
+
       <AddTaskForm
         isOpen={isTaskModalOpen}
         onClose={() => setIsTaskModalOpen(false)}
         onSubmit={handleAddTask}
-        boardId={kanban.id} // Pass boardId as number
+        boardId={kanban.id} 
       />
     </div>
   );
