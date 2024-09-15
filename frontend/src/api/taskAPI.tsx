@@ -1,30 +1,95 @@
-// import axios from "axios";
-// import { Observable, interval, from, concat, of } from "rxjs";
-// import { switchMap } from "rxjs/operators";
-// import { API_URL } from "./apiConfig";
+import axios from "axios";
+import { Observable, from } from "rxjs";
+import { catchError, switchMap } from "rxjs/operators";
+import { API_URL } from "./apiConfig";
+import { CommentApiError, TaskApiError } from "../utilities/errors";
+import { Comment, KanbanTask, NewComment } from "../utilities/types";
 
-// export default class TaskAPI {
-//   static async getTaskComments(taskId: string) {
-//     return axios.get(`${API_URL}/tasks/${taskId}/comments`);
-//   }
+export default class TaskAPI {
+  static async createTask(boardId: number) {
+    const token = localStorage.getItem("token");
+    const response = await axios.post(
+      `${API_URL}/kanbans/${boardId}/tasks`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-//   static async getTaskAssignees(taskId: string) {
-//     return axios.get(`${API_URL}/tasks/${taskId}/assignees`);
-//   }
+    return response.data as KanbanTask;
+  }
+  static async updateTask(
+    boardId: number,
+    taskId: number,
+    taskData: Partial<KanbanTask>
+  ) {
+    const token = localStorage.getItem("token");
+    const response = await axios.post(
+      `${API_URL}/kanbans/${boardId}/tasks/${taskId}`,
+      taskData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data as KanbanTask;
+  }
 
-//   static getTaskCommentsObservable(taskId: string): Observable<any> {
-//     return concat(of(0), interval(1000)).pipe(
-//       switchMap(() => {
-//         return from(TaskAPI.getTaskComments(taskId));
-//       })
-//     );
-//   }
+  static createTaskObservable(
+    boardId: number,
+    taskData: Partial<KanbanTask>
+  ): Observable<KanbanTask> {
+    return from(TaskAPI.createTask(boardId)).pipe(
+      switchMap((task) => {
+        return from(TaskAPI.updateTask(boardId, task.id, taskData)).pipe(
+          catchError((error) => {
+            throw new TaskApiError(
+              `Error creating task with boardId ${boardId}`,
+              task,
+              error
+            );
+          })
+        );
+      })
+    );
+  }
 
-//   static getTaskAssigneesObservable(taskId: string): Observable<any> {
-//     return concat(of(), interval(1000)).pipe(
-//       switchMap(() => {
-//         return from(TaskAPI.getTaskAssignees(taskId));
-//       })
-//     );
-//   }
-// }
+  static async addComment(
+    kanbanId: number,
+    taskId: number,
+    comment: NewComment
+  ) {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.post(
+      `${API_URL}/kanbans/${kanbanId}/tasks/${taskId}/comment`,
+      comment,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data as Comment;
+  }
+
+  static addCommentObservable(
+    kanbanId: number,
+    taskId: number,
+    comment: NewComment
+  ): Observable<Comment> {
+    return from(TaskAPI.addComment(kanbanId, taskId, comment)).pipe(
+      catchError((error) => {
+        throw new CommentApiError(
+          error.response.data.description,
+          comment,
+          error
+        );
+      })
+    );
+  }
+}

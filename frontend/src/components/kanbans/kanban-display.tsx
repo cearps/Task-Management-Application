@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import KanbanColumn from "./kanban-column";
 import { KanbanBoard, KanbanTask } from "../../utilities/types";
 import DetailedTaskView from "./kanban-task-detail";
+import AddTaskForm from "../forms/add-task-form";
+import TaskAPI from "../../api/taskAPI";
 import { kanbanColumns } from "../../utilities/kanban-category-mapping";
 
 export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
-  const [selectedTask, setSelectedTask] = useState<KanbanTask | null>(null);
+  const [selectedTask, setSelectedTask] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
 
   useEffect(() => {
     const startDate = new Date(kanban.startDate);
@@ -24,11 +27,48 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
   }, [kanban.startDate, kanban.dueDate]);
 
   const setActiveTaskMethod = (task: KanbanTask) => () => {
-    setSelectedTask(task);
+    setSelectedTask(task.id);
   };
 
   const handleTaskClose = () => {
     setSelectedTask(null);
+  };
+
+  const handleAddTask = async (taskData: {
+    name: string;
+    description: string;
+    dueDate: string;
+    urgency: number;
+    boardId: number;
+  }) => {
+    const taskPayload: Partial<KanbanTask> = {
+      name: taskData.name,
+      description: taskData.description,
+      dueDate: taskData.dueDate,
+      urgency: taskData.urgency,
+      taskCategory: 1, // default to backlog
+    };
+
+    TaskAPI.createTaskObservable(taskData.boardId, taskPayload).subscribe({
+      next: (task) => {
+        console.log("Task created:", task);
+        setIsTaskModalOpen(false);
+      },
+      error: (error) => {
+        console.error("Error creating task:", error);
+      },
+    });
+  };
+
+  const addComment = (comment: string, taskId: number) => {
+    TaskAPI.addCommentObservable(kanban.id, taskId, { comment }).subscribe({
+      next: (comment) => {
+        console.log("Comment added:", comment);
+      },
+      error: (error) => {
+        console.error("Error adding comment:", error);
+      },
+    });
   };
 
   return (
@@ -41,21 +81,42 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
           <span>DUE DATE: {kanban.dueDate}</span>
         </div>
         <ProgressBar progress={progress} />
+
+        <div className="mt-4 w-full flex justify-start">
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            onClick={() => setIsTaskModalOpen(true)}
+          >
+            Add Task
+          </button>
+        </div>
       </header>
       <div className="grid grid-cols-4 gap-4">
         {kanbanColumns.map((column) => (
           <KanbanColumn
             key={column.taskCategoryId}
             title={column.title}
-            taskCategoryId={`${column.taskCategoryId}`}
+            taskCategoryId={`${column.taskCategoryId}`} // Ensure the task category ID is passed as a string
             kanban={kanban}
             setActiveTaskMethod={setActiveTaskMethod}
           />
         ))}
       </div>
+
       {selectedTask && (
-        <DetailedTaskView task={selectedTask} onClose={handleTaskClose} />
+        <DetailedTaskView
+          task={kanban.tasks.find((task) => task.id === selectedTask)!}
+          onClose={handleTaskClose}
+          addComment={addComment}
+        />
       )}
+
+      <AddTaskForm
+        isOpen={isTaskModalOpen}
+        onClose={() => setIsTaskModalOpen(false)}
+        onSubmit={handleAddTask}
+        boardId={kanban.id} // Pass boardId as number
+      />
     </div>
   );
 }

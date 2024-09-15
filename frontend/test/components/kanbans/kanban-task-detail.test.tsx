@@ -13,6 +13,10 @@ describe("DetailedTaskView", () => {
           urgency: 0,
           taskCategory: 0,
           users: [],
+          comments: [],
+        }}
+        addComment={function (comment: string, taskId: number): void {
+          console.log(comment, taskId);
         }}
         onClose={function (): void {
           throw new Error("Function not implemented.");
