@@ -3,8 +3,16 @@ import KanbanColumn from "./kanban-column";
 import { KanbanBoard, KanbanTask } from "../../utilities/types";
 import DetailedTaskView from "./kanban-task-detail";
 import { kanbanColumns } from "../../utilities/kanban-category-mapping";
+import { DragDropContext } from "react-beautiful-dnd";
+import TaskAPI from "../../api/taskAPI";
 
-export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
+export default function KanbanDisplay({
+  kanban,
+  setKanban,
+}: {
+  kanban: KanbanBoard;
+  setKanban: (kanban: KanbanBoard) => void;
+}) {
   const [selectedTask, setSelectedTask] = useState<KanbanTask | null>(null);
   const [progress, setProgress] = useState(0);
 
@@ -31,6 +39,48 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
     setSelectedTask(null);
   };
 
+  const onDragEnd = (result) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    const newTasks = [...kanban.tasks];
+
+    const task = newTasks.find((task) => task.id === parseInt(draggableId));
+    if (!task) {
+      return;
+    }
+
+    task.taskCategory = parseInt(destination.droppableId);
+
+    // Update the task in the database
+    TaskAPI.updateTaskObservable(task, kanban.id).subscribe({
+      next: (response) => {
+        if (response === null) {
+          return;
+        }
+        console.log("Task updated successfully");
+        // Update the state
+        setKanban({
+          ...kanban,
+          tasks: newTasks,
+        });
+      },
+      error: (error) => {
+        console.error("Error updating task:", error);
+      },
+    });
+  };
+
   return (
     <div style={{ padding: "0 20px" }}>
       <header className="flex flex-col items-start mb-6 w-full">
@@ -42,17 +92,19 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
         </div>
         <ProgressBar progress={progress} />
       </header>
-      <div className="grid grid-cols-4 gap-4">
-        {kanbanColumns.map((column) => (
-          <KanbanColumn
-            key={column.taskCategoryId}
-            title={column.title}
-            taskCategoryId={`${column.taskCategoryId}`}
-            kanban={kanban}
-            setActiveTaskMethod={setActiveTaskMethod}
-          />
-        ))}
-      </div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className="grid grid-cols-4 gap-4">
+          {kanbanColumns.map((column) => (
+            <KanbanColumn
+              key={column.taskCategoryId}
+              title={column.title}
+              taskCategoryId={`${column.taskCategoryId}`}
+              kanban={kanban}
+              setActiveTaskMethod={setActiveTaskMethod}
+            />
+          ))}
+        </div>
+      </DragDropContext>
       {selectedTask && (
         <DetailedTaskView task={selectedTask} onClose={handleTaskClose} />
       )}
