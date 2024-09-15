@@ -1,9 +1,16 @@
-import { KanbanBoard } from "./types";
+import { KanbanBoard, KanbanTask } from "./types";
 
 class BoardApiError extends Error {
   constructor(message: string, public board: KanbanBoard, public error: any) {
     super(message);
     this.name = "BoardApiError";
+  }
+}
+
+class TaskApiError extends Error {
+  constructor(message: string, public task: KanbanTask, public error: any) {
+    super(message);
+    this.name = "TaskApiError";
   }
 }
 
@@ -13,4 +20,4 @@ class ApiError extends Error {
   }
 }
 
-export { ApiError, BoardApiError };
+export { ApiError, BoardApiError, TaskApiError };

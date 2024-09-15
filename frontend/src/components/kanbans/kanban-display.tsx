@@ -41,21 +41,23 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
     urgency: number;
     boardId: number;
   }) => {
-    try {
-      console.log("Task data being sent to backend:", taskData);
-  
-      // Call the API to create the task
-      const newTask = await TaskAPI.createTask(taskData.boardId.toString(), {});
+    const taskPayload: KanbanTask = {
+      name: taskData.name,
+      description: taskData.description,
+      dueDate: taskData.dueDate,
+      urgency: taskData.urgency,
+      taskCategory: 1, // default to backlog
+    };
 
-      // Update the task with the proper details
-      const updatedTask = await TaskAPI.updateTask(newTask.id, taskData);
-  
-      console.log("Updated task response from backend:", updatedTask);
-  
-      setIsTaskModalOpen(false); // Close modal after task is created
-    } catch (error) {
-      console.error("Error adding task:", error);
-    }
+    TaskAPI.createTaskObservable(taskData.boardId, taskPayload).subscribe({
+      next: (task) => {
+        console.log("Task created:", task);
+        setIsTaskModalOpen(false);
+      },
+      error: (error) => {
+        console.error("Error creating task:", error);
+      },
+    });
   };
 
   return (
@@ -68,7 +70,7 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
           <span>DUE DATE: {kanban.dueDate}</span>
         </div>
         <ProgressBar progress={progress} />
-        
+
         <div className="mt-4 w-full flex justify-start">
           <button
             className="px-4 py-2 bg-blue-500 text-white rounded-md"
@@ -84,7 +86,7 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
             key={column.taskCategoryId}
             title={column.title}
             taskCategoryId={`${column.taskCategoryId}`} // Ensure the task category ID is passed as a string
-            kanban={kanban} 
+            kanban={kanban}
             setActiveTaskMethod={setActiveTaskMethod}
           />
         ))}

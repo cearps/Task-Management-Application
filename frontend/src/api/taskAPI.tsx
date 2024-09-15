@@ -1,10 +1,11 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Observable, interval, from, concat, of } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { catchError, switchMap } from "rxjs/operators";
 import { API_URL } from "./apiConfig";
+import { TaskApiError } from "../utilities/errors";
+import { KanbanTask } from "../utilities/types";
 
 export default class TaskAPI {
-
   // Get task comments by taskId
   static async getTaskComments(taskId: string) {
     return axios.get(`${API_URL}/tasks/${taskId}/comments`);
@@ -16,7 +17,7 @@ export default class TaskAPI {
   }
 
   // Observable for task comments with periodic updates
-  static getTaskCommentsObservable(taskId: string): Observable<any> {
+  static getTaskCommentsObservable(taskId: string): Observable<KanbanTask> {
     return concat(of(0), interval(1000)).pipe(
       switchMap(() => {
         return from(TaskAPI.getTaskComments(taskId));
@@ -24,72 +25,70 @@ export default class TaskAPI {
     );
   }
 
-  // Observable for task assignees with periodic updates
-  static getTaskAssigneesObservable(taskId: string): Observable<any> {
-    return concat(of(), interval(1000)).pipe(
-      switchMap(() => {
-        return from(TaskAPI.getTaskAssignees(taskId));
+  static async createTask(boardId: string) {
+    const token = localStorage.getItem("token");
+    const response = await axios.post(
+      `${API_URL}/kanbans/${boardId}/tasks`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data as KanbanTask;
+  }
+  static async updateTask(
+    boardId: string,
+    taskId: number,
+    taskData: KanbanTask
+  ) {
+    const token = localStorage.getItem("token");
+    const response = await axios.post(
+      `${API_URL}/kanbans/${boardId}/tasks/${taskId}`,
+      taskData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data as KanbanTask;
+  }
+
+  static updateTaskObservable(
+    boardId: string,
+    taskId: number,
+    taskData: KanbanTask
+  ): Observable<KanbanTask> {
+    return from(TaskAPI.updateTask(boardId, taskId, taskData)).pipe(
+      catchError((error) => {
+        throw new TaskApiError(
+          `Error updating task with taskId ${taskId}`,
+          taskData,
+          error
+        );
       })
     );
   }
 
-  // Create a task on a specific board
-  static async createTask(boardId: string, taskData: any) {
-    const token = localStorage.getItem("token");
-
-    // Ensure token exists before making the request
-    if (!token) {
-      throw new Error("No authorization token found");
-    }
-
-    // Log the data that is being sent to the backend
-    console.log(`Sending POST request to ${API_URL}/kanbans/${boardId}/tasks with data:`, taskData);
-
-    try {
-      const response = await axios.post(`${API_URL}/kanbans/${boardId}/tasks`, taskData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      // Log the response from the backend
-      console.log("Task creation response:", response.data);
-
-      // Return the new created task data
-      return response.data;
-    } catch (error) {
-      console.error("Error creating task:", error);
-      throw error;
-    }
-  }
-
-  // Update an existing task
-  static async updateTask(taskId: string, taskData: any) {
-    const token = localStorage.getItem("token");
-
-    // Ensure token exists before making the request
-    if (!token) {
-      throw new Error("No authorization token found");
-    }
-
-    console.log(`Sending PUT request to ${API_URL}/tasks/${taskId} with data:`, taskData);
-
-    try {
-      const response = await axios.put(`${API_URL}/tasks/${taskId}`, taskData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      // Log the response from the backend
-      console.log("Task update response:", response.data);
-
-      return response.data;
-    } catch (error) {
-      console.error("Error updating task:", error);
-      throw error;
-    }
+  static createTaskObservable(
+    boardId: string,
+    taskData: KanbanTask
+  ): Observable<KanbanTask> {
+    return from(TaskAPI.createTask(boardId)).pipe(
+      switchMap((task) => {
+        return from(TaskAPI.updateTask(boardId, task.id, taskData)).pipe(
+          catchError((error) => {
+            throw new TaskApiError(
+              `Error creating task with boardId ${boardId}`,
+              task,
+              error
+            );
+          })
+        );
+      })
+    );
   }
 }
