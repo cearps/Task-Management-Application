@@ -3,8 +3,6 @@ import AddBoardForm from "../../../src/components/forms/add-board-form";
 
 describe("AddBoardForm", () => {
   test("renders without crashing", () => {
-    render(
-      <AddBoardForm isOpen={true} onClose={() => {}} onSubmit={() => {}} />
-    );
+    render(<AddBoardForm onClose={() => {}} onSubmit={() => {}} />);
   });
 });
