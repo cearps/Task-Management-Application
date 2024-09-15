@@ -3,43 +3,18 @@ import { useEffect, useRef } from "react";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
 import { getTaskStatus } from "../../utilities/kanban-category-mapping";
 // import TaskAPI from "../../api/taskAPI";
-// import KanbanTaskComment from "./kanban-task-comment";
+import KanbanTaskComment from "./kanban-task-comment";
 
 const DetailedTaskView = ({
   task,
   onClose,
+  addComment,
 }: {
   task: KanbanTask;
+  addComment: (comment: string, taskId: number) => void;
   onClose: () => void;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-
-  // const [assignedUsers, setAssignedUsers] = useState([] as User[]);
-  // const [comments, setComments] = useState([] as Comment[]);
-
-  useEffect(() => {
-    // const subscription = TaskAPI.getTaskAssigneesObservable(
-    //   `${task.id}`
-    // ).subscribe((response) => {
-    //   console.log(response.data);
-    //   setAssignedUsers(response.data);
-    // });
-    // return () => {
-    //   subscription.unsubscribe();
-    // };
-  });
-
-  useEffect(() => {
-    // const subscription = TaskAPI.getTaskCommentsObservable(
-    //   `${task.id}`
-    // ).subscribe((response) => {
-    //   console.log(response.data);
-    //   setComments(response.data);
-    // });
-    // return () => {
-    //   subscription.unsubscribe();
-    // };
-  });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -54,6 +29,11 @@ const DetailedTaskView = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
+
+  const createComment = (comment: string) => {
+    // Logic to create a comment using the provided value
+    addComment(comment, task.id);
+  };
 
   return (
     <div className="fixed inset-0 flex items-center rounded-lg justify-center bg-black bg-opacity-50">
@@ -107,11 +87,12 @@ const DetailedTaskView = ({
           <div className="mb-4">
             <span className="font-semibold">Assigned to:</span>{" "}
             <p>
-              {/* {task.users.map((user) => (
-                <span key={user.id} className="mx-2">
-                  {user.userTag}
-                </span>
-              ))} */}
+              {task.users &&
+                task.users.map((user) => (
+                  <span key={user.id} className="mx-2">
+                    {user.userTag}
+                  </span>
+                ))}
             </p>
           </div>
           <div className="mb-4">
@@ -121,14 +102,29 @@ const DetailedTaskView = ({
           <div className="mb-4">
             <span className="font-semibold">Comments:</span>
             <div className="p-2">
-              {/* {comments.map((comment) => (
+              {task.comments.map((comment) => (
                 <KanbanTaskComment key={comment.id} comment={comment} />
-              ))} */}
+              ))}
               <textarea
                 placeholder="Leave a comment..."
-                className="w-full p-2 rounded"
+                name="comment"
+                id="comment"
+                className="w-full p-2 rounded text-black"
               ></textarea>
-              <button className="mt-2 bg-orange-500 text-white p-2 rounded">
+              <button
+                className="mt-2 bg-orange-500 text-white p-2 rounded"
+                onClick={() => {
+                  // get the comment textarea value
+                  const comment = document.getElementById(
+                    "comment"
+                  ) as HTMLTextAreaElement;
+
+                  if (comment) {
+                    createComment(comment.value);
+                    comment.value = "";
+                  }
+                }}
+              >
                 Comment
               </button>
             </div>

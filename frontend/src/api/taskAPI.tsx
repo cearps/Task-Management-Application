@@ -2,8 +2,8 @@ import axios from "axios";
 import { Observable, from } from "rxjs";
 import { catchError, switchMap } from "rxjs/operators";
 import { API_URL } from "./apiConfig";
-import { TaskApiError } from "../utilities/errors";
-import { KanbanTask } from "../utilities/types";
+import { CommentApiError, TaskApiError } from "../utilities/errors";
+import { Comment, KanbanTask, NewComment } from "../utilities/types";
 
 export default class TaskAPI {
   static async createTask(boardId: number) {
@@ -52,6 +52,42 @@ export default class TaskAPI {
               error
             );
           })
+        );
+      })
+    );
+  }
+
+  static async addComment(
+    kanbanId: number,
+    taskId: number,
+    comment: NewComment
+  ) {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.post(
+      `${API_URL}/kanbans/${kanbanId}/tasks/${taskId}/comment`,
+      comment,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data as Comment;
+  }
+
+  static addCommentObservable(
+    kanbanId: number,
+    taskId: number,
+    comment: NewComment
+  ): Observable<Comment> {
+    return from(TaskAPI.addComment(kanbanId, taskId, comment)).pipe(
+      catchError((error) => {
+        throw new CommentApiError(
+          error.response.data.description,
+          comment,
+          error
         );
       })
     );

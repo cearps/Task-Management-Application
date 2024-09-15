@@ -1,4 +1,4 @@
-import { KanbanBoard, KanbanTask } from "./types";
+import { KanbanBoard, KanbanTask, NewComment } from "./types";
 
 class BoardApiError extends Error {
   constructor(message: string, public board: KanbanBoard, public error: any) {
@@ -14,10 +14,17 @@ class TaskApiError extends Error {
   }
 }
 
+class CommentApiError extends Error {
+  constructor(message: string, public comment: NewComment, public error: any) {
+    super(message);
+    this.name = "CommentApiError";
+  }
+}
+
 class ApiError extends Error {
   constructor(message: string, public status: number) {
     super(message);
   }
 }
 
-export { ApiError, BoardApiError, TaskApiError };
+export { ApiError, BoardApiError, TaskApiError, CommentApiError };
