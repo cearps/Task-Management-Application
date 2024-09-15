@@ -54,7 +54,7 @@ export default function UserBoardForm({
         ref={cardRef}
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Add User to Board</h2>
+          <h2 className="text-xl font-bold">Update Board Users</h2>
           <button className="text-red-500" onClick={onClose}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
