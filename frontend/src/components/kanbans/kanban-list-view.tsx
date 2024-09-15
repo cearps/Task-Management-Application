@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import KanbanAPI from "../../api/kanbanAPI";
 import { useNavigate } from "react-router-dom";
 import { KanbanBoard } from "../../utilities/types";
+import UserBoardForm from "../forms/user-board-form";
 import AddBoardForm from "../forms/add-board-form";
 
 export default function KanbanListView() {
   const [kanbanBoards, setKanbanBoards] = useState([] as KanbanBoard[]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false); // Add the state for the AddUserModal
   const [editingBoard, setEditingBoard] = useState<KanbanBoard | null>(null);
   const [formErrors, setFormErrors] = useState("");
 
@@ -95,6 +97,35 @@ export default function KanbanListView() {
     setIsModalOpen(true);
   };
 
+  // Function to handle adding a user to a board
+  const handleAddUser = (board: KanbanBoard) => {
+    // Add the logic to add a user to a board
+    setEditingBoard(board);
+    setIsAddUserModalOpen(true);
+  };
+
+  const handleAddUserSubmit = (updatedBoard: KanbanBoard) => {
+    if (!editingBoard) return;
+
+    KanbanAPI.updateKanbanBoardObservable(
+      editingBoard.id,
+      updatedBoard
+    ).subscribe({
+      next: () => {
+        setKanbanBoards((prevBoards) =>
+          prevBoards.map((board) =>
+            board.id === editingBoard.id ? updatedBoard : board
+          )
+        );
+        setEditingBoard(null);
+        setIsAddUserModalOpen(false);
+      },
+      error: (error) => {
+        console.error("Error updating Kanban board:", error);
+      },
+    });
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">YOUR PROJECTS</h1>
@@ -126,6 +157,7 @@ export default function KanbanListView() {
             dueDate={board.dueDate}
             onDelete={handleDeleteBoard}
             onEdit={() => handleEditBoard(board)}
+            onAddUser={() => handleAddUser(board)}
           />
         ))}
       </div>
@@ -150,6 +182,19 @@ export default function KanbanListView() {
           } // Use undefined when editingBoard is null
         />
       )}
+      {/* AddUserForm Modal */}
+      {isAddUserModalOpen && editingBoard && (
+        <UserBoardForm
+          onClose={() => {
+            setIsAddUserModalOpen(false);
+            setEditingBoard(null);
+          }}
+          onSubmit={handleAddUserSubmit}
+          setErrors={setFormErrors}
+          errors={formErrors}
+          board={editingBoard}
+        />
+      )}
     </div>
   );
 }
@@ -159,12 +204,14 @@ const BoardCard = ({
   dueDate,
   onDelete,
   onEdit,
+  onAddUser, // Add the new prop for adding a user
 }: {
   id: number;
   title: string;
   dueDate: string;
   onDelete: (id: number) => void;
   onEdit: () => void;
+  onAddUser: () => void; // Define the new prop type
 }) => {
   const navigate = useNavigate();
 
@@ -184,8 +231,27 @@ const BoardCard = ({
           className="text-black"
           onClick={(e) => {
             e.stopPropagation();
+            onAddUser();
+          }}
+          title="Add User"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="24px"
+            height="24px"
+            fill="currentColor"
+          >
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+          </svg>
+        </button>
+        <button
+          className="text-black"
+          onClick={(e) => {
+            e.stopPropagation();
             onEdit();
           }}
+          title="Edit"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -209,6 +275,7 @@ const BoardCard = ({
             e.stopPropagation();
             onDelete(id);
           }}
+          title="Delete"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
