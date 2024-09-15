@@ -59,14 +59,12 @@ public class TaskController {
     @PostMapping("/{boardId}/tasks/{taskId}/comment")
     public ResponseEntity<TaskResponse> commentOnTask(@PathVariable Long boardId, @PathVariable Long taskId,
                                                       @RequestBody CommentRequest request) {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         log.info("User {} is commenting on task {} on board {} START", currentUser.getUserTag(), taskId, boardId);
         Task task = taskService.commentOnTask(currentUser, boardId, taskId, request);
         log.info("User {} is commenting on task {} on board {} SUCCESS", currentUser.getUserTag(), taskId, boardId);
         return ResponseEntity.ok(new TaskResponse(task));
-
     }
 
 }

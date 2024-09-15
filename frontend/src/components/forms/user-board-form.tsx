@@ -1,11 +1,10 @@
+import { useState, useEffect, useRef } from "react";
 import { KanbanBoard } from "../../utilities/types";
-import { useState } from "react";
 
 export default function UserBoardForm({
   onClose,
   onSubmit,
   errors,
-  setErrors,
   board,
 }: {
   onClose: () => void;
@@ -14,19 +13,20 @@ export default function UserBoardForm({
   setErrors: React.Dispatch<React.SetStateAction<string>>;
   board: KanbanBoard;
 }) {
-  const [name, setName] = useState(board.name);
+  const [userTag, setUserTag] = useState("");
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const handleAddUserSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // find the user by tag
-    // if the user exists, add the user to the board
-    // if the user does not exist, set an error
-
-    onSubmit({ ...board, name });
+    onSubmit({
+      ...board,
+      users: [...board.users, { id: 1, userTag: userTag }],
+    });
   };
 
   const handleRemoveUserSubmit =
-    (userId: number) => (e: React.FormEvent<HTMLFormElement>) => {
+    (userId: number) =>
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
       onSubmit({
         ...board,
@@ -34,9 +34,26 @@ export default function UserBoardForm({
       });
     };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+      <div
+        className="bg-white rounded-lg shadow-lg w-full max-w-md p-6"
+        ref={cardRef}
+      >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Add User to Board</h2>
           <button className="text-red-500" onClick={onClose}>
@@ -57,6 +74,8 @@ export default function UserBoardForm({
           </button>
         </div>
         <div>
+          <h2 className="text-xl font-bold mb-5">Board Name: {board.name}</h2>
+
           <h3 className="text-lg font-bold mb-2">Users</h3>
           <ul>
             {/* Iterate over the users and render each user */}
@@ -79,6 +98,8 @@ export default function UserBoardForm({
             <input
               type="text"
               placeholder="Enter user tag"
+              value={userTag}
+              onChange={(e) => setUserTag(e.target.value)}
               className="border border-gray-300 rounded-md px-2 py-2 mt-2 mr-2"
             />
             <button
@@ -87,6 +108,7 @@ export default function UserBoardForm({
             >
               Add User
             </button>
+            {errors && <p className="text-red-500">{errors}</p>}
           </form>
         </div>
       </div>

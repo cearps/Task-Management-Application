@@ -104,7 +104,7 @@ export default function KanbanListView() {
     setIsAddUserModalOpen(true);
   };
 
-  const handleAddUserSubmit = (updatedBoard: KanbanBoard) => {
+  const handleBoardUserSubmit = (updatedBoard: KanbanBoard) => {
     if (!editingBoard) return;
 
     KanbanAPI.updateKanbanBoardObservable(
@@ -121,7 +121,7 @@ export default function KanbanListView() {
         setIsAddUserModalOpen(false);
       },
       error: (error) => {
-        console.error("Error updating Kanban board:", error);
+        setFormErrors(error.response.data);
       },
     });
   };
@@ -189,7 +189,7 @@ export default function KanbanListView() {
             setIsAddUserModalOpen(false);
             setEditingBoard(null);
           }}
-          onSubmit={handleAddUserSubmit}
+          onSubmit={handleBoardUserSubmit}
           setErrors={setFormErrors}
           errors={formErrors}
           board={editingBoard}

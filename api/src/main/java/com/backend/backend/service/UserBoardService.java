@@ -66,8 +66,10 @@ public class UserBoardService {
             board.getUserBoards().clear();
             for (ShortUserRequest shortUser : request.getUsers()) {
                 UserBoard userBoard = new UserBoard();
+                User userToAdd = userRepository.findByUserTag(shortUser.getUserTag())
+                        .orElseThrow(() -> new BoardEditException("User not found with userTag " + shortUser.getUserTag()));
                 userBoard.setBoard(board);
-                userBoard.setUser(userRepository.findById(shortUser.getId()).orElseThrow(() -> new EntityNotFoundException("User not found with id " + shortUser.getId().toString())));
+                userBoard.setUser(userToAdd);
                 board.getUserBoards().add(userBoard);
             }
         }
