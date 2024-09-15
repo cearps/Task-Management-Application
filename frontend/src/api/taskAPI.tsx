@@ -41,7 +41,7 @@ export default class TaskAPI {
   }
   static async updateTask(
     boardId: string,
-    taskId: number,
+    taskId: ,
     taskData: KanbanTask
   ) {
     const token = localStorage.getItem("token");
@@ -57,18 +57,14 @@ export default class TaskAPI {
     return response.data as KanbanTask;
   }
 
-  static updateTaskObservable(
-    boardId: string,
-    taskId: number,
+  // Observable for task assignees with periodic updates
+  static getTaskAssigneesObservable(
+    taskId: string,
     taskData: KanbanTask
-  ): Observable<KanbanTask> {
-    return from(TaskAPI.updateTask(boardId, taskId, taskData)).pipe(
-      catchError((error) => {
-        throw new TaskApiError(
-          `Error updating task with taskId ${taskId}`,
-          taskData,
-          error
-        );
+  ): Observable<AxiosResponse<KanbanTask>> {
+    return concat(of(), interval(1000)).pipe(
+      switchMap(() => {
+        return from(TaskAPI.updateTask(taskId, taskData));
       })
     );
   }
@@ -76,7 +72,7 @@ export default class TaskAPI {
   static createTaskObservable(
     boardId: string,
     taskData: KanbanTask
-  ): Observable<KanbanTask> {
+  ): Observable<AxiosResponse<KanbanTask>> {
     return from(TaskAPI.createTask(boardId)).pipe(
       switchMap((task) => {
         return from(TaskAPI.updateTask(boardId, task.id, taskData)).pipe(
