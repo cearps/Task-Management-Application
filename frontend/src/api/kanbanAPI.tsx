@@ -2,7 +2,7 @@ import axios from "axios";
 import { Observable, interval, from, concat, of } from "rxjs";
 import { switchMap, catchError } from "rxjs/operators";
 import { API_URL } from "./apiConfig";
-import { KanbanBoard, KanbanBoardUpdate } from "../utilities/types";
+import { KanbanBoard } from "../utilities/types";
 import { BoardApiError } from "../utilities/errors";
 
 export default class KanbanAPI {
@@ -32,7 +32,7 @@ export default class KanbanAPI {
   // Step 2: Use the returned board ID to populate the details
   static async updateKanbanBoard(
     id: number,
-    data: Partial<KanbanBoardUpdate>
+    data: Partial<KanbanBoard>
   ): Promise<KanbanBoard> {
     const token = localStorage.getItem("token");
     const response = await axios.post(`${API_URL}/kanbans/${id}`, data, {
