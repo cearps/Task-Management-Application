@@ -1,8 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
 import UserAPI from "../../api/userAPI";
+import { useEffect, useState } from "react";
 
 const Header = () => {
-  const isAuthenticated = UserAPI.isAuthenticated();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const subscription = UserAPI.isAuthenticatedObservable().subscribe(
+      (isAuthenticated) => {
+        setIsAuthenticated(isAuthenticated);
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   const navigate = useNavigate();
 
   const logout = () => {
