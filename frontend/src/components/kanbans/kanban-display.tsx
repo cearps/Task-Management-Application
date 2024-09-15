@@ -7,7 +7,7 @@ import TaskAPI from "../../api/taskAPI";
 import { kanbanColumns } from "../../utilities/kanban-category-mapping";
 
 export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
-  const [selectedTask, setSelectedTask] = useState<KanbanTask | null>(null);
+  const [selectedTask, setSelectedTask] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
 
@@ -27,7 +27,7 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
   }, [kanban.startDate, kanban.dueDate]);
 
   const setActiveTaskMethod = (task: KanbanTask) => () => {
-    setSelectedTask(task);
+    setSelectedTask(task.id);
   };
 
   const handleTaskClose = () => {
@@ -56,6 +56,17 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
       },
       error: (error) => {
         console.error("Error creating task:", error);
+      },
+    });
+  };
+
+  const addComment = (comment: string, taskId: number) => {
+    TaskAPI.addCommentObservable(kanban.id, taskId, { comment }).subscribe({
+      next: (comment) => {
+        console.log("Comment added:", comment);
+      },
+      error: (error) => {
+        console.error("Error adding comment:", error);
       },
     });
   };
@@ -93,7 +104,11 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
       </div>
 
       {selectedTask && (
-        <DetailedTaskView task={selectedTask} onClose={handleTaskClose} />
+        <DetailedTaskView
+          task={kanban.tasks.find((task) => task.id === selectedTask)!}
+          onClose={handleTaskClose}
+          addComment={addComment}
+        />
       )}
 
       <AddTaskForm

@@ -64,6 +64,10 @@ type Comment = {
   timestamp: string;
 };
 
+type NewComment = {
+  comment: string;
+};
+
 type ButtonType = "button" | "submit" | "reset";
 
 export type {
@@ -76,4 +80,5 @@ export type {
   LoginResponse,
   SignUpResponse,
   UserInfo,
+  NewComment,
 };
