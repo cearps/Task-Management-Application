@@ -41,7 +41,7 @@ export default class TaskAPI {
   }
   static async updateTask(
     boardId: string,
-    taskId: ,
+    taskId: number,
     taskData: KanbanTask
   ) {
     const token = localStorage.getItem("token");
