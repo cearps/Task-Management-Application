@@ -10,7 +10,6 @@ export default function UserBoardForm({
   onClose: () => void;
   onSubmit: (board: KanbanBoard) => void;
   errors: string | null;
-  setErrors: React.Dispatch<React.SetStateAction<string>>;
   board: KanbanBoard;
 }) {
   const [userTag, setUserTag] = useState("");

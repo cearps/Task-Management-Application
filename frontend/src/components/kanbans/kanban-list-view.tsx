@@ -192,7 +192,6 @@ export default function KanbanListView() {
             setFormErrors("");
           }}
           onSubmit={handleBoardUserSubmit}
-          setErrors={setFormErrors}
           errors={formErrors}
           board={editingBoard}
         />
