@@ -141,12 +141,14 @@ export default function KanbanDisplay({
       <div className="grid grid-cols-4 gap-4">
         <DragDropContext onDragEnd={onDragEnd}>
           {kanbanColumns.map((column) => (
-            <Droppable droppableId={column.taskCategoryId.toString()}>
+            <Droppable
+              droppableId={column.taskCategoryId.toString()}
+              key={column.taskCategoryId}
+            >
               {(provided, snapshot) => (
                 <KanbanColumn
-                  key={column.taskCategoryId}
                   title={column.title}
-                  taskCategoryId={`${column.taskCategoryId}`} // Ensure the task category ID is passed as a string
+                  taskCategoryId={column.taskCategoryId.toString()} // Ensure the task category ID is passed as a string
                   kanban={kanban}
                   setActiveTaskMethod={setActiveTaskMethod}
                   provided={provided}

@@ -30,7 +30,7 @@ export default function KanbanColumn({
     <div className="bg-yellow-400 rounded-lg p-2">
       <h2 className="text-lg font-bold mb-2">{title}</h2>
       <div
-        className="space-y-2"
+        className="space-y-2 rounded-lg"
         ref={provided.innerRef}
         {...provided.droppableProps}
         style={{
