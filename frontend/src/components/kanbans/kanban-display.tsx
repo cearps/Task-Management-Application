@@ -168,12 +168,13 @@ export default function KanbanDisplay({
         />
       )}
 
-      <AddTaskForm
-        isOpen={isTaskModalOpen}
-        onClose={() => setIsTaskModalOpen(false)}
-        onSubmit={handleAddTask}
-        boardId={kanban.id} // Pass boardId as number
-      />
+      {isTaskModalOpen && (
+        <AddTaskForm
+          onClose={() => setIsTaskModalOpen(false)}
+          onSubmit={handleAddTask}
+          boardId={kanban.id} // Pass boardId as number
+        />
+      )}
     </div>
   );
 }
