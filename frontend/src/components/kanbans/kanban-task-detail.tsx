@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
 import { getTaskStatus } from "../../utilities/kanban-category-mapping";
 // import TaskAPI from "../../api/taskAPI";
-// import KanbanTaskComment from "./kanban-task-comment";
+import KanbanTaskComment from "./kanban-task-comment";
 
 const DetailedTaskView = ({
   task,
@@ -121,9 +121,9 @@ const DetailedTaskView = ({
           <div className="mb-4">
             <span className="font-semibold">Comments:</span>
             <div className="p-2">
-              {/* {comments.map((comment) => (
+              {task.comments.map((comment) => (
                 <KanbanTaskComment key={comment.id} comment={comment} />
-              ))} */}
+              ))}
               <textarea
                 placeholder="Leave a comment..."
                 className="w-full p-2 rounded"

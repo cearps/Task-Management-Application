@@ -21,6 +21,7 @@ type KanbanTask = {
   urgency: number;
   taskCategory: number;
   users: UserInfo[];
+  comments: Comment[];
 };
 
 type NewUserData = {
@@ -55,10 +56,12 @@ type LoginResponse = {
 
 type Comment = {
   id: number;
-  taskId: number;
-  userId: number;
-  content: string;
-  createdAt: string;
+  comment: string;
+  user: {
+    userId: number;
+    userTag: string;
+  };
+  timestamp: string;
 };
 
 type ButtonType = "button" | "submit" | "reset";
