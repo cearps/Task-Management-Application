@@ -1,4 +1,4 @@
-import { KanbanBoard, KanbanTask } from "./types";
+import { KanbanBoard, KanbanTask, NewComment } from "./types";
 
 class BoardApiError extends Error {
   constructor(message: string, public board: KanbanBoard, public error: any) {
