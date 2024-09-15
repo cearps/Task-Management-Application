@@ -7,11 +7,15 @@ export default function KanbanColumn({
   taskCategoryId,
   kanban,
   setActiveTaskMethod,
+  provided,
+  snapshot,
 }: {
   title: string;
   taskCategoryId: string;
   kanban: KanbanBoard;
   setActiveTaskMethod: (task: KanbanTask) => () => void;
+  provided: any;
+  snapshot: any;
 }) {
   const [tasks, setTasks] = useState([] as KanbanTask[]);
 
@@ -25,12 +29,22 @@ export default function KanbanColumn({
   return (
     <div className="bg-yellow-400 rounded-lg p-2">
       <h2 className="text-lg font-bold mb-2">{title}</h2>
-      <div className="space-y-2">
+      <div
+        className="space-y-2"
+        ref={provided.innerRef}
+        {...provided.droppableProps}
+        style={{
+          background: snapshot.isDraggingOver ? "lightyellow" : "",
+          padding: 4,
+          minHeight: 200,
+        }}
+      >
         {tasks.map((task) => (
           <KanbanCard
             key={task.id}
             task={task}
             setActiveTaskMethod={setActiveTaskMethod}
+            index={tasks.indexOf(task)}
           />
         ))}
       </div>

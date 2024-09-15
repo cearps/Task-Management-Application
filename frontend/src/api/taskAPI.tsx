@@ -57,6 +57,24 @@ export default class TaskAPI {
     );
   }
 
+  static updateTaskObservable(
+    boardId: number,
+    taskData: Partial<KanbanTask>
+  ): Observable<KanbanTask> {
+    if (!taskData.id) {
+      throw new TaskApiError("Task id is required", taskData, null);
+    }
+    return from(TaskAPI.updateTask(boardId, taskData.id, taskData)).pipe(
+      catchError((error) => {
+        throw new TaskApiError(
+          `Error updating task with boardId ${boardId} and taskId ${taskData.id}`,
+          taskData,
+          error
+        );
+      })
+    );
+  }
+
   static async addComment(
     kanbanId: number,
     taskId: number,
