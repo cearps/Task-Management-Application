@@ -41,7 +41,7 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
     urgency: number;
     boardId: number;
   }) => {
-    const taskPayload: KanbanTask = {
+    const taskPayload: Partial<KanbanTask> = {
       name: taskData.name,
       description: taskData.description,
       dueDate: taskData.dueDate,
