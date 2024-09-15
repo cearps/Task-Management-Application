@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Observable, interval, from, concat, of } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { switchMap, catchError, map } from "rxjs/operators";
 import {
   LoginResponse,
   NewUserData,
@@ -72,8 +72,47 @@ export default class UserAPI {
     return from(UserAPI.loginUser(data));
   }
 
-  static isAuthenticated() {
-    return localStorage.getItem("token") !== null;
+  static isAuthenticatedObservable(): Observable<boolean> {
+    return concat(of(0), interval(10000)).pipe(
+      switchMap(() => {
+        return from(UserAPI.getUser()).pipe(
+          map(() => true),
+          catchError(() => of(false))
+        );
+      })
+    );
+  }
+
+  static subscribeIsAuthenticated() {
+    return this.isAuthenticatedObservable().subscribe((isAuthenticated) => {
+      if (!isAuthenticated) {
+        localStorage.removeItem("token");
+
+        // redirect to login page
+        window.location.href = "/accounts/login";
+      }
+    });
+  }
+
+  static subscribeIsNotAuthenticated() {
+    return this.isAuthenticatedObservable().subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        // redirect to boards page
+        window.location.href = "/boards";
+      }
+    });
+  }
+
+  static subscribeIsAuthenticatedDecision() {
+    return this.isAuthenticatedObservable().subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        // redirect to boards page
+        window.location.href = "/boards";
+      } else {
+        // redirect to login page
+        window.location.href = "/accounts/login";
+      }
+    });
   }
 
   static logout() {

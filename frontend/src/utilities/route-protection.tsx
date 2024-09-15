@@ -1,16 +1,42 @@
 // PrivateRoute.tsx
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import UserAPI from "../api/userAPI";
 
-interface PrivateRouteProps {
+interface RouteProps {
   children: React.ReactElement;
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  const isAuthenticated = UserAPI.isAuthenticated();
+const PrivateRoute: React.FC<RouteProps> = ({ children }) => {
+  useEffect(() => {
+    const subscription = UserAPI.subscribeIsAuthenticated();
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
-  return isAuthenticated ? children : <Navigate to="/accounts/login" replace />;
+  return children;
 };
 
-export default PrivateRoute;
+const NonAuthenticatedRoute: React.FC<RouteProps> = ({ children }) => {
+  useEffect(() => {
+    const subscription = UserAPI.subscribeIsNotAuthenticated();
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  return children;
+};
+
+const DecisionRoute: React.FC<RouteProps> = () => {
+  useEffect(() => {
+    const subscription = UserAPI.subscribeIsAuthenticatedDecision();
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  return null;
+};
+
+export { PrivateRoute, NonAuthenticatedRoute, DecisionRoute };
