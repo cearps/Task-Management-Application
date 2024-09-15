@@ -21,12 +21,6 @@ const AddBoardForm = ({
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setName(defaultValues?.name || "");
-    setDueDate(defaultValues?.dueDate || "");
-    setDescription(defaultValues?.description || "");
-  }, [defaultValues]);
-
-  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
         onClose();

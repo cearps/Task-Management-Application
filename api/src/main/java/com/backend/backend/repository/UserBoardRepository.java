@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface UserBoardRepository extends JpaRepository<UserBoard, Long> {
     List<UserBoard> findByUserId(Long userId);
+    List<UserBoard> findByBoardId(Long boardId);
 }
