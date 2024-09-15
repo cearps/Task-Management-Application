@@ -168,6 +168,7 @@ export default function KanbanListView() {
           onClose={() => {
             setIsModalOpen(false);
             setEditingBoard(null);
+            setFormErrors("");
           }}
           onSubmit={handleAddBoard}
           errors={formErrors}
@@ -188,6 +189,7 @@ export default function KanbanListView() {
           onClose={() => {
             setIsAddUserModalOpen(false);
             setEditingBoard(null);
+            setFormErrors("");
           }}
           onSubmit={handleBoardUserSubmit}
           setErrors={setFormErrors}
