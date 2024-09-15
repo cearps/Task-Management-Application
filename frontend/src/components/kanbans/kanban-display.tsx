@@ -93,24 +93,14 @@ export default function KanbanDisplay({
     }
 
     const updatedTasks = [...kanban.tasks];
-    const task = updatedTasks.find((task) => task.id === parseInt(draggableId));
-    if (!task) {
-      return;
-    }
+    const task = updatedTasks.find((t) => t.id === parseInt(draggableId))!;
+    task.taskCategory = parseInt(destination.droppableId);
+    task.index = destination.index;
 
-    const newTaskCategory = kanbanColumns.find(
-      (column) => column.taskCategoryId === parseInt(destination.droppableId)
-    );
-
-    if (!newTaskCategory) {
-      return;
-    }
-
-    task.taskCategory = newTaskCategory.taskCategoryId;
     TaskAPI.updateTaskObservable(kanban.id, task).subscribe({
       next: (updatedTask) => {
         console.log("Task updated:", updatedTask);
-        setKanban({ ...kanban, tasks: updatedTasks });
+        setKanban({ ...kanban, tasks: newTasks });
       },
       error: (error) => {
         console.error("Error updating task:", error);
@@ -141,12 +131,10 @@ export default function KanbanDisplay({
       <div className="grid grid-cols-4 gap-4">
         <DragDropContext onDragEnd={onDragEnd}>
           {kanbanColumns.map((column) => (
-            <Droppable
-              droppableId={column.taskCategoryId.toString()}
-              key={column.taskCategoryId}
-            >
+            <Droppable droppableId={column.taskCategoryId.toString()}>
               {(provided, snapshot) => (
                 <KanbanColumn
+                  key={column.taskCategoryId}
                   title={column.title}
                   taskCategoryId={column.taskCategoryId.toString()} // Ensure the task category ID is passed as a string
                   kanban={kanban}

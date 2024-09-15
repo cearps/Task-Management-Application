@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class TaskService {
@@ -60,6 +61,41 @@ public class TaskService {
         }
         if (request.getTaskCategory() != null) {
             task.setTaskCategory(request.getTaskCategory());
+        }
+
+        if (request.getIndex() != null) {
+            // ensure that the index is within the bounds of the task category
+            int taskCategorySize = taskRepository.findAllByBoardIdAndCategoryId(boardId, task.getTaskCategory()).size();
+            if (request.getIndex() < 0 || request.getIndex() > taskCategorySize) {
+                throw new EntityNotFoundException("Index out of bounds for task category " + task.getTaskCategory().toString());
+            }
+
+            // check if reshuffling is required
+            if (request.getIndex() < task.getIndex()) {
+                // move tasks up
+                List<Task> tasks = taskRepository.findAllByBoardIdAndCategoryId(boardId, task.getTaskCategory());
+                for (Task t : tasks) {
+                    if (t.getIndex() >= request.getIndex() && t.getIndex() < task.getIndex()) {
+                        t.setIndex(t.getIndex() + 1);
+                        taskRepository.save(t);
+                    }
+                }
+            } else if (request.getIndex() > task.getIndex()) {
+                // move tasks down
+                List<Task> tasks = taskRepository.findAllByBoardIdAndCategoryId(boardId, task.getTaskCategory());
+                for (Task t : tasks) {
+                    if (t.getIndex() <= request.getIndex() && t.getIndex() > task.getIndex()) {
+                        t.setIndex(t.getIndex() - 1);
+                        taskRepository.save(t);
+                    }
+                }
+            }
+
+
+        } else {
+            if (request.getTaskCategory() != null && task.getIndex() == null) {
+                task.setIndex(taskRepository.findAllByBoardIdAndCategoryId(boardId, request.getTaskCategory()).size());
+            }
         }
 
         taskRepository.save(task);

@@ -12,7 +12,7 @@ export default function KanbanCard({
   index: number;
 }) {
   return (
-    <Draggable draggableId={task.id.toString()} index={index}>
+    <Draggable draggableId={task.id.toString()} index={task.index}>
       {(provided, snapshot) => (
         <div
           className="relative bg-[#2e223b] text-white rounded-lg p-4 shadow-md cursor-pointer hover:bg-gray-100 hover:text-black hover:shadow-lg transition-transform transform hover:scale-105"
