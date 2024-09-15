@@ -1,57 +1,115 @@
-import PrivateRoute from "../../src/utilities/route-protection";
+import {
+  PrivateRoute,
+  DecisionRoute,
+  NonAuthenticatedRoute,
+} from "../../src/utilities/route-protection";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import UserAPI from "../../src/api/userAPI";
 
-// Mock components
-const ProtectedComponent = () => <div>Protected Content</div>;
-const LoginComponent = () => <div>Login Page</div>;
-
-// Mock authentication function
-
-// mock the UserAPI.isAuthenticated function
-jest.mock("../../src/api/userAPI", () => ({
-  isAuthenticated: jest.fn(),
-}));
-
-const mockedIsAuthenticated = UserAPI.isAuthenticated as jest.Mock;
-
-describe("PrivateRoute", () => {
-  beforeEach(() => {
-    mockedIsAuthenticated.mockReset();
-  });
-  it("renders protected component for authenticated users", () => {
-    mockedIsAuthenticated.mockReturnValue(true);
+describe("Route Protection", () => {
+  test("renders PrivateRoute component", () => {
     render(
-      <MemoryRouter initialEntries={["/protected"]}>
+      <MemoryRouter initialEntries={["/private"]}>
         <Routes>
-          <Route path="/accounts/login" element={<LoginComponent />} />
           <Route
-            path="/protected"
-            element={<PrivateRoute children={<ProtectedComponent />} />}
+            path="/private"
+            element={
+              <PrivateRoute>
+                <div>Private Route</div>
+              </PrivateRoute>
+            }
           />
         </Routes>
       </MemoryRouter>
     );
 
-    expect(screen.getByText("Protected Content")).toBeInTheDocument();
+    expect(screen.getByText("Private Route")).toBeInTheDocument();
   });
 
-  it("redirects to login for unauthenticated users", () => {
-    mockedIsAuthenticated.mockReturnValue(false);
-
+  test("renders NonAuthenticatedRoute component", () => {
     render(
-      <MemoryRouter initialEntries={["/protected"]}>
+      <MemoryRouter initialEntries={["/non-authenticated"]}>
         <Routes>
-          <Route path="/accounts/login" element={<LoginComponent />} />
           <Route
-            path="/protected"
-            element={<PrivateRoute children={<ProtectedComponent />} />}
+            path="/non-authenticated"
+            element={
+              <NonAuthenticatedRoute>
+                <div>Non-Authenticated Route</div>
+              </NonAuthenticatedRoute>
+            }
           />
         </Routes>
       </MemoryRouter>
     );
 
-    expect(screen.getByText("Login Page")).toBeInTheDocument();
+    expect(screen.getByText("Non-Authenticated Route")).toBeInTheDocument();
+  });
+
+  test("Tests decision route for logged in", () => {
+    // mock the UserAPI.getUserObservable method to just omit true every second
+    jest.mock("../../src/api/userAPI", () => {
+      return {
+        __esModule: true,
+        default: {
+          getUserObservable: () => {
+            return {
+              subscribe: (callback: (value: boolean) => void) => {
+                setInterval(() => {
+                  callback(true);
+                }, 1000);
+              },
+              unsubscribe: () => {},
+            };
+          },
+        },
+      };
+    });
+
+    render(
+      <MemoryRouter initialEntries={["/decision"]}>
+        <Routes>
+          <Route path="/decision" element={<DecisionRoute />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    // check that it redirected to the boards page
+    setTimeout(() => {
+      expect(window.location.pathname).toBe("/boards");
+    }, 2000);
+  });
+
+  test("Tests decision route for logged out", () => {
+    // mock the UserAPI.getUserObservable method to just omit false every second
+    jest.mock("../../src/api/userAPI", () => {
+      return {
+        __esModule: true,
+        default: {
+          getUserObservable: () => {
+            return {
+              subscribe: (callback: (value: boolean) => void) => {
+                setInterval(() => {
+                  callback(false);
+                }, 1000);
+              },
+              unsubscribe: () => {},
+            };
+          },
+        },
+      };
+    });
+
+    render(
+      <MemoryRouter initialEntries={["/decision"]}>
+        <Routes>
+          <Route path="/decision" element={<DecisionRoute />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    // check that it redirected to the login page
+    setTimeout(() => {
+      expect(window.location.pathname).toBe("/accounts/login");
+    }, 2000);
   });
 });

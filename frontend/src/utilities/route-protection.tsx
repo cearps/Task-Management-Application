@@ -28,7 +28,7 @@ const NonAuthenticatedRoute: React.FC<RouteProps> = ({ children }) => {
   return children;
 };
 
-const DecisionRoute: React.FC<RouteProps> = () => {
+const DecisionRoute: React.FC = () => {
   useEffect(() => {
     const subscription = UserAPI.subscribeIsAuthenticatedDecision();
     return () => {
