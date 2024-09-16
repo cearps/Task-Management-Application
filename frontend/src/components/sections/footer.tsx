@@ -1,6 +1,9 @@
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white p-4 mt-8 fixed bottom-0 left-0 w-full">
+    <footer
+      className="bg-gray-800 text-white p-4 mt-8 fixed bottom-0 w-full"
+      style={{ height: "8vh" }}
+    >
       <div className="container mx-auto flex justify-between items-center">
         <p className="text-sm">© 2024 Kanban App. All rights reserved.</p>
         <nav className="space-x-4">

@@ -25,7 +25,10 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-blue-500 text-white p-4 fixed top-0 left-0 right-0">
+    <header
+      className="bg-blue-500 text-white p-4 fixed top-0 left-0 right-0"
+      style={{ height: "8vh" }}
+    >
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-lg font-bold">
           <Link to="/">Kanban App</Link>
