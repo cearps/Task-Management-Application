@@ -2,12 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { KanbanTask } from "../../utilities/types";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
 import { getTaskStatus } from "../../utilities/kanban-category-mapping";
-import TaskAPI from "../../api/taskAPI"; // Assuming you have an API call to update the task
+import TaskAPI from "../../api/taskAPI"; 
 import KanbanTaskComment from "./kanban-task-comment";
 
 const DetailedTaskView = ({
   task,
-  boardId,  // Accept boardId as a prop
+  boardId,  
   onClose,
   addComment,
 }: {
@@ -17,8 +17,8 @@ const DetailedTaskView = ({
   onClose: () => void;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [isEditing, setIsEditing] = useState(false); // Toggle between view/edit mode
-  const [updatedTask, setUpdatedTask] = useState<KanbanTask>(task); // Store updated task details
+  const [isEditing, setIsEditing] = useState(false); 
+  const [updatedTask, setUpdatedTask] = useState<KanbanTask>(task); 
 
 
   useEffect(() => {
