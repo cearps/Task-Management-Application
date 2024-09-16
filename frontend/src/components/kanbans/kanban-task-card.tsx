@@ -5,15 +5,13 @@ import { Draggable } from "react-beautiful-dnd";
 export default function KanbanCard({
   task,
   setActiveTaskMethod,
-  index,
 }: {
   task: KanbanTask;
   setActiveTaskMethod: (task: KanbanTask) => () => void;
-  index: number;
 }) {
   return (
     <Draggable draggableId={task.id.toString()} index={task.index}>
-      {(provided, snapshot) => (
+      {(provided: any, snapshot: any) => (
         <div
           className="relative bg-[#2e223b] text-white rounded-lg p-4 shadow-md cursor-pointer hover:bg-gray-100 hover:text-black hover:shadow-lg transition-transform transform hover:scale-105"
           onClick={setActiveTaskMethod(task)}

@@ -14,6 +14,7 @@ describe("DetailedTaskView", () => {
           taskCategory: 0,
           users: [],
           comments: [],
+          index: 0,
         }}
         addComment={function (comment: string, taskId: number): void {
           console.log(comment, taskId);

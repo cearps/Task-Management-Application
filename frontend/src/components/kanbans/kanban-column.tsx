@@ -44,7 +44,6 @@ export default function KanbanColumn({
             key={task.id}
             task={task}
             setActiveTaskMethod={setActiveTaskMethod}
-            index={tasks.indexOf(task)}
           />
         ))}
       </div>

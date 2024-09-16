@@ -100,7 +100,7 @@ export default function KanbanDisplay({
     TaskAPI.updateTaskObservable(kanban.id, task).subscribe({
       next: (updatedTask) => {
         console.log("Task updated:", updatedTask);
-        setKanban({ ...kanban, tasks: newTasks });
+        setKanban({ ...kanban, tasks: updatedTasks });
       },
       error: (error) => {
         console.error("Error updating task:", error);
@@ -132,7 +132,7 @@ export default function KanbanDisplay({
         <DragDropContext onDragEnd={onDragEnd}>
           {kanbanColumns.map((column) => (
             <Droppable droppableId={column.taskCategoryId.toString()}>
-              {(provided, snapshot) => (
+              {(provided: any, snapshot: any) => (
                 <KanbanColumn
                   key={column.taskCategoryId}
                   title={column.title}
