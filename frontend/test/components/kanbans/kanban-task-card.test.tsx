@@ -20,8 +20,8 @@ describe("KanbanCard", () => {
                 taskCategory: 0,
                 users: [],
                 comments: [],
-                index: 0,
               }}
+              position={0}
               setActiveTaskMethod={(task: KanbanTask) => () => task}
             />
           </Droppable>

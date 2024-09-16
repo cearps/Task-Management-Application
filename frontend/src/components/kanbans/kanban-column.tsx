@@ -44,11 +44,12 @@ export default function KanbanColumn({
         }}
       >
         {provided.placeholder}
-        {tasks.map((task) => (
+        {tasks.map((task, index: number) => (
           <KanbanCard
-            key={task.id}
+            key={task.id} // Add key prop with task id
             task={task}
             setActiveTaskMethod={setActiveTaskMethod}
+            position={index} // Add position prop with the index
           />
         ))}
       </div>
