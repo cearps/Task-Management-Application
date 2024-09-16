@@ -103,13 +103,14 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
         ))}
       </div>
 
-      {selectedTask && (
-        <DetailedTaskView
-          task={kanban.tasks.find((task) => task.id === selectedTask)!}
-          onClose={handleTaskClose}
-          addComment={addComment}
-        />
-      )}
+    {selectedTask && (
+      <DetailedTaskView
+        task={kanban.tasks.find((task) => task.id === selectedTask)!}
+        onClose={handleTaskClose}
+        addComment={addComment}
+        boardId={kanban.id} // Passing the boardId as a prop
+    />
+)}
 
       <AddTaskForm
         isOpen={isTaskModalOpen}
