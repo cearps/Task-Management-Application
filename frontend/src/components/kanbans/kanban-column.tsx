@@ -23,6 +23,10 @@ export default function KanbanColumn({
     const tasks = kanban.tasks.filter(
       (task) => task.taskCategory === parseInt(taskCategoryId)
     );
+    // sort tasks by due date
+    tasks.sort((a, b) => {
+      return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+    });
     setTasks(tasks);
   }, [kanban.tasks, taskCategoryId]);
 
@@ -39,6 +43,7 @@ export default function KanbanColumn({
           minHeight: 200,
         }}
       >
+        {provided.placeholder}
         {tasks.map((task) => (
           <KanbanCard
             key={task.id}

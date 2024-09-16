@@ -85,17 +85,18 @@ export default function KanbanDisplay({
       return;
     }
 
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
+    if (destination.droppableId === source.droppableId) {
       return;
     }
 
     const updatedTasks = [...kanban.tasks];
-    const task = updatedTasks.find((t) => t.id === parseInt(draggableId))!;
+
+    const task = updatedTasks.find((task) => task.id === parseInt(draggableId));
+    if (!task) {
+      return;
+    }
+
     task.taskCategory = parseInt(destination.droppableId);
-    task.index = destination.index;
 
     TaskAPI.updateTaskObservable(kanban.id, task).subscribe({
       next: (updatedTask) => {

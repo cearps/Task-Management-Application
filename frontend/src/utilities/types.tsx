@@ -19,7 +19,6 @@ type KanbanTask = {
   description: string;
   dueDate: string;
   urgency: number;
-  index: number;
   taskCategory: number;
   users: UserInfo[];
   comments: Comment[];
