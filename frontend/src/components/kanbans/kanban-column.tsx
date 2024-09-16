@@ -40,7 +40,8 @@ export default function KanbanColumn({
         style={{
           background: snapshot.isDraggingOver ? "lightyellow" : "",
           padding: 4,
-          minHeight: 200,
+          minHeight: 100,
+          height: "80%",
         }}
       >
         {provided.placeholder}
