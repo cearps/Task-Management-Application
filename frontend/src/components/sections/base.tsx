@@ -15,7 +15,7 @@ export default function Base({ pageTitle, children }: baseProps) {
   return (
     <div className="base">
       <Header />
-      <div className="base__container">{children}</div>
+      <div className="base__container mt-24">{children}</div>
       <Footer />
     </div>
   );
