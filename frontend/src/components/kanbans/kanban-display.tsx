@@ -108,7 +108,7 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
         task={kanban.tasks.find((task) => task.id === selectedTask)!}
         onClose={handleTaskClose}
         addComment={addComment}
-        boardId={kanban.id} // Passing the boardId as a prop
+        boardId={kanban.id} 
     />
 )}
 
@@ -116,7 +116,7 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
         isOpen={isTaskModalOpen}
         onClose={() => setIsTaskModalOpen(false)}
         onSubmit={handleAddTask}
-        boardId={kanban.id} // Pass boardId as number
+        boardId={kanban.id} 
       />
     </div>
   );

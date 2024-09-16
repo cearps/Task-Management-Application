@@ -20,7 +20,7 @@ const DetailedTaskView = ({
   const [isEditing, setIsEditing] = useState(false); // Toggle between view/edit mode
   const [updatedTask, setUpdatedTask] = useState<KanbanTask>(task); // Store updated task details
 
-  // Close the pop-up when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
@@ -41,14 +41,15 @@ const DetailedTaskView = ({
 
   const handleSaveChanges = async () => {
     try {
-      await TaskAPI.updateTask(boardId, task.id, updatedTask); // Use boardId here
-      setIsEditing(false); // Exit edit mode after saving
+      await TaskAPI.updateTask(boardId, task.id, updatedTask); 
+      setIsEditing(false); 
     } catch (error) {
       console.error("Error updating task:", error);
     }
   };
 
   const createComment = (comment: string) => {
+    // Logic to create a comment using the provided value
     addComment(comment, task.id);
   };
 
@@ -157,7 +158,7 @@ const DetailedTaskView = ({
           </div>
 
           <div className="mb-4">
-            <span className="font-semibold">Assigned to:</span>
+            <span className="font-semibold">Assigned to:</span>{" "}
             <p>
               {task.users &&
                 task.users.map((user) => (
