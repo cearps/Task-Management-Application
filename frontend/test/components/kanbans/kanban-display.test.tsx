@@ -1,5 +1,6 @@
 import KanbanDisplay from "../../../src/components/kanbans/kanban-display";
 import { render } from "@testing-library/react";
+import { KanbanBoard } from "../../../src/utilities/types";
 
 describe("KanbanDisplay", () => {
   it("renders without crashing", () => {
@@ -13,6 +14,9 @@ describe("KanbanDisplay", () => {
           dueDate: "",
           users: [],
           tasks: [],
+        }}
+        setKanban={(kanban: KanbanBoard) => {
+          console.log(kanban);
         }}
       />
     );

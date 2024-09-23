@@ -1,6 +1,7 @@
 package com.backend.backend.service;
 
 import com.backend.backend.dto.CommentRequest;
+import com.backend.backend.dto.TaskResponse;
 import com.backend.backend.dto.UpdateTaskRequest;
 import com.backend.backend.model.Board;
 import com.backend.backend.model.Comment;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class TaskService {
@@ -61,7 +63,6 @@ public class TaskService {
         if (request.getTaskCategory() != null) {
             task.setTaskCategory(request.getTaskCategory());
         }
-
         taskRepository.save(task);
         return task;
     }

@@ -1,6 +1,4 @@
-// import { useEffect, useState } from "react";
 import { Comment } from "../../utilities/types";
-// import UserAPI from "../../api/userAPI";
 
 const KanbanTaskComment = ({ comment }: { comment: Comment }) => {
   return (

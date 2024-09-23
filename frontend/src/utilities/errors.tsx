@@ -8,7 +8,11 @@ class BoardApiError extends Error {
 }
 
 class TaskApiError extends Error {
-  constructor(message: string, public task: KanbanTask, public error: any) {
+  constructor(
+    message: string,
+    public task: Partial<KanbanTask>,
+    public error: any
+  ) {
     super(message);
     this.name = "TaskApiError";
   }

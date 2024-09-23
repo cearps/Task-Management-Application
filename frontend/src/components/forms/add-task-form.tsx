@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const AddTaskForm = ({
-  isOpen,
   onClose,
   onSubmit,
   boardId,
 }: {
-  isOpen: boolean;
   onClose: () => void;
   onSubmit: (taskData: any) => void;
   boardId: number;
@@ -15,6 +13,8 @@ const AddTaskForm = ({
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [urgency, setUrgency] = useState<number>(1);
+
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,18 +36,43 @@ const AddTaskForm = ({
     onSubmit(taskData);
   };
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+      <div
+        className="bg-white rounded-lg shadow-lg w-full max-w-md p-6"
+        ref={cardRef}
+      >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Add Task</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-700"
-          >
-            &times;
+          <button className="text-red-500" onClick={onClose}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
           </button>
         </div>
         <form onSubmit={handleSubmit}>
