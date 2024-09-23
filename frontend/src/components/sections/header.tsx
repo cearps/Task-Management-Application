@@ -26,7 +26,7 @@ const Header = () => {
 
   return (
     <header
-      className="bg-blue-500 text-white p-4 fixed top-0 left-0 right-0"
+      className="bg-blue-500 text-white p-4 fixed top-0 left-0 right-0 flex items-center"
       style={{ height: "8vh" }}
     >
       <div className="container mx-auto flex justify-between items-center">
