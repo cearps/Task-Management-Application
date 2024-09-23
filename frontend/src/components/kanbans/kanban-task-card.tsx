@@ -1,14 +1,16 @@
-import { KanbanTask } from "../../utilities/types";
+import { KanbanTask, UserInfo } from "../../utilities/types";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
 import { Draggable } from "react-beautiful-dnd";
 
 export default function KanbanCard({
   task,
   setActiveTaskMethod,
+  currentUser,
   position,
 }: {
   task: KanbanTask;
   setActiveTaskMethod: (task: KanbanTask) => () => void;
+  currentUser: UserInfo | null;
   position: number;
 }) {
   return (
@@ -33,6 +35,9 @@ export default function KanbanCard({
           ></span>
           <h3 className="text-lg font-semibold">{task.name}</h3>
           <p className="text-sm text-gray-400">Due Date: {task.dueDate}</p>
+          {task.users.some((user) => user.id === currentUser?.id) && (
+            <p className="text-sm text-gray-400">Assigned to you</p>
+          )}
         </div>
       )}
     </Draggable>

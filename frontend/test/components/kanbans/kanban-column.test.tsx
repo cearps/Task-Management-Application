@@ -19,6 +19,7 @@ describe("KanbanColumn", () => {
             users: [],
           } as KanbanBoard
         }
+        currentUser={null}
         provided={{
           innerRef: null,
           droppableProps: null,

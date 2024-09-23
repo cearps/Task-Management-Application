@@ -6,6 +6,7 @@ import AddTaskForm from "../forms/add-task-form";
 import TaskAPI from "../../api/taskAPI";
 import { kanbanColumns } from "../../utilities/kanban-category-mapping";
 import { Droppable, DragDropContext } from "react-beautiful-dnd";
+import UserAPI from "../../api/userAPI";
 
 export default function KanbanDisplay({
   kanban,
@@ -17,6 +18,22 @@ export default function KanbanDisplay({
   const [selectedTask, setSelectedTask] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    const subscription = UserAPI.getUserObservable().subscribe({
+      next: (user) => {
+        setCurrentUser(user);
+      },
+      error: (error) => {
+        console.error("Error fetching current user:", error);
+      },
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  });
 
   useEffect(() => {
     const startDate = new Date(kanban.startDate);
@@ -142,6 +159,7 @@ export default function KanbanDisplay({
                   taskCategoryId={column.taskCategoryId.toString()} // Ensure the task category ID is passed as a string
                   kanban={kanban}
                   setActiveTaskMethod={setActiveTaskMethod}
+                  currentUser={currentUser}
                   provided={provided}
                   snapshot={snapshot}
                 />
