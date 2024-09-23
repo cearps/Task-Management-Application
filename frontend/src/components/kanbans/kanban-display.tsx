@@ -154,7 +154,7 @@ export default function KanbanDisplay({
           task={kanban.tasks.find((task) => task.id === selectedTask)!}
           onClose={handleTaskClose}
           addComment={addComment}
-          boardId={kanban.id}
+          board={kanban}
         />
       )}
 
