@@ -132,10 +132,12 @@ export default function KanbanDisplay({
     <div style={{ padding: "0 20px" }}>
       <header className="flex flex-col items-start mb-6 w-full">
         <h1 className="text-4xl font-bold">{kanban.name}</h1>
-        <div className="flex justify-between w-full space-x-4 mt-4">
-          <span>START DATE: {kanban.startDate}</span>
-          <span>TODAY'S DATE: {new Date().toISOString().split("T")[0]}</span>
-          <span>DUE DATE: {kanban.dueDate}</span>
+        <div className="flex justify-between text-sm mb-2 w-full space-x-4 mt-4">
+          <span className="font-semibold">START DATE: {kanban.startDate}</span>
+          <span className="font-semibold">
+            TODAY'S DATE: {new Date().toISOString().split("T")[0]}
+          </span>
+          <span className="font-semibold">DUE DATE: {kanban.dueDate}</span>
         </div>
         <ProgressBar progress={progress} />
 
