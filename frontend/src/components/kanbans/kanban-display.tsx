@@ -149,21 +149,22 @@ export default function KanbanDisplay({
         </DragDropContext>
       </div>
 
-    {selectedTask && (
-      <DetailedTaskView
-        task={kanban.tasks.find((task) => task.id === selectedTask)!}
-        onClose={handleTaskClose}
-        addComment={addComment}
-        boardId={kanban.id} 
-    />
-)}
+      {selectedTask && (
+        <DetailedTaskView
+          task={kanban.tasks.find((task) => task.id === selectedTask)!}
+          onClose={handleTaskClose}
+          addComment={addComment}
+          boardId={kanban.id}
+        />
+      )}
 
-      <AddTaskForm
-        isOpen={isTaskModalOpen}
-        onClose={() => setIsTaskModalOpen(false)}
-        onSubmit={handleAddTask}
-        boardId={kanban.id} 
-      />
+      {isTaskModalOpen && (
+        <AddTaskForm
+          onClose={() => setIsTaskModalOpen(false)}
+          onSubmit={handleAddTask}
+          boardId={kanban.id}
+        />
+      )}
     </div>
   );
 }
