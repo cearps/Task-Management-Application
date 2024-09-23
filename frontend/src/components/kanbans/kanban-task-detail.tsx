@@ -1,25 +1,25 @@
 import { useState, useEffect, useRef } from "react";
-import { KanbanTask } from "../../utilities/types";
+import { KanbanBoard, KanbanTask } from "../../utilities/types";
 import urgencyToColour from "../../utilities/urgency-colour-mapping";
 import { getTaskStatus } from "../../utilities/kanban-category-mapping";
-import TaskAPI from "../../api/taskAPI"; 
+import TaskAPI from "../../api/taskAPI";
 import KanbanTaskComment from "./kanban-task-comment";
+import Select from "react-select";
 
 const DetailedTaskView = ({
   task,
-  boardId,  
+  board,
   onClose,
   addComment,
 }: {
   task: KanbanTask;
-  boardId: number;
+  board: KanbanBoard;
   addComment: (comment: string, taskId: number) => void;
   onClose: () => void;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [isEditing, setIsEditing] = useState(false); 
-  const [updatedTask, setUpdatedTask] = useState<KanbanTask>(task); 
-
+  const [isEditing, setIsEditing] = useState(false);
+  const [updatedTask, setUpdatedTask] = useState<KanbanTask>(task);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,15 +34,19 @@ const DetailedTaskView = ({
     };
   }, [onClose]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     setUpdatedTask((prevTask) => ({ ...prevTask, [name]: value }));
   };
 
   const handleSaveChanges = async () => {
     try {
-      await TaskAPI.updateTask(boardId, task.id, updatedTask); 
-      setIsEditing(false); 
+      await TaskAPI.updateTask(board.id, task.id, updatedTask);
+      setIsEditing(false);
     } catch (error) {
       console.error("Error updating task:", error);
     }
@@ -109,7 +113,10 @@ const DetailedTaskView = ({
           </div>
         </div>
 
-        <div className="custom-scrollbar overflow-y-auto pb-5 mb-10" style={{ maxHeight: "75vh" }}>
+        <div
+          className="custom-scrollbar overflow-y-auto pb-5 mb-10"
+          style={{ maxHeight: "75vh" }}
+        >
           <div className="mb-4">
             <span className="font-semibold">Urgency:</span>
             {isEditing ? (
@@ -119,12 +126,16 @@ const DetailedTaskView = ({
                 onChange={handleInputChange}
                 className="p-2 rounded text-black"
               >
-                <option value="1">Low</option>
+                <option value="1">High</option>
                 <option value="2">Medium</option>
-                <option value="3">High</option>
+                <option value="3">Low</option>
               </select>
             ) : (
-              <span className={`w-3 h-3 inline-block mx-2 rounded-full ${urgencyToColour(task.urgency)}`} />
+              <span
+                className={`w-3 h-3 inline-block mx-2 rounded-full ${urgencyToColour(
+                  task.urgency
+                )}`}
+              ></span>
             )}
           </div>
 
@@ -160,12 +171,55 @@ const DetailedTaskView = ({
           <div className="mb-4">
             <span className="font-semibold">Assigned to:</span>{" "}
             <p>
-              {task.users &&
+              {isEditing ? (
+                <Select
+                  isMulti
+                  options={board.users.map((user) => ({
+                    value: user.id,
+                    label: user.userTag,
+                  }))}
+                  value={updatedTask.users.map((user) => ({
+                    value: user.id,
+                    label: user.userTag,
+                  }))}
+                  onChange={(selectedUsers) => {
+                    setUpdatedTask((prevTask) => ({
+                      ...prevTask,
+                      users: selectedUsers.map((user) => ({
+                        id: user.value,
+                        userTag: user.label,
+                      })),
+                    }));
+                  }}
+                  className="focus:outline-none"
+                  styles={{
+                    control: (provided, state) => ({
+                      ...provided,
+                      color: "black",
+                      borderColor: state.isFocused
+                        ? "white"
+                        : provided.borderColor, // Change border color on focus
+                      boxShadow: state.isFocused
+                        ? "0 0 0 1px white"
+                        : provided.boxShadow, // Optional: remove default blue shadow
+                      "&:hover": {
+                        borderColor: "white", // Ensure white border on hover as well
+                      },
+                    }),
+                    option: (provided) => ({
+                      ...provided,
+                      color: "black",
+                    }),
+                  }}
+                />
+              ) : (
+                task.users &&
                 task.users.map((user) => (
-                  <span key={user.id} className="mx-2">
+                  <span key={user.id} className="mr-2">
                     {user.userTag}
                   </span>
-                ))}
+                ))
+              )}
             </p>
           </div>
 
@@ -203,7 +257,9 @@ const DetailedTaskView = ({
               <button
                 className="mt-2 bg-orange-500 text-white p-2 rounded"
                 onClick={() => {
-                  const comment = document.getElementById("comment") as HTMLTextAreaElement;
+                  const comment = document.getElementById(
+                    "comment"
+                  ) as HTMLTextAreaElement;
                   if (comment) {
                     createComment(comment.value);
                     comment.value = "";

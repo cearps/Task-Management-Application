@@ -23,6 +23,7 @@ describe("KanbanCard", () => {
               }}
               position={0}
               setActiveTaskMethod={(task: KanbanTask) => () => task}
+              currentUser={null}
             />
           </Droppable>
         )}

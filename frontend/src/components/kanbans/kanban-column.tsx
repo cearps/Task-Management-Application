@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import KanbanCard from "./kanban-task-card";
-import { KanbanBoard, KanbanTask } from "../../utilities/types";
+import { KanbanBoard, KanbanTask, UserInfo } from "../../utilities/types";
 
 export default function KanbanColumn({
   title,
   taskCategoryId,
   kanban,
   setActiveTaskMethod,
+  currentUser,
   provided,
   snapshot,
 }: {
@@ -14,6 +15,7 @@ export default function KanbanColumn({
   taskCategoryId: string;
   kanban: KanbanBoard;
   setActiveTaskMethod: (task: KanbanTask) => () => void;
+  currentUser: UserInfo | null;
   provided: any;
   snapshot: any;
 }) {
@@ -50,6 +52,7 @@ export default function KanbanColumn({
             key={task.id} // Add key prop with task id
             task={task}
             setActiveTaskMethod={setActiveTaskMethod}
+            currentUser={currentUser}
             position={index} // Add position prop with the index
           />
         ))}

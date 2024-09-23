@@ -1,15 +1,14 @@
 package com.backend.backend.service;
 
 import com.backend.backend.dto.CommentRequest;
+import com.backend.backend.dto.ShortUserRequest;
 import com.backend.backend.dto.TaskResponse;
 import com.backend.backend.dto.UpdateTaskRequest;
-import com.backend.backend.model.Board;
-import com.backend.backend.model.Comment;
-import com.backend.backend.model.Task;
-import com.backend.backend.model.User;
+import com.backend.backend.model.*;
 import com.backend.backend.repository.BoardRepository;
 import com.backend.backend.repository.CommentsRepository;
 import com.backend.backend.repository.TaskRepository;
+import com.backend.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +29,9 @@ public class TaskService {
 
     @Autowired
     CommentsRepository commentRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public Task createTaskForBoard(User user, Long boardId) {
         Board board = boardRepository.findByIdAndUserId(boardId, user.getId())
@@ -63,6 +65,18 @@ public class TaskService {
         if (request.getTaskCategory() != null) {
             task.setTaskCategory(request.getTaskCategory());
         }
+        if (request.getUsers() != null) {
+            task.getUserTasks().clear();
+            for (ShortUserRequest userRequest : request.getUsers()) {
+                User userToAdd = userRepository.findByUserTag(userRequest.getUserTag()).orElseThrow(() -> new EntityNotFoundException("User not found with userTag " + userRequest.getUserTag()));
+
+                UserTask userTask = new UserTask();
+                userTask.setUser(userToAdd);
+                userTask.setTask(task);
+                task.getUserTasks().add(userTask);
+            }
+        }
+
         taskRepository.save(task);
         return task;
     }

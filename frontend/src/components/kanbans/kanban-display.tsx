@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import KanbanColumn from "./kanban-column";
-import { KanbanBoard, KanbanTask } from "../../utilities/types";
+import { KanbanBoard, KanbanTask, UserInfo } from "../../utilities/types";
 import DetailedTaskView from "./kanban-task-detail";
 import AddTaskForm from "../forms/add-task-form";
 import TaskAPI from "../../api/taskAPI";
 import { kanbanColumns } from "../../utilities/kanban-category-mapping";
 import { Droppable, DragDropContext } from "react-beautiful-dnd";
+import UserAPI from "../../api/userAPI";
 
 export default function KanbanDisplay({
   kanban,
@@ -17,6 +18,22 @@ export default function KanbanDisplay({
   const [selectedTask, setSelectedTask] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    const subscription = UserAPI.getUserObservable().subscribe({
+      next: (user) => {
+        setCurrentUser(user);
+      },
+      error: (error) => {
+        console.error("Error fetching current user:", error);
+      },
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  });
 
   useEffect(() => {
     const startDate = new Date(kanban.startDate);
@@ -47,6 +64,7 @@ export default function KanbanDisplay({
     dueDate: string;
     urgency: number;
     boardId: number;
+    users: UserInfo[];
   }) => {
     const taskPayload: Partial<KanbanTask> = {
       name: taskData.name,
@@ -54,6 +72,7 @@ export default function KanbanDisplay({
       dueDate: taskData.dueDate,
       urgency: taskData.urgency,
       taskCategory: 1, // default to backlog
+      users: taskData.users,
     };
 
     TaskAPI.createTaskObservable(taskData.boardId, taskPayload).subscribe({
@@ -140,6 +159,7 @@ export default function KanbanDisplay({
                   taskCategoryId={column.taskCategoryId.toString()} // Ensure the task category ID is passed as a string
                   kanban={kanban}
                   setActiveTaskMethod={setActiveTaskMethod}
+                  currentUser={currentUser}
                   provided={provided}
                   snapshot={snapshot}
                 />
@@ -154,7 +174,7 @@ export default function KanbanDisplay({
           task={kanban.tasks.find((task) => task.id === selectedTask)!}
           onClose={handleTaskClose}
           addComment={addComment}
-          boardId={kanban.id}
+          board={kanban}
         />
       )}
 
@@ -162,7 +182,7 @@ export default function KanbanDisplay({
         <AddTaskForm
           onClose={() => setIsTaskModalOpen(false)}
           onSubmit={handleAddTask}
-          boardId={kanban.id}
+          board={kanban}
         />
       )}
     </div>

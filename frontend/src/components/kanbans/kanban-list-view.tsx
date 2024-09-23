@@ -234,7 +234,7 @@ const BoardCard = ({
             e.stopPropagation();
             onAddUser();
           }}
-          title="Add User"
+          title="Update Users"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
