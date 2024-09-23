@@ -7,6 +7,7 @@ import TaskAPI from "../../api/taskAPI";
 import { kanbanColumns } from "../../utilities/kanban-category-mapping";
 import { Droppable, DragDropContext } from "react-beautiful-dnd";
 import UserAPI from "../../api/userAPI";
+import ConfirmationModal from "../forms/confirmation-form";
 
 export default function KanbanDisplay({
   kanban,
@@ -19,6 +20,8 @@ export default function KanbanDisplay({
   const [progress, setProgress] = useState(0);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserInfo | null>(null);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     const subscription = UserAPI.getUserObservable().subscribe({
@@ -34,6 +37,23 @@ export default function KanbanDisplay({
       subscription.unsubscribe();
     };
   });
+
+  const handleDeleteTask = (taskId: number) => {
+    setTaskToDelete(taskId); // Set the task to be deleted
+    setIsConfirmModalOpen(true); // Open the confirmation modal
+  };
+
+  const confirmDelete = () => {
+    if (taskToDelete !== null) {
+      TaskAPI.deleteTask(kanban.id, taskToDelete).then(() => {
+        setKanban({ ...kanban, tasks: kanban.tasks.filter((task) => task.id !== taskToDelete) });
+        setSelectedTask(null); // Close the task detail view
+        setIsConfirmModalOpen(false); // Close the confirmation modal
+      }).catch((error) => {
+        console.error("Error deleting task:", error);
+      });
+    }
+  };
 
   useEffect(() => {
     const startDate = new Date(kanban.startDate);
@@ -188,14 +208,26 @@ export default function KanbanDisplay({
           onClose={handleTaskClose}
           addComment={addComment}
           board={kanban}
+          onDeleteTask={handleDeleteTask}
         />
       )}
 
+      {/* Task modal for adding new tasks */}
       {isTaskModalOpen && (
         <AddTaskForm
           onClose={() => setIsTaskModalOpen(false)}
           onSubmit={handleAddTask}
           board={kanban}
+        />
+      )}
+
+      {/* Confirmation Modal */}
+      {isConfirmModalOpen && (
+        <ConfirmationModal
+          isOpen={isConfirmModalOpen}
+          message="Are you sure you want to delete this task?"
+          onConfirm={confirmDelete}
+          onCancel={() => setIsConfirmModalOpen(false)}
         />
       )}
     </div>

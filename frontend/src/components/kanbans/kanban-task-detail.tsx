@@ -11,11 +11,13 @@ const DetailedTaskView = ({
   board,
   onClose,
   addComment,
+  onDeleteTask,
 }: {
   task: KanbanTask;
   board: KanbanBoard;
   addComment: (comment: string, taskId: number) => void;
   onClose: () => void;
+  onDeleteTask: (taskId: number) => void;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -50,6 +52,11 @@ const DetailedTaskView = ({
     } catch (error) {
       console.error("Error updating task:", error);
     }
+  };
+
+  const handleDeleteTask = () => {
+    // Trigger the delete task functionality
+    onDeleteTask(task.id);
   };
 
   const createComment = (comment: string) => {
@@ -94,6 +101,12 @@ const DetailedTaskView = ({
                 Edit Task
               </button>
             )}
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              onClick={handleDeleteTask} // Delete Task button
+            >
+              Delete Task
+            </button>
             <button className="text-red-500" onClick={onClose}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
