@@ -3,6 +3,7 @@ package com.backend.backend.dto;
 import com.backend.backend.model.Comment;
 import com.backend.backend.model.Task;
 import com.backend.backend.model.UserBoard;
+import com.backend.backend.model.UserTask;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class TaskResponse {
     private Integer urgency;
     private Integer taskCategory;
     private List<CommentResponse> comments;
+    private List<ShortUserResponse> users;
 
     public TaskResponse(Task task) {
         this.id = task.getId();
@@ -29,6 +31,10 @@ public class TaskResponse {
         this.comments = new ArrayList<>();
         for (Comment comment : task.getComments()) {
             comments.add(new CommentResponse(comment));
+        }
+        this.users = new ArrayList<>();
+        for (UserTask userTask : task.getUserTasks()) {
+            users.add(new ShortUserResponse(userTask.getUser().getId(), userTask.getUser().getUserTag()));
         }
     }
 }
