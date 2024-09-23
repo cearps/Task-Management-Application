@@ -20,11 +20,14 @@ export default function KanbanSingularView({ id }: { id: string }) {
       },
     });
 
-    // prevent memory leak
     return () => {
       subscription.unsubscribe();
     };
   }, [id]);
 
-  return kanban ? <KanbanDisplay kanban={kanban} /> : <Loader />;
+  return kanban ? (
+    <KanbanDisplay kanban={kanban} setKanban={setKanban} />
+  ) : (
+    <Loader />
+  );
 }

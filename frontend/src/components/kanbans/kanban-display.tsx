@@ -5,8 +5,15 @@ import DetailedTaskView from "./kanban-task-detail";
 import AddTaskForm from "../forms/add-task-form";
 import TaskAPI from "../../api/taskAPI";
 import { kanbanColumns } from "../../utilities/kanban-category-mapping";
+import { Droppable, DragDropContext } from "react-beautiful-dnd";
 
-export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
+export default function KanbanDisplay({
+  kanban,
+  setKanban,
+}: {
+  kanban: KanbanBoard;
+  setKanban: (kanban: KanbanBoard) => void;
+}) {
   const [selectedTask, setSelectedTask] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
@@ -71,6 +78,37 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
     });
   };
 
+  const onDragEnd = (result: any) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (destination.droppableId === source.droppableId) {
+      return;
+    }
+
+    const updatedTasks = [...kanban.tasks];
+
+    const task = updatedTasks.find((task) => task.id === parseInt(draggableId));
+    if (!task) {
+      return;
+    }
+
+    task.taskCategory = parseInt(destination.droppableId);
+
+    TaskAPI.updateTaskObservable(kanban.id, task).subscribe({
+      next: (updatedTask) => {
+        console.log("Task updated:", updatedTask);
+        setKanban({ ...kanban, tasks: updatedTasks });
+      },
+      error: (error) => {
+        console.error("Error updating task:", error);
+      },
+    });
+  };
+
   return (
     <div style={{ padding: "0 20px" }}>
       <header className="flex flex-col items-start mb-6 w-full">
@@ -92,15 +130,23 @@ export default function KanbanDisplay({ kanban }: { kanban: KanbanBoard }) {
         </div>
       </header>
       <div className="grid grid-cols-4 gap-4">
-        {kanbanColumns.map((column) => (
-          <KanbanColumn
-            key={column.taskCategoryId}
-            title={column.title}
-            taskCategoryId={`${column.taskCategoryId}`} // Ensure the task category ID is passed as a string
-            kanban={kanban}
-            setActiveTaskMethod={setActiveTaskMethod}
-          />
-        ))}
+        <DragDropContext onDragEnd={onDragEnd}>
+          {kanbanColumns.map((column) => (
+            <Droppable droppableId={column.taskCategoryId.toString()}>
+              {(provided: any, snapshot: any) => (
+                <KanbanColumn
+                  key={column.taskCategoryId}
+                  title={column.title}
+                  taskCategoryId={column.taskCategoryId.toString()} // Ensure the task category ID is passed as a string
+                  kanban={kanban}
+                  setActiveTaskMethod={setActiveTaskMethod}
+                  provided={provided}
+                  snapshot={snapshot}
+                />
+              )}
+            </Droppable>
+          ))}
+        </DragDropContext>
       </div>
 
     {selectedTask && (

@@ -54,7 +54,7 @@ const DetailedTaskView = ({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center rounded-lg justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center rounded-lg justify-center bg-black bg-opacity-50 z-50">
       <div
         ref={cardRef}
         className="bg-[#2e223b] text-white rounded-lg p-6 shadow-md w-3/4 text-left overflow-hidden"
