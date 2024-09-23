@@ -6,7 +6,7 @@ const Footer = () => {
     >
       <div className="container mx-auto flex justify-between items-center">
         <p className="text-sm">© 2024 Kanban App. All rights reserved.</p>
-        <nav className="space-x-4">
+        {/* <nav className="space-x-4">
           <a href="#" className="hover:underline">
             Privacy Policy
           </a>
@@ -16,7 +16,7 @@ const Footer = () => {
           <a href="#" className="hover:underline">
             Contact Us
           </a>
-        </nav>
+        </nav> */}
       </div>
     </footer>
   );
