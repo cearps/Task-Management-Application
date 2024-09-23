@@ -132,41 +132,54 @@ export default function KanbanDisplay({
     <div style={{ padding: "0 20px" }}>
       <header className="flex flex-col items-start mb-6 w-full">
         <h1 className="text-4xl font-bold">{kanban.name}</h1>
-        <div className="flex justify-between w-full space-x-4 mt-4">
-          <span>START DATE: {kanban.startDate}</span>
-          <span>TODAY'S DATE: {new Date().toISOString().split("T")[0]}</span>
-          <span>DUE DATE: {kanban.dueDate}</span>
+        <div className="flex justify-between text-sm mb-2 w-full space-x-4 mt-4">
+          <span className="font-semibold">
+            START DATE:{" "}
+            <span style={{ whiteSpace: "nowrap" }}>{kanban.startDate}</span>
+          </span>
+          <span className="font-semibold">
+            TODAY'S DATE:{" "}
+            <span style={{ whiteSpace: "nowrap" }}>
+              {new Date().toISOString().split("T")[0]}
+            </span>
+          </span>
+          <span className="font-semibold">
+            DUE DATE:{" "}
+            <span style={{ whiteSpace: "nowrap" }}>{kanban.dueDate}</span>
+          </span>
         </div>
         <ProgressBar progress={progress} />
 
         <div className="mt-4 w-full flex justify-start">
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
             onClick={() => setIsTaskModalOpen(true)}
           >
             Add Task
           </button>
         </div>
       </header>
-      <div className="grid grid-cols-4 gap-4">
-        <DragDropContext onDragEnd={onDragEnd}>
-          {kanbanColumns.map((column) => (
-            <Droppable droppableId={column.taskCategoryId.toString()}>
-              {(provided: any, snapshot: any) => (
-                <KanbanColumn
-                  key={column.taskCategoryId}
-                  title={column.title}
-                  taskCategoryId={column.taskCategoryId.toString()} // Ensure the task category ID is passed as a string
-                  kanban={kanban}
-                  setActiveTaskMethod={setActiveTaskMethod}
-                  currentUser={currentUser}
-                  provided={provided}
-                  snapshot={snapshot}
-                />
-              )}
-            </Droppable>
-          ))}
-        </DragDropContext>
+      <div className="overflow-x-auto">
+        <div className="grid grid-cols-4 gap-4 min-w-256 mb-5">
+          <DragDropContext onDragEnd={onDragEnd}>
+            {kanbanColumns.map((column) => (
+              <Droppable droppableId={column.taskCategoryId.toString()}>
+                {(provided: any, snapshot: any) => (
+                  <KanbanColumn
+                    key={column.taskCategoryId}
+                    title={column.title}
+                    taskCategoryId={column.taskCategoryId.toString()} // Ensure the task category ID is passed as a string
+                    kanban={kanban}
+                    setActiveTaskMethod={setActiveTaskMethod}
+                    currentUser={currentUser}
+                    provided={provided}
+                    snapshot={snapshot}
+                  />
+                )}
+              </Droppable>
+            ))}
+          </DragDropContext>
+        </div>
       </div>
 
       {selectedTask && (

@@ -15,12 +15,12 @@ export default function Base({ pageTitle, children }: baseProps) {
   return (
     <div className="base m-h-full">
       <Header />
-      <div className="base__container min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="base__container min-h-screen flex items-center justify-center">
         <div
           className="w-full max-w-xlg bg-white shadow-lg rounded-lg p-6 overflow-y-auto"
           style={{ height: "84vh" }}
         >
-          <div className="space-y-4">{children}</div>
+          <div className="space-y-4 h-full">{children}</div>
         </div>
       </div>
       <Footer />

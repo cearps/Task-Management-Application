@@ -148,7 +148,7 @@ export default function KanbanListView() {
           />
         </svg>
       </div>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap flex-col lg:flex-row">
         {kanbanBoards.map((board: KanbanBoard) => (
           <BoardCard
             key={board.id}
@@ -222,14 +222,14 @@ const BoardCard = ({
 
   return (
     <div
-      className="bg-yellow-500 text-black rounded-lg shadow-md p-4 m-2 w-56 h-36 relative border rounded cursor-pointer hover:bg-gray-100 hover:shadow-lg transition-transform transform hover:scale-105"
+      className="bg-yellow-500 text-black rounded-lg shadow-md p-2 lg:m-2 m-0 my-2 w-56 h-36 relative border rounded cursor-pointer hover:bg-gray-100 hover:shadow-lg transition-transform transform hover:scale-105 w-full lg:w-64"
       onClick={() => handleCardClick(id)}
     >
-      <div className="flex justify-between">
+      <div className="flex">
         <h3 className="font-bold text-lg">{title}</h3>
 
         <button
-          className="text-black"
+          className="text-black ml-auto mr-2"
           onClick={(e) => {
             e.stopPropagation();
             onAddUser();
@@ -247,7 +247,7 @@ const BoardCard = ({
           </svg>
         </button>
         <button
-          className="text-black"
+          className="text-black mr-2"
           onClick={(e) => {
             e.stopPropagation();
             onEdit();

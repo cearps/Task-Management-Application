@@ -178,7 +178,7 @@ const AddTaskForm = ({
             </button>
             <button
               onClick={onClose}
-              className="ml-2 px-4 py-2 bg-gray-300 text-black rounded-md shadow hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="ml-2 px-4 py-2 bg-gray-300 text-black rounded-md shadow hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors"
             >
               Cancel
             </button>
