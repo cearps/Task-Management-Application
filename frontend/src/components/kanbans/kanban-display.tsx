@@ -141,7 +141,7 @@ export default function KanbanDisplay({
 
         <div className="mt-4 w-full flex justify-start">
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
             onClick={() => setIsTaskModalOpen(true)}
           >
             Add Task

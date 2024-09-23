@@ -103,7 +103,7 @@ export default function UserBoardForm({
             />
             <button
               type="submit"
-              className="bg-blue-500 text-white rounded-md px-4 py-2 mt-2"
+              className="bg-blue-500 text-white rounded-md px-4 py-2 mt-2 hover:bg-blue-600"
             >
               Add User
             </button>
