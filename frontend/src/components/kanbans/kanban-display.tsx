@@ -154,6 +154,7 @@ export default function KanbanDisplay({
           task={kanban.tasks.find((task) => task.id === selectedTask)!}
           onClose={handleTaskClose}
           addComment={addComment}
+          boardId={kanban.id}
         />
       )}
 
@@ -161,7 +162,7 @@ export default function KanbanDisplay({
         <AddTaskForm
           onClose={() => setIsTaskModalOpen(false)}
           onSubmit={handleAddTask}
-          boardId={kanban.id} // Pass boardId as number
+          boardId={kanban.id}
         />
       )}
     </div>
