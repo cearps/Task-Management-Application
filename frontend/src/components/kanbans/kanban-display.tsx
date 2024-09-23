@@ -148,25 +148,27 @@ export default function KanbanDisplay({
           </button>
         </div>
       </header>
-      <div className="grid grid-cols-4 gap-4">
-        <DragDropContext onDragEnd={onDragEnd}>
-          {kanbanColumns.map((column) => (
-            <Droppable droppableId={column.taskCategoryId.toString()}>
-              {(provided: any, snapshot: any) => (
-                <KanbanColumn
-                  key={column.taskCategoryId}
-                  title={column.title}
-                  taskCategoryId={column.taskCategoryId.toString()} // Ensure the task category ID is passed as a string
-                  kanban={kanban}
-                  setActiveTaskMethod={setActiveTaskMethod}
-                  currentUser={currentUser}
-                  provided={provided}
-                  snapshot={snapshot}
-                />
-              )}
-            </Droppable>
-          ))}
-        </DragDropContext>
+      <div className="overflow-x-auto">
+        <div className="grid grid-cols-4 gap-4 min-w-256 mb-5">
+          <DragDropContext onDragEnd={onDragEnd}>
+            {kanbanColumns.map((column) => (
+              <Droppable droppableId={column.taskCategoryId.toString()}>
+                {(provided: any, snapshot: any) => (
+                  <KanbanColumn
+                    key={column.taskCategoryId}
+                    title={column.title}
+                    taskCategoryId={column.taskCategoryId.toString()} // Ensure the task category ID is passed as a string
+                    kanban={kanban}
+                    setActiveTaskMethod={setActiveTaskMethod}
+                    currentUser={currentUser}
+                    provided={provided}
+                    snapshot={snapshot}
+                  />
+                )}
+              </Droppable>
+            ))}
+          </DragDropContext>
+        </div>
       </div>
 
       {selectedTask && (
