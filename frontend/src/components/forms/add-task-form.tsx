@@ -1,18 +1,21 @@
 import { useEffect, useState, useRef } from "react";
+import { KanbanBoard, UserInfo } from "../../utilities/types";
+import Select from "react-select";
 
 const AddTaskForm = ({
   onClose,
   onSubmit,
-  boardId,
+  board,
 }: {
   onClose: () => void;
   onSubmit: (taskData: any) => void;
-  boardId: number;
+  board: KanbanBoard;
 }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [urgency, setUrgency] = useState<number>(1);
+  const [users, setUsers] = useState([] as UserInfo[]);
 
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -30,8 +33,9 @@ const AddTaskForm = ({
       description,
       dueDate,
       urgency,
-      taskCategory: 1, // default to backlog
-      boardId,
+      taskCategory: 1, // default to
+      users: users,
+      boardId: board.id,
     };
     onSubmit(taskData);
   };
@@ -126,6 +130,44 @@ const AddTaskForm = ({
               <option value={2}>Medium</option>
               <option value={1}>High</option>
             </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Assign to
+            </label>
+            <Select
+              isMulti
+              options={board.users.map((user) => ({
+                value: user.id,
+                label: user.userTag,
+              }))}
+              onChange={(selected) =>
+                setUsers(
+                  selected.map((user) => ({
+                    id: user.value,
+                    userTag: user.label,
+                  }))
+                )
+              }
+              className="focus:outline-none"
+              styles={{
+                control: (provided, state) => ({
+                  ...provided,
+                  color: "black",
+                  borderColor: state.isFocused ? "white" : provided.borderColor, // Change border color on focus
+                  boxShadow: state.isFocused
+                    ? "0 0 0 1px white"
+                    : provided.boxShadow, // Optional: remove default blue shadow
+                  "&:hover": {
+                    borderColor: "white", // Ensure white border on hover as well
+                  },
+                }),
+                option: (provided) => ({
+                  ...provided,
+                  color: "black",
+                }),
+              }}
+            />
           </div>
           <div className="flex justify-end">
             <button

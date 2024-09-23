@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import KanbanColumn from "./kanban-column";
-import { KanbanBoard, KanbanTask } from "../../utilities/types";
+import { KanbanBoard, KanbanTask, UserInfo } from "../../utilities/types";
 import DetailedTaskView from "./kanban-task-detail";
 import AddTaskForm from "../forms/add-task-form";
 import TaskAPI from "../../api/taskAPI";
@@ -47,6 +47,7 @@ export default function KanbanDisplay({
     dueDate: string;
     urgency: number;
     boardId: number;
+    users: UserInfo[];
   }) => {
     const taskPayload: Partial<KanbanTask> = {
       name: taskData.name,
@@ -54,6 +55,7 @@ export default function KanbanDisplay({
       dueDate: taskData.dueDate,
       urgency: taskData.urgency,
       taskCategory: 1, // default to backlog
+      users: taskData.users,
     };
 
     TaskAPI.createTaskObservable(taskData.boardId, taskPayload).subscribe({
@@ -162,7 +164,7 @@ export default function KanbanDisplay({
         <AddTaskForm
           onClose={() => setIsTaskModalOpen(false)}
           onSubmit={handleAddTask}
-          boardId={kanban.id}
+          board={kanban}
         />
       )}
     </div>
