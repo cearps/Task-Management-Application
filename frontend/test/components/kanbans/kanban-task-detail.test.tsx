@@ -15,6 +15,7 @@ describe("DetailedTaskView", () => {
           users: [],
           comments: [],
         }}
+        boardId={0}
         addComment={function (comment: string, taskId: number): void {
           console.log(comment, taskId);
         }}
