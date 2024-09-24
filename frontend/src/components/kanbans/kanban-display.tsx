@@ -39,16 +39,16 @@ export default function KanbanDisplay({
   });
 
   const handleDeleteTask = (taskId: number) => {
-    setTaskToDelete(taskId); // Set the task to be deleted
-    setIsConfirmModalOpen(true); // Open the confirmation modal
+    setTaskToDelete(taskId); 
+    setIsConfirmModalOpen(true); 
   };
 
   const confirmDelete = () => {
     if (taskToDelete !== null) {
       TaskAPI.deleteTask(kanban.id, taskToDelete).then(() => {
         setKanban({ ...kanban, tasks: kanban.tasks.filter((task) => task.id !== taskToDelete) });
-        setSelectedTask(null); // Close the task detail view
-        setIsConfirmModalOpen(false); // Close the confirmation modal
+        setSelectedTask(null); 
+        setIsConfirmModalOpen(false); 
       }).catch((error) => {
         console.error("Error deleting task:", error);
       });
@@ -188,7 +188,7 @@ export default function KanbanDisplay({
                   <KanbanColumn
                     key={column.taskCategoryId}
                     title={column.title}
-                    taskCategoryId={column.taskCategoryId.toString()} // Ensure the task category ID is passed as a string
+                    taskCategoryId={column.taskCategoryId.toString()} 
                     kanban={kanban}
                     setActiveTaskMethod={setActiveTaskMethod}
                     currentUser={currentUser}

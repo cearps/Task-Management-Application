@@ -12,8 +12,8 @@ export default function KanbanListView() {
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false); // Add the state for the AddUserModal
   const [editingBoard, setEditingBoard] = useState<KanbanBoard | null>(null);
   const [formErrors, setFormErrors] = useState("");
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // For the confirmation modal
-  const [boardToDelete, setBoardToDelete] = useState<number | null>(null); // Store the ID of the board to delete
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); 
+  const [boardToDelete, setBoardToDelete] = useState<number | null>(null); 
 
 
   useEffect(() => {
@@ -74,7 +74,6 @@ export default function KanbanListView() {
         error: (error) => {
           console.error("Error creating Kanban board:", error);
           setFormErrors(error.error.response.data);
-          // delete the board if it was created before the error
           KanbanAPI.deleteKanbanBoard(error.board.id);
         },
       });
@@ -84,7 +83,7 @@ export default function KanbanListView() {
   // Function to handle deleting a board
   const handleDeleteBoard = (id: number) => {
     setBoardToDelete(id); // Set the board ID for deletion
-    setIsConfirmModalOpen(true); // Open the confirmation modal
+    setIsConfirmModalOpen(true); 
   };
 
   const confirmDeleteBoard = () => {
@@ -94,8 +93,8 @@ export default function KanbanListView() {
           setKanbanBoards((prevBoards) =>
             prevBoards.filter((board) => board.id !== boardToDelete)
           );
-          setBoardToDelete(null); // Reset the board to delete
-          setIsConfirmModalOpen(false); // Close the confirmation modal
+          setBoardToDelete(null); 
+          setIsConfirmModalOpen(false); 
         },
         error: (error) => {
           console.error("Error deleting Kanban board:", error);
@@ -105,8 +104,8 @@ export default function KanbanListView() {
   };
   
   const cancelDeleteBoard = () => {
-    setBoardToDelete(null); // Reset the board to delete
-    setIsConfirmModalOpen(false); // Close the confirmation modal
+    setBoardToDelete(null); 
+    setIsConfirmModalOpen(false); 
   };
   
   
