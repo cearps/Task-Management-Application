@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { KanbanBoard } from "../../utilities/types";
 import UserBoardForm from "../forms/user-board-form";
 import AddBoardForm from "../forms/add-board-form";
+import ConfirmationModal from "../forms/confirmation-form";
 
 export default function KanbanListView() {
   const [kanbanBoards, setKanbanBoards] = useState([] as KanbanBoard[]);
@@ -11,6 +12,9 @@ export default function KanbanListView() {
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false); // Add the state for the AddUserModal
   const [editingBoard, setEditingBoard] = useState<KanbanBoard | null>(null);
   const [formErrors, setFormErrors] = useState("");
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); 
+  const [boardToDelete, setBoardToDelete] = useState<number | null>(null); 
+
 
   useEffect(() => {
     const subscription = KanbanAPI.getKanbanBoardsObservable().subscribe({
@@ -70,7 +74,6 @@ export default function KanbanListView() {
         error: (error) => {
           console.error("Error creating Kanban board:", error);
           setFormErrors(error.error.response.data);
-          // delete the board if it was created before the error
           KanbanAPI.deleteKanbanBoard(error.board.id);
         },
       });
@@ -78,18 +81,34 @@ export default function KanbanListView() {
   };
 
   // Function to handle deleting a board
-  const handleDeleteBoard = async (id: number) => {
-    KanbanAPI.deleteKanbanBoardObservable(id).subscribe({
-      next: () => {
-        setKanbanBoards((prevBoards) =>
-          prevBoards.filter((board) => board.id !== id)
-        );
-      },
-      error: (error) => {
-        console.error("Error deleting Kanban board:", error);
-      },
-    });
+  const handleDeleteBoard = (id: number) => {
+    setBoardToDelete(id); // Set the board ID for deletion
+    setIsConfirmModalOpen(true); 
   };
+
+  const confirmDeleteBoard = () => {
+    if (boardToDelete !== null) {
+      KanbanAPI.deleteKanbanBoardObservable(boardToDelete).subscribe({
+        next: () => {
+          setKanbanBoards((prevBoards) =>
+            prevBoards.filter((board) => board.id !== boardToDelete)
+          );
+          setBoardToDelete(null); 
+          setIsConfirmModalOpen(false); 
+        },
+        error: (error) => {
+          console.error("Error deleting Kanban board:", error);
+        },
+      });
+    }
+  };
+  
+  const cancelDeleteBoard = () => {
+    setBoardToDelete(null); 
+    setIsConfirmModalOpen(false); 
+  };
+  
+  
 
   // Function to handle editing a board
   const handleEditBoard = (board: KanbanBoard) => {
@@ -196,6 +215,17 @@ export default function KanbanListView() {
           board={editingBoard}
         />
       )}
+
+{isConfirmModalOpen && (
+  <ConfirmationModal
+    isOpen={isConfirmModalOpen}
+    message="Are you sure you want to delete this board?"
+    onConfirm={confirmDeleteBoard}
+    onCancel={cancelDeleteBoard}
+  />
+)}
+
+
     </div>
   );
 }

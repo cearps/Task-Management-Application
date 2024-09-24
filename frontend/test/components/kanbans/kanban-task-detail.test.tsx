@@ -30,6 +30,7 @@ describe("DetailedTaskView", () => {
         onClose={function (): void {
           throw new Error("Function not implemented.");
         }}
+	onDeleteTask={(taskId: number) => {console.log(taskId)}} 
       />
     );
   });

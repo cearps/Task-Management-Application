@@ -20,6 +20,26 @@ export default class TaskAPI {
 
     return response.data as KanbanTask;
   }
+
+  static async deleteTask(boardId: number, taskId: number): Promise<void> {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("User is not authenticated");
+    }
+
+    try {
+      const response = await axios.delete(`${API_URL}/kanbans/${boardId}/tasks/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to delete task:`);
+    }
+  }
+
   static async updateTask(
     boardId: number,
     taskId: number,
