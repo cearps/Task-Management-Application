@@ -24,7 +24,7 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Run backend tests
-        run: cd api && ./gradlew test
+        run: cd api && ./gradlew runTestsWithCoverage 
 
   frontend-test:
     runs-on: ubuntu-latest

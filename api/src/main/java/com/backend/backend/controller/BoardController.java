@@ -60,12 +60,12 @@ public class BoardController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<?> getBoardById(@PathVariable Long id, @RequestBody UpdateBoardRequest request) {
+    public ResponseEntity<?> updateBoardById(@PathVariable Long id, @RequestBody UpdateBoardRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         log.info("User {} is updating board {} START", currentUser.getUserTag(), id);
         BoardResponse boardResponse;
-        try { 
+        try {
             boardResponse = userBoardService.updateBoardForUser(currentUser, id, request);
         } catch (BoardEditException e) {
             log.error("User {} is updating board {} FAILED", currentUser.getUserTag(), id);
