@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { KanbanBoard } from "../../utilities/types";
+import { KanbanBoard, UserInfo } from "../../utilities/types";
+import UserAPI from "../../api/userAPI";
 
 export default function UserBoardForm({
   onClose,
@@ -14,6 +15,22 @@ export default function UserBoardForm({
 }) {
   const [userTag, setUserTag] = useState("");
   const cardRef = useRef<HTMLDivElement>(null);
+  const [currentUser, setCurrentUser] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    const subscription = UserAPI.getUserObservable().subscribe({
+      next: (user) => {
+        setCurrentUser(user);
+      },
+      error: (error) => {
+        console.error("Error fetching current user:", error);
+      },
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  });
 
   const handleAddUserSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -84,12 +101,14 @@ export default function UserBoardForm({
                 className="flex items-center justify-between mb-2"
               >
                 <span>{user.userTag}</span>
-                <button
-                  className="text-red-500"
-                  onClick={handleRemoveUserSubmit(user.id)}
-                >
-                  Delete User
-                </button>
+                {user.id !== currentUser?.id && (
+                  <button
+                    className="text-red-500"
+                    onClick={handleRemoveUserSubmit(user.id)}
+                  >
+                    Delete User
+                  </button>
+                )}
               </li>
             ))}
           </ul>
