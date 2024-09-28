@@ -1,9 +1,10 @@
 package com.backend.backend.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-
 import java.time.LocalDate;
+
+import com.backend.backend.model.UserBoard;
+
+import lombok.Data;
 
 @Data
 public class UpdateBoardRequest {
@@ -13,5 +14,5 @@ public class UpdateBoardRequest {
     private LocalDate startDate;
     private LocalDate dueDate;
     private String description;
-
+    private ShortUserRequest[] users;
 }

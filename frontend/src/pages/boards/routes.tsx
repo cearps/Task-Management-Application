@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import KanbanList from "./kanban-list";
 import KanbanSingle from "./kanban-single";
-import PrivateRoute from "../../utilities/route-protection";
+import { PrivateRoute } from "../../utilities/route-protection";
 
 const BoardRoutes = () => {
   return (

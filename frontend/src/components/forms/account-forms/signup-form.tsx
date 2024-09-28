@@ -53,17 +53,16 @@ const SignUpForm = () => {
           navigate("/accounts/login");
         },
         error: (error) => {
-          if (error.response.status) {
-            setSignupErrors(error.response.data.description);
-          } else {
-            setSignupErrors("An error occurred. Please try again later.");
-          }
+          console.error("Error signing up:", error);
+          setSignupErrors(
+            error.response.data.toString() || "An error occurred"
+          );
         },
       });
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-full">
       <FormBase onSubmit={handleSignup}>
         <h2 className="text-2xl font-bold mb-6">Sign Up</h2>
         <Field

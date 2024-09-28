@@ -13,5 +13,5 @@ public class UpdateTaskRequest {
     private LocalDate dueDate;
     private Integer urgency;
     private Integer taskCategory;
-
+    private ShortUserRequest[] users;
 }

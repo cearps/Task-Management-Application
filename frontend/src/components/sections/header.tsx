@@ -1,8 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
 import UserAPI from "../../api/userAPI";
+import { useEffect, useState } from "react";
 
 const Header = () => {
-  const isAuthenticated = UserAPI.isAuthenticated();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const subscription = UserAPI.isAuthenticatedObservable().subscribe(
+      (isAuthenticated) => {
+        setIsAuthenticated(isAuthenticated);
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   const navigate = useNavigate();
 
   const logout = () => {
@@ -11,7 +25,10 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-blue-500 text-white p-4">
+    <header
+      className="bg-blue-500 text-white p-4 fixed top-0 left-0 right-0 flex items-center shadow-md"
+      style={{ height: "8vh" }}
+    >
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-lg font-bold">
           <Link to="/">Kanban App</Link>

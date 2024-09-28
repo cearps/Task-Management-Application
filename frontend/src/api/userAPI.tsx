@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Observable, interval, from, concat, of } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { switchMap, catchError, map } from "rxjs/operators";
 import {
   LoginResponse,
   NewUserData,
@@ -8,6 +8,7 @@ import {
   User,
 } from "../utilities/types";
 import { API_URL } from "./apiConfig";
+import { ApiError } from "../utilities/errors";
 
 export default class UserAPI {
   static async getUser() {
@@ -35,6 +36,10 @@ export default class UserAPI {
       },
     });
 
+    if (response.status !== 200) {
+      throw new ApiError(response.data.description, response.status);
+    }
+
     return response.data as SignUpResponse;
   }
 
@@ -49,6 +54,12 @@ export default class UserAPI {
         "Content-Type": "application/json",
       },
     });
+
+    if (response.status === 200 && response.data.token) {
+      localStorage.setItem("token", response.data.token);
+    } else {
+      throw new ApiError(response.data.description, response.status);
+    }
 
     return response.data as LoginResponse;
   }
@@ -72,8 +83,47 @@ export default class UserAPI {
     return from(UserAPI.loginUser(data));
   }
 
-  static isAuthenticated() {
-    return localStorage.getItem("token") !== null;
+  static isAuthenticatedObservable(): Observable<boolean> {
+    return concat(of(0), interval(10000)).pipe(
+      switchMap(() => {
+        return from(UserAPI.getUser()).pipe(
+          map(() => true),
+          catchError(() => of(false))
+        );
+      })
+    );
+  }
+
+  static subscribeIsAuthenticated() {
+    return this.isAuthenticatedObservable().subscribe((isAuthenticated) => {
+      if (!isAuthenticated) {
+        localStorage.removeItem("token");
+
+        // redirect to login page
+        window.location.href = "/accounts/login";
+      }
+    });
+  }
+
+  static subscribeIsNotAuthenticated() {
+    return this.isAuthenticatedObservable().subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        // redirect to boards page
+        window.location.href = "/boards";
+      }
+    });
+  }
+
+  static subscribeIsAuthenticatedDecision() {
+    return this.isAuthenticatedObservable().subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        // redirect to boards page
+        window.location.href = "/boards";
+      } else {
+        // redirect to login page
+        window.location.href = "/accounts/login";
+      }
+    });
   }
 
   static logout() {

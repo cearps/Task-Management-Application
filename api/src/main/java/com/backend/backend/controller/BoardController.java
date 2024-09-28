@@ -6,7 +6,9 @@ import com.backend.backend.dto.UpdateBoardRequest;
 import com.backend.backend.model.User;
 import com.backend.backend.service.BoardService;
 import com.backend.backend.service.UserBoardService;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import com.backend.backend.exceptions.BoardEditException;
 
 @RequestMapping("/kanbans")
 @RestController
@@ -60,7 +64,13 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         log.info("User {} is updating board {} START", currentUser.getUserTag(), id);
-        BoardResponse boardResponse = userBoardService.updateBoardForUser(currentUser, id, request);
+        BoardResponse boardResponse;
+        try {
+            boardResponse = userBoardService.updateBoardForUser(currentUser, id, request);
+        } catch (BoardEditException e) {
+            log.error("User {} is updating board {} FAILED", currentUser.getUserTag(), id);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
         log.info("User {} is updating board {} SUCCESS", currentUser.getUserTag(), id);
         return ResponseEntity.ok(boardResponse);
     }

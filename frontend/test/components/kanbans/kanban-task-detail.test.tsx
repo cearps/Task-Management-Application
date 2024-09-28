@@ -13,10 +13,24 @@ describe("DetailedTaskView", () => {
           urgency: 0,
           taskCategory: 0,
           users: [],
+          comments: [],
+        }}
+        board={{
+          id: 0,
+          name: "",
+          description: "",
+          startDate: "",
+          dueDate: "",
+          users: [],
+          tasks: [],
+        }}
+        addComment={function (comment: string, taskId: number): void {
+          console.log(comment, taskId);
         }}
         onClose={function (): void {
           throw new Error("Function not implemented.");
         }}
+	onDeleteTask={(taskId: number) => {console.log(taskId)}} 
       />
     );
   });

@@ -19,6 +19,14 @@ describe("KanbanColumn", () => {
             users: [],
           } as KanbanBoard
         }
+        currentUser={null}
+        provided={{
+          innerRef: null,
+          droppableProps: null,
+        }}
+        snapshot={{
+          isDraggingOver: false,
+        }}
         setActiveTaskMethod={(task: KanbanTask) => () => task}
       />
     );
