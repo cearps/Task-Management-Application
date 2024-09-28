@@ -20,7 +20,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class JwtServiceTest {
+class JwtServiceTests {
 
     private JwtService jwtService;
     @Mock
