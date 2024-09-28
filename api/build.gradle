@@ -61,3 +61,22 @@ jacocoTestReport {
 		}))
 	}
 }
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.95 // Set the coverage threshold to 80%
+			}
+		}
+	}
+}
+
+task runTestsWithCoverage {
+    dependsOn test, jacocoTestReport, jacocoTestCoverageVerification
+
+    doLast {
+        // This block will be executed after the tasks complete
+        println "Tests and coverage report generated."
+    }
+}
