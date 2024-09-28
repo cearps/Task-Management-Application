@@ -106,7 +106,7 @@ class GlobalExceptionHandlerTest {
         // Then
         assertNotNull(result);
         assertEquals(HttpStatusCode.valueOf(500), HttpStatusCode.valueOf(result.getStatus()));
-        assertEquals("Unknown error", result.getDetail());
+        assertEquals("Check logs for more information", result.getDetail());
         assertEquals("Unknown internal server error.", result.getProperties().get("description"));
     }
 }

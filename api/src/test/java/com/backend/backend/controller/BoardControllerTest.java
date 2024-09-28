@@ -107,7 +107,7 @@ class BoardControllerTest {
         when(userBoardService.updateBoardForUser(currentUser, boardId, request)).thenReturn(mockBoardResponse);
 
         // Act
-        ResponseEntity<BoardResponse> response = boardController.updateBoardById(boardId, request);
+        ResponseEntity<?> response = boardController.updateBoardById(boardId, request);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());

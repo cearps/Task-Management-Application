@@ -85,7 +85,8 @@ class UserBoardServiceTest {
         board.setId(boardId);
         board.setName("Old Name");
         board.setDescription("Old Description");
-
+        board.setStartDate(LocalDate.of(2023, 1, 2));
+        board.setDueDate(LocalDate.of(2023, 12, 10));
         UpdateBoardRequest updateRequest = new UpdateBoardRequest();
         updateRequest.setName("New Name");
         updateRequest.setDescription("New Description");

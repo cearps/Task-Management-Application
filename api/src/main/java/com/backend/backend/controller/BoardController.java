@@ -60,7 +60,7 @@ public class BoardController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<BoardResponse> updateBoardById(@PathVariable Long id, @RequestBody UpdateBoardRequest request) {
+    public ResponseEntity<?> updateBoardById(@PathVariable Long id, @RequestBody UpdateBoardRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         log.info("User {} is updating board {} START", currentUser.getUserTag(), id);
