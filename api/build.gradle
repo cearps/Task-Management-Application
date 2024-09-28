@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.0'
 	id 'io.spring.dependency-management' version '1.1.5'
+	id 'jacoco'
 }
 
 group = 'com.backend'
@@ -39,4 +40,43 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
- 
+
+test {
+	finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+	dependsOn test // Ensure tests are run before generating the report
+
+	reports {
+		xml.required.set(true) // Enable XML report
+		html.required.set(true) // Enable HTML report
+	}
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					'**/*Generated*' // Exclude methods annotated with @Generated
+			])
+		}))
+	}
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.80 // Set the coverage threshold to 80%
+			}
+		}
+	}
+}
+
+task runTestsWithCoverage {
+    dependsOn test, jacocoTestReport, jacocoTestCoverageVerification
+
+    doLast {
+        // This block will be executed after the tasks complete
+        println "Tests and coverage report generated."
+    }
+}
