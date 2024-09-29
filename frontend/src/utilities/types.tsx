@@ -1,7 +1,7 @@
 type KanbanBoard = {
   id: number;
   name: string;
-  description: string;
+  description?: string;
   startDate: string;
   dueDate: string;
   users: UserInfo[];

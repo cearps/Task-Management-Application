@@ -25,7 +25,6 @@ describe("KanbanListView", () => {
           id: 1,
           name: "Test Board 1",
           dueDate: "2024-09-30",
-          description: "Description 1",
           users: [],
           tasks: [],
           startDate: "2024-09-01",
@@ -34,7 +33,6 @@ describe("KanbanListView", () => {
           id: 2,
           name: "Test Board 2",
           dueDate: "2024-10-05",
-          description: "Description 2",
           users: [],
           tasks: [],
           startDate: "2024-09-01",
@@ -80,9 +78,6 @@ describe("KanbanListView", () => {
     });
     fireEvent.change(screen.getByLabelText(/due date/i), {
       target: { value: "2024-11-01" },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/description/i), {
-      target: { value: "New Description" },
     });
     fireEvent.click(screen.getByRole("button", { name: /create board/i }));
     // Wait for the new board to be rendered
