@@ -12,9 +12,8 @@ export default function KanbanListView() {
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false); // Add the state for the AddUserModal
   const [editingBoard, setEditingBoard] = useState<KanbanBoard | null>(null);
   const [formErrors, setFormErrors] = useState("");
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); 
-  const [boardToDelete, setBoardToDelete] = useState<number | null>(null); 
-
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [boardToDelete, setBoardToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     const subscription = KanbanAPI.getKanbanBoardsObservable().subscribe({
@@ -83,7 +82,7 @@ export default function KanbanListView() {
   // Function to handle deleting a board
   const handleDeleteBoard = (id: number) => {
     setBoardToDelete(id); // Set the board ID for deletion
-    setIsConfirmModalOpen(true); 
+    setIsConfirmModalOpen(true);
   };
 
   const confirmDeleteBoard = () => {
@@ -93,8 +92,8 @@ export default function KanbanListView() {
           setKanbanBoards((prevBoards) =>
             prevBoards.filter((board) => board.id !== boardToDelete)
           );
-          setBoardToDelete(null); 
-          setIsConfirmModalOpen(false); 
+          setBoardToDelete(null);
+          setIsConfirmModalOpen(false);
         },
         error: (error) => {
           console.error("Error deleting Kanban board:", error);
@@ -102,13 +101,11 @@ export default function KanbanListView() {
       });
     }
   };
-  
+
   const cancelDeleteBoard = () => {
-    setBoardToDelete(null); 
-    setIsConfirmModalOpen(false); 
+    setBoardToDelete(null);
+    setIsConfirmModalOpen(false);
   };
-  
-  
 
   // Function to handle editing a board
   const handleEditBoard = (board: KanbanBoard) => {
@@ -150,6 +147,7 @@ export default function KanbanListView() {
       <h1 className="text-3xl font-bold mb-6">YOUR PROJECTS</h1>
       <div
         className="bg-yellow-500 rounded-full w-14 h-14 flex items-center justify-center m-2 cursor-pointer transition-transform hover:scale-110"
+        data-testid="add-board-button"
         onClick={() => setIsModalOpen(true)}
       >
         <svg
@@ -216,16 +214,14 @@ export default function KanbanListView() {
         />
       )}
 
-{isConfirmModalOpen && (
-  <ConfirmationModal
-    isOpen={isConfirmModalOpen}
-    message="Are you sure you want to delete this board?"
-    onConfirm={confirmDeleteBoard}
-    onCancel={cancelDeleteBoard}
-  />
-)}
-
-
+      {isConfirmModalOpen && (
+        <ConfirmationModal
+          isOpen={isConfirmModalOpen}
+          message="Are you sure you want to delete this board?"
+          onConfirm={confirmDeleteBoard}
+          onCancel={cancelDeleteBoard}
+        />
+      )}
     </div>
   );
 }

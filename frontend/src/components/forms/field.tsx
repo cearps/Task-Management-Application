@@ -17,8 +17,14 @@ const Field = ({
 }: FieldProps) => {
   return (
     <div className="mb-4">
-      <label className="block text-gray-700 font-semibold mb-2">{label}</label>
+      <label
+        className="block text-gray-700 font-semibold mb-2"
+        htmlFor={convertToSlug(label)}
+      >
+        {label}
+      </label>
       <input
+        id={convertToSlug(label)}
         type={type}
         value={value}
         onChange={onChange}
@@ -30,6 +36,13 @@ const Field = ({
       )}
     </div>
   );
+};
+
+const convertToSlug = (text: string) => {
+  return text
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
 };
 
 export default Field;

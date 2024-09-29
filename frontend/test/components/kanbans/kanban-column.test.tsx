@@ -1,34 +1,41 @@
 import KanbanColumn from "../../../src/components/kanbans/kanban-column";
-import { render } from "@testing-library/react";
-import { KanbanBoard, KanbanTask } from "../../../src/utilities/types";
+import { KanbanBoard, UserInfo } from "../../../src/utilities/types";
+
+import { render, screen, cleanup } from "@testing-library/react";
+
+const mockKanban: KanbanBoard = {
+  // tasks: mockTasks,
+  tasks: [],
+  id: 1,
+  name: "Kanban Board",
+  description: "Kanban Board description",
+  startDate: "2024-09-01",
+  dueDate: "2024-09-30",
+  users: [],
+};
+
+const mockSetActiveTaskMethod = jest.fn();
+const mockCurrentUser: UserInfo | null = null;
 
 describe("KanbanColumn", () => {
-  it("renders without crashing", () => {
+  afterEach(cleanup);
+
+  test("renders the KanbanColumn component with the correct title", () => {
     render(
       <KanbanColumn
-        title={""}
-        taskCategoryId={""}
-        kanban={
-          {
-            tasks: [],
-            id: 0,
-            name: "",
-            description: "",
-            startDate: "",
-            dueDate: "",
-            users: [],
-          } as KanbanBoard
-        }
-        currentUser={null}
+        title="In Progress"
+        taskCategoryId="1"
+        kanban={mockKanban}
+        setActiveTaskMethod={mockSetActiveTaskMethod}
+        currentUser={mockCurrentUser}
         provided={{
           innerRef: null,
           droppableProps: null,
         }}
-        snapshot={{
-          isDraggingOver: false,
-        }}
-        setActiveTaskMethod={(task: KanbanTask) => () => task}
+        snapshot={{ isDraggingOver: false }}
       />
     );
+
+    expect(screen.getByText("In Progress")).toBeInTheDocument();
   });
 });

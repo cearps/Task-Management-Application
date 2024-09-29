@@ -81,10 +81,14 @@ const AddTaskForm = ({
         </div>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="task-name"
+            >
               Task Name
             </label>
             <input
+              id="task-name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -94,10 +98,14 @@ const AddTaskForm = ({
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="description"
+            >
               Description
             </label>
             <textarea
+              id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter task description"
@@ -106,10 +114,14 @@ const AddTaskForm = ({
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="dueDate"
+            >
               Due Date
             </label>
             <input
+              id="dueDate"
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
@@ -118,10 +130,14 @@ const AddTaskForm = ({
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="urgency"
+            >
               Urgency
             </label>
             <select
+              id="urgency"
               value={urgency}
               onChange={(e) => setUrgency(Number(e.target.value))}
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -132,10 +148,14 @@ const AddTaskForm = ({
             </select>
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="assignTo"
+            >
               Assign to
             </label>
             <Select
+              id="assignTo"
               isMulti
               options={board.users.map((user) => ({
                 value: user.id,
@@ -173,6 +193,7 @@ const AddTaskForm = ({
             <button
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              aria-label="Add Task"
             >
               Add Task
             </button>

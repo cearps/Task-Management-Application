@@ -39,19 +39,24 @@ export default function KanbanDisplay({
   });
 
   const handleDeleteTask = (taskId: number) => {
-    setTaskToDelete(taskId); 
-    setIsConfirmModalOpen(true); 
+    setTaskToDelete(taskId);
+    setIsConfirmModalOpen(true);
   };
 
   const confirmDelete = () => {
     if (taskToDelete !== null) {
-      TaskAPI.deleteTask(kanban.id, taskToDelete).then(() => {
-        setKanban({ ...kanban, tasks: kanban.tasks.filter((task) => task.id !== taskToDelete) });
-        setSelectedTask(null); 
-        setIsConfirmModalOpen(false); 
-      }).catch((error) => {
-        console.error("Error deleting task:", error);
-      });
+      TaskAPI.deleteTask(kanban.id, taskToDelete)
+        .then(() => {
+          setKanban({
+            ...kanban,
+            tasks: kanban.tasks.filter((task) => task.id !== taskToDelete),
+          });
+          setSelectedTask(null);
+          setIsConfirmModalOpen(false);
+        })
+        .catch((error) => {
+          console.error("Error deleting task:", error);
+        });
     }
   };
 
@@ -188,7 +193,7 @@ export default function KanbanDisplay({
                   <KanbanColumn
                     key={column.taskCategoryId}
                     title={column.title}
-                    taskCategoryId={column.taskCategoryId.toString()} 
+                    taskCategoryId={column.taskCategoryId.toString()}
                     kanban={kanban}
                     setActiveTaskMethod={setActiveTaskMethod}
                     currentUser={currentUser}
@@ -246,6 +251,7 @@ function ProgressBar({ progress }: { progress: number }) {
       }}
     >
       <div
+        data-testid="progressbar"
         style={{
           background: progress > 80 ? "red" : "green",
           width: `${progress}%`,

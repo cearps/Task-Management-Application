@@ -81,11 +81,15 @@ const AddBoardForm = ({
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="dueDate"
+              className="block text-sm font-medium text-gray-700"
+            >
               Due Date
             </label>
             <input
               type="date"
+              id="dueDate"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
