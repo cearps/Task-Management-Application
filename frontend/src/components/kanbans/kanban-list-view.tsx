@@ -30,24 +30,17 @@ export default function KanbanListView() {
     };
   }, []);
 
-  const handleAddBoard = async (
-    name: string,
-    dueDate: string,
-    description: string
-  ) => {
+  const handleAddBoard = async (name: string, dueDate: string) => {
     if (editingBoard) {
       // If we're editing a board, update it
       KanbanAPI.updateKanbanBoardObservable(editingBoard.id, {
         name,
         dueDate,
-        description,
       }).subscribe({
         next: () => {
           setKanbanBoards((prevBoards) =>
             prevBoards.map((board) =>
-              board.id === editingBoard.id
-                ? { ...board, name, dueDate, description }
-                : board
+              board.id === editingBoard.id ? { ...board, name, dueDate } : board
             )
           );
           setEditingBoard(null); // Reset after editing
@@ -63,7 +56,6 @@ export default function KanbanListView() {
       KanbanAPI.createKanbanBoardWithDetailsObservable({
         name,
         dueDate,
-        description,
       }).subscribe({
         next: (board) => {
           setKanbanBoards((prevBoards) => [...prevBoards, board]);
@@ -194,7 +186,6 @@ export default function KanbanListView() {
               ? {
                   name: editingBoard.name,
                   dueDate: editingBoard.dueDate,
-                  description: editingBoard.description,
                 }
               : undefined
           } // Use undefined when editingBoard is null

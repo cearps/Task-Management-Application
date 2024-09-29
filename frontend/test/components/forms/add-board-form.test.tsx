@@ -24,7 +24,6 @@ describe("AddBoardForm Component", () => {
   test("renders form with empty inputs by default", () => {
     setup();
     expect(screen.getByPlaceholderText(/enter board name/i)).toHaveValue("");
-    expect(screen.getByPlaceholderText(/enter description/i)).toHaveValue("");
     expect(screen.getByLabelText(/due date/i)).toHaveValue("");
     expect(
       screen.getByRole("heading", { name: /create new board/i })
@@ -35,7 +34,6 @@ describe("AddBoardForm Component", () => {
     const defaultValues = {
       name: "Test Board",
       dueDate: "2023-12-31",
-      description: "Test Description",
     };
     setup({ defaultValues });
 
@@ -43,9 +41,6 @@ describe("AddBoardForm Component", () => {
       "Test Board"
     );
     expect(screen.getByLabelText(/due date/i)).toHaveValue("2023-12-31");
-    expect(screen.getByPlaceholderText(/enter description/i)).toHaveValue(
-      "Test Description"
-    );
     expect(
       screen.getByRole("heading", { name: /edit board/i })
     ).toBeInTheDocument();
@@ -60,16 +55,12 @@ describe("AddBoardForm Component", () => {
     fireEvent.change(screen.getByLabelText(/due date/i), {
       target: { value: "2023-11-20" },
     });
-    fireEvent.change(screen.getByPlaceholderText(/enter description/i), {
-      target: { value: "A description" },
-    });
 
     fireEvent.click(screen.getByRole("button", { name: /create board/i }));
 
     expect(defaultProps.onSubmit).toHaveBeenCalledWith(
       "New Board",
-      "2023-11-20",
-      "A description"
+      "2023-11-20"
     );
   });
 
