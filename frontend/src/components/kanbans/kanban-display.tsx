@@ -36,7 +36,7 @@ export default function KanbanDisplay({
     return () => {
       subscription.unsubscribe();
     };
-  });
+  }, []);
 
   const handleDeleteTask = (taskId: number) => {
     setTaskToDelete(taskId);
