@@ -30,7 +30,7 @@ export default function UserBoardForm({
     return () => {
       subscription.unsubscribe();
     };
-  });
+  }, []);
 
   const handleAddUserSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
