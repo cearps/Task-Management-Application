@@ -22,6 +22,7 @@ export default function KanbanDisplay({
   const [currentUser, setCurrentUser] = useState<UserInfo | null>(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<number | null>(null);
+  const [addTaskError, setAddTaskError] = useState<string | null>(null);
 
   useEffect(() => {
     const subscription = UserAPI.getUserObservable().subscribe({
@@ -106,6 +107,8 @@ export default function KanbanDisplay({
         setIsTaskModalOpen(false);
       },
       error: (error) => {
+        setAddTaskError(error.error.response.data);
+        TaskAPI.deleteTask(kanban.id, error.task.id);
         console.error("Error creating task:", error);
       },
     });
@@ -223,6 +226,7 @@ export default function KanbanDisplay({
           onClose={() => setIsTaskModalOpen(false)}
           onSubmit={handleAddTask}
           board={kanban}
+          errors={addTaskError}
         />
       )}
 

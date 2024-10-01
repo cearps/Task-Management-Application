@@ -4,6 +4,7 @@ import com.backend.backend.dto.CommentRequest;
 import com.backend.backend.dto.ShortUserRequest;
 import com.backend.backend.dto.TaskResponse;
 import com.backend.backend.dto.UpdateTaskRequest;
+import com.backend.backend.exceptions.TaskEditException;
 import com.backend.backend.model.*;
 import com.backend.backend.repository.BoardRepository;
 import com.backend.backend.repository.CommentsRepository;
@@ -57,6 +58,9 @@ public class TaskService {
             task.setDescription(request.getDescription());
         }
         if (request.getDueDate() != null) {
+            if (task.getBoard().getStartDate().isAfter(request.getDueDate())) {
+                throw new TaskEditException("Start date must be before due date");
+            }
             task.setDueDate(request.getDueDate());
         }
         if (request.getUrgency() != null) {

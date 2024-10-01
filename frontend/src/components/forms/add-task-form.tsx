@@ -6,10 +6,12 @@ const AddTaskForm = ({
   onClose,
   onSubmit,
   board,
+  errors,
 }: {
   onClose: () => void;
   onSubmit: (taskData: any) => void;
   board: KanbanBoard;
+  errors: string | null;
 }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -204,6 +206,7 @@ const AddTaskForm = ({
               Cancel
             </button>
           </div>
+          {errors && <p className="text-red-500">{errors}</p>}
         </form>
       </div>
     </div>

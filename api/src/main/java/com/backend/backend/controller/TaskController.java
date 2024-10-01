@@ -3,6 +3,7 @@ package com.backend.backend.controller;
 import com.backend.backend.dto.CommentRequest;
 import com.backend.backend.dto.TaskResponse;
 import com.backend.backend.dto.UpdateTaskRequest;
+import com.backend.backend.exceptions.TaskEditException;
 import com.backend.backend.model.Task;
 import com.backend.backend.model.User;
 import com.backend.backend.service.TaskService;
@@ -34,16 +35,20 @@ public class TaskController {
     }
 
     @PostMapping("/{boardId}/tasks/{taskId}")
-    public ResponseEntity<Task> updateTaskForBoard(@PathVariable Long boardId, @PathVariable Long taskId,
+    public ResponseEntity<?> updateTaskForBoard(@PathVariable Long boardId, @PathVariable Long taskId,
                                                    @RequestBody UpdateTaskRequest request) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         log.info("User {} is updating task {} on board {} START", currentUser.getUserTag(), taskId, boardId);
-        Task task = taskService.updateTaskForBoard(currentUser, boardId, taskId, request);
-        log.info("User {} is updating task {} on board {} SUCCESS", currentUser.getUserTag(), taskId, boardId);
-        return ResponseEntity.ok(task);
-
+        try {
+            Task task = taskService.updateTaskForBoard(currentUser, boardId, taskId, request);
+            log.info("User {} is updating task {} on board {} SUCCESS", currentUser.getUserTag(), taskId, boardId);
+            return ResponseEntity.ok(task);
+        } catch (TaskEditException e) {
+            log.error("User {} is updating task {} on board {} FAILED", currentUser.getUserTag(), taskId, boardId);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{boardId}/tasks/{taskId}")
