@@ -3,6 +3,7 @@ package com.backend.backend.controller;
 import com.backend.backend.dto.CommentRequest;
 import com.backend.backend.dto.TaskResponse;
 import com.backend.backend.dto.UpdateTaskRequest;
+import com.backend.backend.exceptions.CharacterLimitException;
 import com.backend.backend.model.Task;
 import com.backend.backend.model.User;
 import com.backend.backend.service.TaskService;
@@ -109,5 +110,22 @@ class TaskControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(new TaskResponse(mockTask), response.getBody());
         verify(taskService).commentOnTask(currentUser, boardId, taskId, commentRequest);
+    }
+
+    @Test
+    void testCreateTaskLongTitle() {
+        // Arrange
+        Long boardId = 1L;
+        Long taskId = 1L;
+        UpdateTaskRequest request = new UpdateTaskRequest();
+        Task mockTask = new Task();
+        when(taskService.updateTaskForBoard(currentUser, boardId, taskId, request)).thenThrow(new CharacterLimitException("Title is too long"));
+
+        // Act
+        ResponseEntity<?> response = taskController.updateTaskForBoard(boardId, taskId, new UpdateTaskRequest());
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Title is too long", response.getBody());
     }
 }
