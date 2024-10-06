@@ -71,7 +71,7 @@ class TaskControllerTest {
         when(taskService.updateTaskForBoard(currentUser, boardId, taskId, request)).thenReturn(mockTask);
 
         // Act
-        ResponseEntity<Task> response = taskController.updateTaskForBoard(boardId, taskId, request);
+        ResponseEntity<?> response = taskController.updateTaskForBoard(boardId, taskId, request);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
