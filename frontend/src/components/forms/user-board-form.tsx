@@ -90,7 +90,9 @@ export default function UserBoardForm({
           </button>
         </div>
         <div>
-          <h2 className="text-xl font-bold mb-5">Board Name: {board.name}</h2>
+          <h2 className="text-xl font-bold mb-5 break-words max-w-full">
+            Board Name: {board.name}
+          </h2>
 
           <h3 className="text-lg font-bold mb-2">Users</h3>
           <ul>

@@ -3,6 +3,7 @@ package com.backend.backend.controller;
 
 import com.backend.backend.dto.BoardResponse;
 import com.backend.backend.dto.UpdateBoardRequest;
+import com.backend.backend.exceptions.CharacterLimitException;
 import com.backend.backend.model.User;
 import com.backend.backend.service.BoardService;
 import com.backend.backend.service.UserBoardService;
@@ -67,7 +68,7 @@ public class BoardController {
         BoardResponse boardResponse;
         try {
             boardResponse = userBoardService.updateBoardForUser(currentUser, id, request);
-        } catch (BoardEditException e) {
+        } catch (BoardEditException | CharacterLimitException e) {
             log.error("User {} is updating board {} FAILED", currentUser.getUserTag(), id);
             return ResponseEntity.badRequest().body(e.getMessage());
         }

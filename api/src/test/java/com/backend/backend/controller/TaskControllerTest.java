@@ -103,7 +103,7 @@ class TaskControllerTest {
         when(taskService.commentOnTask(currentUser, boardId, taskId, commentRequest)).thenReturn(mockTask);
 
         // Act
-        ResponseEntity<TaskResponse> response = taskController.commentOnTask(boardId, taskId, commentRequest);
+        ResponseEntity<?> response = taskController.commentOnTask(boardId, taskId, commentRequest);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());

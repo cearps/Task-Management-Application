@@ -159,7 +159,9 @@ export default function KanbanDisplay({
   return (
     <div style={{ padding: "0 20px" }}>
       <header className="flex flex-col items-start mb-6 w-full">
-        <h1 className="text-4xl font-bold">{kanban.name}</h1>
+        <h1 className="text-4xl font-bold break-words sm:max-w-full max-w-64">
+          {kanban.name}
+        </h1>
         <div className="flex justify-between text-sm mb-2 w-full space-x-4 mt-4">
           <span className="font-semibold">
             START DATE:{" "}

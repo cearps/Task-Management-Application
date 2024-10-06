@@ -5,23 +5,24 @@ import { getTaskStatus } from "../../utilities/kanban-category-mapping";
 import TaskAPI from "../../api/taskAPI";
 import KanbanTaskComment from "./kanban-task-comment";
 import Select from "react-select";
+import { error } from "console";
 
 const DetailedTaskView = ({
   task,
   board,
   onClose,
-  addComment,
   onDeleteTask,
 }: {
   task: KanbanTask;
   board: KanbanBoard;
-  addComment: (comment: string, taskId: number) => void;
   onClose: () => void;
   onDeleteTask: (taskId: number) => void;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [updatedTask, setUpdatedTask] = useState<KanbanTask>(task);
+  const [updateTaskError, setUpdateTaskError] = useState<string | null>(null);
+  const [addCommentError, setAddCommentError] = useState<string | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -46,12 +47,16 @@ const DetailedTaskView = ({
   };
 
   const handleSaveChanges = async () => {
-    try {
-      await TaskAPI.updateTask(board.id, task.id, updatedTask);
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Error updating task:", error);
-    }
+    TaskAPI.updateTaskObservable(board.id, updatedTask).subscribe({
+      next: () => {
+        setIsEditing(false);
+        setUpdateTaskError(null);
+      },
+      error: (error) => {
+        console.error("Error updating task:", error);
+        setUpdateTaskError(error.error.response.data);
+      },
+    });
   };
 
   const handleDeleteTask = () => {
@@ -59,9 +64,28 @@ const DetailedTaskView = ({
     onDeleteTask(task.id);
   };
 
-  const createComment = (comment: string) => {
+  const createComment = () => {
+    const comment = document.getElementById("comment") as HTMLTextAreaElement;
+
+    if (comment == null) {
+      return;
+    }
+
+    const newComment = {
+      comment: comment.value,
+    };
+
     // Logic to create a comment using the provided value
-    addComment(comment, task.id);
+    TaskAPI.addCommentObservable(board.id, task.id, newComment).subscribe({
+      next: () => {
+        setAddCommentError(null);
+        comment.value = "";
+      },
+      error: (error) => {
+        setAddCommentError(error.error.response.data);
+        console.log(error);
+      },
+    });
   };
 
   return (
@@ -174,10 +198,10 @@ const DetailedTaskView = ({
                 name="description"
                 value={updatedTask.description}
                 onChange={handleInputChange}
-                className="w-full p-2 rounded text-black"
+                className="w-full p-2 rounded text-black break-words max-w-full"
               />
             ) : (
-              <p>{task.description}</p>
+              <p className="max-w-full break-words">{task.description}</p>
             )}
           </div>
 
@@ -255,6 +279,12 @@ const DetailedTaskView = ({
             )}
           </div>
 
+          {isEditing && updateTaskError && (
+            <div className="mb-4">
+              <span className="text-red-500">{updateTaskError}</span>
+            </div>
+          )}
+
           <div className="mb-4">
             <span className="font-semibold">Comments:</span>
             <div className="p-2">
@@ -269,19 +299,14 @@ const DetailedTaskView = ({
               ></textarea>
               <button
                 className="mt-2 bg-orange-500 text-white p-2 rounded hover:bg-orange-600"
-                onClick={() => {
-                  const comment = document.getElementById(
-                    "comment"
-                  ) as HTMLTextAreaElement;
-                  if (comment) {
-                    createComment(comment.value);
-                    comment.value = "";
-                  }
-                }}
+                onClick={createComment}
               >
                 Comment
               </button>
             </div>
+            {addCommentError && (
+              <span className="text-red-500">{addCommentError}</span>
+            )}
           </div>
         </div>
       </div>

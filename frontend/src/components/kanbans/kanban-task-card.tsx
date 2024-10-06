@@ -33,7 +33,9 @@ export default function KanbanCard({
               task.urgency
             )}`}
           ></span>
-          <h3 className="text-lg font-semibold">{task.name}</h3>
+          <h3 className="text-lg font-semibold max-w-full break-words">
+            {task.name}
+          </h3>
           <p className="text-sm text-gray-400">Due Date: {task.dueDate}</p>
           {task.users.some((user) => user.id === currentUser?.id) && (
             <p className="text-sm text-gray-400">Assigned to you</p>

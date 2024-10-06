@@ -3,6 +3,7 @@ package com.backend.backend.controller;
 import com.backend.backend.dto.CommentRequest;
 import com.backend.backend.dto.TaskResponse;
 import com.backend.backend.dto.UpdateTaskRequest;
+import com.backend.backend.exceptions.CharacterLimitException;
 import com.backend.backend.exceptions.TaskEditException;
 import com.backend.backend.model.Task;
 import com.backend.backend.model.User;
@@ -45,7 +46,7 @@ public class TaskController {
             Task task = taskService.updateTaskForBoard(currentUser, boardId, taskId, request);
             log.info("User {} is updating task {} on board {} SUCCESS", currentUser.getUserTag(), taskId, boardId);
             return ResponseEntity.ok(task);
-        } catch (TaskEditException e) {
+        } catch (TaskEditException | CharacterLimitException e) {
             log.error("User {} is updating task {} on board {} FAILED", currentUser.getUserTag(), taskId, boardId);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -62,14 +63,19 @@ public class TaskController {
     }
 
     @PostMapping("/{boardId}/tasks/{taskId}/comment")
-    public ResponseEntity<TaskResponse> commentOnTask(@PathVariable Long boardId, @PathVariable Long taskId,
+    public ResponseEntity<?> commentOnTask(@PathVariable Long boardId, @PathVariable Long taskId,
                                                       @RequestBody CommentRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         log.info("User {} is commenting on task {} on board {} START", currentUser.getUserTag(), taskId, boardId);
-        Task task = taskService.commentOnTask(currentUser, boardId, taskId, request);
-        log.info("User {} is commenting on task {} on board {} SUCCESS", currentUser.getUserTag(), taskId, boardId);
-        return ResponseEntity.ok(new TaskResponse(task));
+        try {
+            Task task = taskService.commentOnTask(currentUser, boardId, taskId, request);
+            log.info("User {} is commenting on task {} on board {} SUCCESS", currentUser.getUserTag(), taskId, boardId);
+            return ResponseEntity.ok(new TaskResponse(task));
+        } catch (CharacterLimitException e) {
+            log.error("User {} is commenting on task {} on board {} FAILED", currentUser.getUserTag(), taskId, boardId);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }
