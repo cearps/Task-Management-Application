@@ -5,7 +5,6 @@ import { getTaskStatus } from "../../utilities/kanban-category-mapping";
 import TaskAPI from "../../api/taskAPI";
 import KanbanTaskComment from "./kanban-task-comment";
 import Select from "react-select";
-import { error } from "console";
 
 const DetailedTaskView = ({
   task,

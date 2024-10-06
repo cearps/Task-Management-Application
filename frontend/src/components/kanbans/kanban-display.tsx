@@ -114,17 +114,6 @@ export default function KanbanDisplay({
     });
   };
 
-  const addComment = (comment: string, taskId: number) => {
-    TaskAPI.addCommentObservable(kanban.id, taskId, { comment }).subscribe({
-      next: (comment) => {
-        console.log("Comment added:", comment);
-      },
-      error: (error) => {
-        console.error("Error adding comment:", error);
-      },
-    });
-  };
-
   const onDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
 
@@ -216,7 +205,6 @@ export default function KanbanDisplay({
         <DetailedTaskView
           task={kanban.tasks.find((task) => task.id === selectedTask)!}
           onClose={handleTaskClose}
-          addComment={addComment}
           board={kanban}
           onDeleteTask={handleDeleteTask}
         />
