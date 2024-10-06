@@ -22,6 +22,7 @@ export default function KanbanDisplay({
   const [currentUser, setCurrentUser] = useState<UserInfo | null>(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<number | null>(null);
+  const [addTaskError, setAddTaskError] = useState<string | null>(null);
 
   useEffect(() => {
     const subscription = UserAPI.getUserObservable().subscribe({
@@ -106,18 +107,9 @@ export default function KanbanDisplay({
         setIsTaskModalOpen(false);
       },
       error: (error) => {
+        setAddTaskError(error.error.response.data);
+        TaskAPI.deleteTask(kanban.id, error.task.id);
         console.error("Error creating task:", error);
-      },
-    });
-  };
-
-  const addComment = (comment: string, taskId: number) => {
-    TaskAPI.addCommentObservable(kanban.id, taskId, { comment }).subscribe({
-      next: (comment) => {
-        console.log("Comment added:", comment);
-      },
-      error: (error) => {
-        console.error("Error adding comment:", error);
       },
     });
   };
@@ -156,7 +148,9 @@ export default function KanbanDisplay({
   return (
     <div style={{ padding: "0 20px" }}>
       <header className="flex flex-col items-start mb-6 w-full">
-        <h1 className="text-4xl font-bold">{kanban.name}</h1>
+        <h1 className="text-4xl font-bold break-words sm:max-w-full max-w-64">
+          {kanban.name}
+        </h1>
         <div className="flex justify-between text-sm mb-2 w-full space-x-4 mt-4">
           <span className="font-semibold">
             START DATE:{" "}
@@ -211,7 +205,6 @@ export default function KanbanDisplay({
         <DetailedTaskView
           task={kanban.tasks.find((task) => task.id === selectedTask)!}
           onClose={handleTaskClose}
-          addComment={addComment}
           board={kanban}
           onDeleteTask={handleDeleteTask}
         />
@@ -223,6 +216,7 @@ export default function KanbanDisplay({
           onClose={() => setIsTaskModalOpen(false)}
           onSubmit={handleAddTask}
           board={kanban}
+          errors={addTaskError}
         />
       )}
 

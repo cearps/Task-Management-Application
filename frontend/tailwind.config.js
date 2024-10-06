@@ -6,6 +6,9 @@ export default {
       spacing: {
         256: "64rem",
       },
+      maxWidth: {
+        "9xl": "9rem",
+      },
     },
   },
   plugins: [],

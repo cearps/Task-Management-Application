@@ -243,7 +243,7 @@ const BoardCard = ({
       onClick={() => handleCardClick(id)}
     >
       <div className="flex">
-        <h3 className="font-bold text-lg">{title}</h3>
+        <h3 className="font-bold text-lg break-words max-w-9xl">{title}</h3>
 
         <button
           className="text-black ml-auto mr-2"

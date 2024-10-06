@@ -3,7 +3,9 @@ package com.backend.backend.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.backend.backend.config.Constants;
 import com.backend.backend.dto.ShortUserRequest;
+import com.backend.backend.exceptions.CharacterLimitException;
 import com.backend.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,9 @@ public class UserBoardService {
         }
 
         if (request.getName() != null) {
+            if (request.getName().length() > Constants.MAX_KANBAN_TITLE_LENGTH) {
+                throw new CharacterLimitException("Board name is too long (max " + Constants.MAX_KANBAN_TITLE_LENGTH + " characters)");
+            }
             board.setName(request.getName());
         }
         if (request.getDescription() != null) {

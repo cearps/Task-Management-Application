@@ -139,4 +139,42 @@ describe("isAuthenticatedObservable", () => {
       expect(localStorage.getItem("token")).toBeNull();
     });
   });
+
+  describe("createUser", () => {
+    it("should throw an error if the response status is not 200", async () => {
+      const newUser: NewUserData = {
+        userTag: "userTag",
+        email: "new@example.com",
+        password: "password",
+      };
+
+      const mockErrorResponse = {
+        data: { description: "User creation failed" },
+        status: 400,
+      };
+
+      mockedAxios.post.mockResolvedValueOnce(mockErrorResponse);
+
+      await expect(UserAPI.createUser(newUser)).rejects.toThrow(
+        "User creation failed"
+      );
+    });
+  });
+
+  describe("loginUser", () => {
+    it("should throw an error if login fails", async () => {
+      const loginData = { email: "user@example.com", password: "password" };
+
+      const mockErrorResponse = {
+        data: { description: "Invalid credentials" },
+        status: 401,
+      };
+
+      mockedAxios.post.mockResolvedValueOnce(mockErrorResponse);
+
+      await expect(UserAPI.loginUser(loginData)).rejects.toThrow(
+        "Invalid credentials"
+      );
+    });
+  });
 });

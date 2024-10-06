@@ -1,9 +1,12 @@
 package com.backend.backend.service;
 
+import com.backend.backend.config.Constants;
 import com.backend.backend.dto.CommentRequest;
 import com.backend.backend.dto.ShortUserRequest;
 import com.backend.backend.dto.TaskResponse;
 import com.backend.backend.dto.UpdateTaskRequest;
+import com.backend.backend.exceptions.CharacterLimitException;
+import com.backend.backend.exceptions.TaskEditException;
 import com.backend.backend.model.*;
 import com.backend.backend.repository.BoardRepository;
 import com.backend.backend.repository.CommentsRepository;
@@ -51,12 +54,21 @@ public class TaskService {
                         " with board id " + boardId.toString() + " and user id " + user.getId().toString()));
 
         if (request.getName() != null) {
+            if (request.getName().length() > Constants.MAX_TASK_TITLE_LENGTH) {
+                throw new CharacterLimitException("Task name is too long (max " + Constants.MAX_TASK_TITLE_LENGTH + " characters)");
+            }
             task.setName(request.getName());
         }
         if (request.getDescription() != null) {
+            if (request.getDescription().length() > Constants.MAX_TASK_DESCRIPTION_LENGTH) {
+                throw new CharacterLimitException("Task description is too long (max " + Constants.MAX_TASK_DESCRIPTION_LENGTH + " characters)");
+            }
             task.setDescription(request.getDescription());
         }
         if (request.getDueDate() != null) {
+            if (task.getBoard().getStartDate().isAfter(request.getDueDate())) {
+                throw new TaskEditException("Start date must be before due date");
+            }
             task.setDueDate(request.getDueDate());
         }
         if (request.getUrgency() != null) {
@@ -87,6 +99,9 @@ public class TaskService {
                         " with board id " + boardId.toString() + " and user id " + user.getId().toString()));
 
         Comment comment = new Comment();
+        if (request.getComment().length() > Constants.MAX_COMMENT_LENGTH) {
+            throw new CharacterLimitException("Comment is too long (max " + Constants.MAX_COMMENT_LENGTH + " characters)");
+        }
         comment.setComment(request.getComment());
         comment.setUser(user);
         comment.setTask(task);

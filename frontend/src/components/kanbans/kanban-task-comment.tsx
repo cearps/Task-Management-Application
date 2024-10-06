@@ -13,7 +13,9 @@ const KanbanTaskComment = ({ comment }: { comment: Comment }) => {
           </div>
         </div>
       </div>
-      <p className="mt-3 text-gray-700">{comment.comment}</p>
+      <p className="mt-3 text-gray-700 break-words max-w-full">
+        {comment.comment}
+      </p>
     </div>
   );
 };

@@ -69,7 +69,14 @@ describe("AddTaskForm", () => {
   });
 
   test("renders the form and inputs", () => {
-    render(<AddTaskForm board={board} onClose={onClose} onSubmit={onSubmit} />);
+    render(
+      <AddTaskForm
+        board={board}
+        onClose={onClose}
+        onSubmit={onSubmit}
+        errors={""}
+      />
+    );
 
     expect(screen.getAllByText("Add Task")[0]).toBeInTheDocument();
     expect(screen.getByLabelText("Task Name")).toBeInTheDocument();
@@ -82,7 +89,14 @@ describe("AddTaskForm", () => {
   });
 
   test("validates and submits form", async () => {
-    render(<AddTaskForm board={board} onClose={onClose} onSubmit={onSubmit} />);
+    render(
+      <AddTaskForm
+        board={board}
+        onClose={onClose}
+        onSubmit={onSubmit}
+        errors={""}
+      />
+    );
 
     // Fill out the form
     fireEvent.change(screen.getByLabelText("Task Name"), {
@@ -107,7 +121,14 @@ describe("AddTaskForm", () => {
   });
 
   test("calls onClose when clicking outside the form", () => {
-    render(<AddTaskForm board={board} onClose={onClose} onSubmit={onSubmit} />);
+    render(
+      <AddTaskForm
+        board={board}
+        onClose={onClose}
+        onSubmit={onSubmit}
+        errors={""}
+      />
+    );
 
     // Simulate a click outside the form
     fireEvent.mouseDown(document);
@@ -116,7 +137,14 @@ describe("AddTaskForm", () => {
   });
 
   test("closes the form when clicking cancel", () => {
-    render(<AddTaskForm board={board} onClose={onClose} onSubmit={onSubmit} />);
+    render(
+      <AddTaskForm
+        board={board}
+        onClose={onClose}
+        onSubmit={onSubmit}
+        errors={""}
+      />
+    );
 
     fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
@@ -124,7 +152,14 @@ describe("AddTaskForm", () => {
   });
 
   test("does not submit the form if required fields are missing", async () => {
-    render(<AddTaskForm board={board} onClose={onClose} onSubmit={onSubmit} />);
+    render(
+      <AddTaskForm
+        board={board}
+        onClose={onClose}
+        onSubmit={onSubmit}
+        errors={""}
+      />
+    );
 
     // Try to submit without filling the form
     fireEvent.click(screen.getByRole("button", { name: "Add Task" }));
