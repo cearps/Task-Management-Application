@@ -91,11 +91,11 @@ const DetailedTaskView = ({
     <div className="fixed inset-0 flex items-center rounded-lg justify-center bg-black bg-opacity-50 z-50">
       <div
         ref={cardRef}
-        className="bg-[#2e223b] text-white rounded-lg p-6 shadow-md w-3/4 text-left overflow-hidden rounded-lg shadow-lg w-full max-w-5xl p-6"
+        className="bg-[#2e223b] text-white rounded-lg p-6 shadow-md w-3/4 text-left overflow-hidden rounded-lg shadow-lg w-full max-w-3xl break-words p-6"
         style={{ maxHeight: "95vh" }}
       >
         <div className="flex justify-between items-center mb-4 ">
-          <h2 className="text-2xl font-semibold">
+          <h2 className="text-2xl font-semibold break-words max-w-32 sm:max-w-96">
             {isEditing ? (
               <input
                 type="text"
