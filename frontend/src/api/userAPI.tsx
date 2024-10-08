@@ -57,6 +57,7 @@ export default class UserAPI {
 
     if (response.status === 200 && response.data.token) {
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("firstLogin", response.data.firstLogin.toString());
     } else {
       throw new ApiError(response.data.description, response.status);
     }
