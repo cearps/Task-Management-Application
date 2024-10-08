@@ -52,7 +52,7 @@ type SignUpResponse = {
 type LoginResponse = {
   token: string;
   expiresIn: number;
-  firstLogin: boolean;
+  logInCount: number;
 };
 
 type Comment = {

@@ -37,8 +37,8 @@ public class AuthenticationService {
                 .setUserTag(input.getUserTag())
                 .setUsername(input.getEmail())
                 .setEmail(input.getEmail())
-                .setPassword(passwordEncoder.encode(input.getPassword()))
-                .setFirstLogin(true);
+                .setLoginCount(0)
+                .setPassword(passwordEncoder.encode(input.getPassword()));
 
         try {
             return userRepository.save(user);
@@ -56,20 +56,10 @@ public class AuthenticationService {
         );
 
         User user = userRepository.findByEmail(input.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // copy the user object
-        user = new User()
-                .setUserTag(user.getUserTag())
-                .setEmail(user.getEmail())
-                .setPassword(user.getPassword())
-                .setFirstLogin(user.getFirstLogin());
-
-        userRepository.findByEmail(input.getEmail())
-                .ifPresent(u -> {
-            u.setFirstLogin(false);
-            userRepository.save(u);
-        });
+        user.setLoginCount(user.getLoginCount() + 1);
+        userRepository.save(user);
 
         return user;
     }

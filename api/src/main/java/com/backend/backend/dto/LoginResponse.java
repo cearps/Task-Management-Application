@@ -9,6 +9,5 @@ public class LoginResponse {
     private String token;
 
     private long expiresIn;
-    private boolean firstLogin;
-
+    private int loginCount;
 }
