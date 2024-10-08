@@ -37,7 +37,8 @@ public class AuthenticationService {
                 .setUserTag(input.getUserTag())
                 .setUsername(input.getEmail())
                 .setEmail(input.getEmail())
-                .setPassword(passwordEncoder.encode(input.getPassword()));
+                .setPassword(passwordEncoder.encode(input.getPassword()))
+                .setFirstLogin(true);
 
         try {
             return userRepository.save(user);
@@ -54,7 +55,22 @@ public class AuthenticationService {
                 )
         );
 
-        return userRepository.findByEmail(input.getEmail())
+        User user = userRepository.findByEmail(input.getEmail())
                 .orElseThrow();
+
+        // copy the user object
+        user = new User()
+                .setUserTag(user.getUserTag())
+                .setEmail(user.getEmail())
+                .setPassword(user.getPassword())
+                .setFirstLogin(user.getFirstLogin());
+
+        userRepository.findByEmail(input.getEmail())
+                .ifPresent(u -> {
+            u.setFirstLogin(false);
+            userRepository.save(u);
+        });
+
+        return user;
     }
 }

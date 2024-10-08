@@ -1,5 +1,6 @@
 package com.backend.backend.controller;
 
+import com.backend.backend.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,7 +53,8 @@ public class AuthenticationController {
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime());
+
+        LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime()).setFirstLogin(authenticatedUser.getFirstLogin());
 
         return ResponseEntity.ok(loginResponse);
     }

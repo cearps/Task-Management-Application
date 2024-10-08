@@ -24,6 +24,8 @@ public class User implements UserDetails {
     private String password;
     @Column(unique = true)
     private String userTag;
+    @Column
+    private Boolean firstLogin;
 
     @OneToMany(mappedBy = "user")
     private Set<UserBoard> userBoards;
