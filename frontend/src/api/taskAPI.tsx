@@ -21,6 +21,25 @@ export default class TaskAPI {
     return response.data as KanbanTask;
   }
 
+  static createTaskObservable(
+    boardId: number,
+    taskData: Partial<KanbanTask>
+  ): Observable<KanbanTask> {
+    return from(TaskAPI.createTask(boardId)).pipe(
+      switchMap((task) => {
+        return from(TaskAPI.updateTask(boardId, task.id, taskData)).pipe(
+          catchError((error) => {
+            throw new TaskApiError(
+              `Error creating task with boardId ${boardId}`,
+              task,
+              error
+            );
+          })
+        );
+      })
+    );
+  }
+
   static async deleteTask(boardId: number, taskId: number): Promise<void> {
     const token = localStorage.getItem("token");
 
@@ -58,24 +77,7 @@ export default class TaskAPI {
     return response.data as KanbanTask;
   }
 
-  static createTaskObservable(
-    boardId: number,
-    taskData: Partial<KanbanTask>
-  ): Observable<KanbanTask> {
-    return from(TaskAPI.createTask(boardId)).pipe(
-      switchMap((task) => {
-        return from(TaskAPI.updateTask(boardId, task.id, taskData)).pipe(
-          catchError((error) => {
-            throw new TaskApiError(
-              `Error creating task with boardId ${boardId}`,
-              task,
-              error
-            );
-          })
-        );
-      })
-    );
-  }
+
 
   static updateTaskObservable(
     boardId: number,

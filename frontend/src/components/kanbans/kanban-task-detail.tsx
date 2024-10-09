@@ -160,7 +160,7 @@ const DetailedTaskView = ({
                 name="urgency"
                 value={updatedTask.urgency}
                 onChange={handleInputChange}
-                className="p-2 rounded text-black"
+                className="block w-full p-2 rounded text-black mt-1"
               >
                 <option value="1">High</option>
                 <option value="2">Medium</option>
@@ -183,7 +183,7 @@ const DetailedTaskView = ({
                 name="dueDate"
                 value={updatedTask.dueDate}
                 onChange={handleInputChange}
-                className="p-2 rounded text-black"
+                className="block w-full p-2 rounded text-black mt-1"
               />
             ) : (
               <span className="ml-2">{task.dueDate}</span>
@@ -266,7 +266,7 @@ const DetailedTaskView = ({
                 name="taskCategory"
                 value={updatedTask.taskCategory}
                 onChange={handleInputChange}
-                className="p-2 rounded text-black"
+                className="block w-full p-2 rounded text-black mt-1"
               >
                 <option value="1">Backlog</option>
                 <option value="2">In Progress</option>

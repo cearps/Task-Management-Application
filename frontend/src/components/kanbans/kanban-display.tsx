@@ -240,7 +240,7 @@ function ProgressBar({ progress }: { progress: number }) {
         background: "#ddd",
         borderRadius: "4px",
         width: "100%",
-        height: "10px",
+        height: "30px",
         marginTop: "5px",
       }}
     >
