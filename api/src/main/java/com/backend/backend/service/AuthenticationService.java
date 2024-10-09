@@ -37,6 +37,7 @@ public class AuthenticationService {
                 .setUserTag(input.getUserTag())
                 .setUsername(input.getEmail())
                 .setEmail(input.getEmail())
+                .setLoginCount(0)
                 .setPassword(passwordEncoder.encode(input.getPassword()));
 
         try {
@@ -54,7 +55,12 @@ public class AuthenticationService {
                 )
         );
 
-        return userRepository.findByEmail(input.getEmail())
-                .orElseThrow();
+        User user = userRepository.findByEmail(input.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setLoginCount(user.getLoginCount() + 1);
+        userRepository.save(user);
+
+        return user;
     }
 }

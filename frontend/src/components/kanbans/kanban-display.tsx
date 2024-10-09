@@ -8,6 +8,7 @@ import { kanbanColumns } from "../../utilities/kanban-category-mapping";
 import { Droppable, DragDropContext } from "react-beautiful-dnd";
 import UserAPI from "../../api/userAPI";
 import ConfirmationModal from "../forms/confirmation-form";
+import { KanbanDisplayTutorialNoTask } from "../tutorials/kanbanDisplayTutorial";
 
 export default function KanbanDisplay({
   kanban,
@@ -147,6 +148,7 @@ export default function KanbanDisplay({
 
   return (
     <div style={{ padding: "0 20px" }}>
+      {kanban.tasks.length === 0 && <KanbanDisplayTutorialNoTask />}
       <header className="flex flex-col items-start mb-6 w-full">
         <h1 className="text-4xl font-bold break-words sm:max-w-full max-w-64">
           {kanban.name}
@@ -173,6 +175,7 @@ export default function KanbanDisplay({
           <button
             className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
             onClick={() => setIsTaskModalOpen(true)}
+            id="add-task-button"
           >
             Add Task
           </button>
@@ -243,6 +246,7 @@ function ProgressBar({ progress }: { progress: number }) {
         height: "10px",
         marginTop: "5px",
       }}
+      id="progress-bar"
     >
       <div
         data-testid="progressbar"
