@@ -19,6 +19,7 @@ services:
       SPRING_DATASOURCE_USERNAME: myuser
       SPRING_DATASOURCE_PASSWORD: password
       LOGGING_LEVEL_ROOT: "info"
+      SERVER_PORT: 8080
 
   frontend:
     image: "maxjasz/fit3162-19-frontend:latest"
