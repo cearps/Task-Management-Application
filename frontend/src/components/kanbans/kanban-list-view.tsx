@@ -5,6 +5,10 @@ import { KanbanBoard } from "../../utilities/types";
 import UserBoardForm from "../forms/user-board-form";
 import AddBoardForm from "../forms/add-board-form";
 import ConfirmationModal from "../forms/confirmation-form";
+import {
+  KanbanListTutorialFirstBoard,
+  KanbanListTutorialNoBoard,
+} from "../tutorials/kanbanListTutorial";
 
 export default function KanbanListView() {
   const [kanbanBoards, setKanbanBoards] = useState([] as KanbanBoard[]);
@@ -136,10 +140,13 @@ export default function KanbanListView() {
 
   return (
     <div>
+      {kanbanBoards.length === 0 && <KanbanListTutorialNoBoard />}
+      {kanbanBoards.length === 1 && <KanbanListTutorialFirstBoard />}
       <h1 className="text-3xl font-bold mb-6">YOUR PROJECTS</h1>
       <div
         className="bg-yellow-500 rounded-full w-14 h-14 flex items-center justify-center m-2 cursor-pointer transition-transform hover:scale-110"
         data-testid="add-board-button"
+        id="add-board-button"
         onClick={() => setIsModalOpen(true)}
       >
         <svg
@@ -239,7 +246,7 @@ const BoardCard = ({
 
   return (
     <div
-      className="bg-yellow-500 text-black rounded-lg shadow-md p-2 lg:m-2 m-0 my-2 w-56 h-36 relative border rounded cursor-pointer hover:bg-gray-100 hover:shadow-lg transition-transform transform hover:scale-105 w-full lg:w-64"
+      className="bg-yellow-500 text-black rounded-lg shadow-md p-2 lg:m-2 m-0 my-2 w-56 h-36 relative border rounded cursor-pointer hover:bg-gray-100 hover:shadow-lg transition-transform transform hover:scale-105 w-full lg:w-64 board-card"
       onClick={() => handleCardClick(id)}
     >
       <div className="flex">
@@ -252,6 +259,7 @@ const BoardCard = ({
             onAddUser();
           }}
           title="Update Users"
+          id="update-users-button"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -270,6 +278,7 @@ const BoardCard = ({
             onEdit();
           }}
           title="Edit"
+          id="edit-board-button"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -294,6 +303,7 @@ const BoardCard = ({
             onDelete(id);
           }}
           title="Delete"
+          id="delete-board-button"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

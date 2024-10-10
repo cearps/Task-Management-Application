@@ -33,7 +33,7 @@ export default function KanbanColumn({
   }, [kanban.tasks, taskCategoryId]);
 
   return (
-    <div className="bg-yellow-400 rounded-lg p-2 shadow-md">
+    <div className="bg-yellow-400 rounded-lg p-2 shadow-md kanban-column">
       <h2 className="text-lg font-bold mb-2">{title}</h2>
       <div
         className="space-y-2 rounded-lg"
