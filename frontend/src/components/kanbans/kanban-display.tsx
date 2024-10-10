@@ -8,8 +8,9 @@ import { kanbanColumns } from "../../utilities/kanban-category-mapping";
 import { Droppable, DragDropContext } from "react-beautiful-dnd";
 import UserAPI from "../../api/userAPI";
 import ConfirmationModal from "../forms/confirmation-form";
+import NotificationPopup from "../forms/notification-popup"; 
 import { KanbanDisplayTutorialNoTask } from "../tutorials/kanbanDisplayTutorial";
-
+        
 export default function KanbanDisplay({
   kanban,
   setKanban,
@@ -24,6 +25,12 @@ export default function KanbanDisplay({
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<number | null>(null);
   const [addTaskError, setAddTaskError] = useState<string | null>(null);
+  const [notification, setNotification] = useState<{ message: string; isVisible: boolean; type: "success" | "error" | "info" }>({
+    message: "",
+    isVisible: false,
+    type: "info"
+  });
+  
 
   useEffect(() => {
     const subscription = UserAPI.getUserObservable().subscribe({
@@ -40,6 +47,12 @@ export default function KanbanDisplay({
     };
   }, []);
 
+  
+  const showNotification = (message: string, type: "success" | "error" | "info" = "info") => {
+    setNotification({ message, isVisible: true, type });
+    setTimeout(() => setNotification({ message: "", isVisible: false, type }), 3000);
+  };
+
   const handleDeleteTask = (taskId: number) => {
     setTaskToDelete(taskId);
     setIsConfirmModalOpen(true);
@@ -55,9 +68,11 @@ export default function KanbanDisplay({
           });
           setSelectedTask(null);
           setIsConfirmModalOpen(false);
+          showNotification("Task deleted successfully", "success");
         })
         .catch((error) => {
           console.error("Error deleting task:", error);
+          
         });
     }
   };
@@ -106,6 +121,7 @@ export default function KanbanDisplay({
       next: (task) => {
         console.log("Task created:", task);
         setIsTaskModalOpen(false);
+        showNotification("Task created successfully", "success");
       },
       error: (error) => {
         setAddTaskError(error.error.response.data);
@@ -139,6 +155,7 @@ export default function KanbanDisplay({
       next: (updatedTask) => {
         console.log("Task updated:", updatedTask);
         setKanban({ ...kanban, tasks: updatedTasks });
+        showNotification("Task updated successfully", "success");
       },
       error: (error) => {
         console.error("Error updating task:", error);
@@ -146,8 +163,18 @@ export default function KanbanDisplay({
     });
   };
 
+
   return (
+
     <div style={{ padding: "0 20px" }}>
+    {/* Notification Popup */}
+    <NotificationPopup
+      message={notification.message}
+      isVisible={notification.isVisible}
+      onClose={() => setNotification({ ...notification, isVisible: false })}
+      type={notification.type || "info"}
+    />
+    
       {kanban.tasks.length === 0 && <KanbanDisplayTutorialNoTask />}
       <header className="flex flex-col items-start mb-6 w-full">
         <h1 className="text-4xl font-bold break-words sm:max-w-full max-w-64">
@@ -170,6 +197,7 @@ export default function KanbanDisplay({
           </span>
         </div>
         <ProgressBar progress={progress} />
+        
 
         <div className="mt-4 w-full flex justify-start">
           <button
@@ -243,7 +271,7 @@ function ProgressBar({ progress }: { progress: number }) {
         background: "#ddd",
         borderRadius: "4px",
         width: "100%",
-        height: "10px",
+        height: "30px",
         marginTop: "5px",
       }}
       id="progress-bar"
