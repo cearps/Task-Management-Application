@@ -50,26 +50,64 @@ jobs:
       - name: Run frontend tests
         run: cd frontend && npm run test
 
-  backend-build:
-    runs-on: ubuntu-latest
-
+  backend-build-and-deploy-multi-arch:
+    runs-on: ubuntu-latest  # Use an Ubuntu runner
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      # Checkout the repository to access the Dockerfile and source code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Build backend Docker container
-        working-directory: api
-        run: |
-          docker build -t api .
+      # Set up Docker Buildx (needed for multi-platform builds)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-  frontend-build:
-    runs-on: ubuntu-latest
+      # Log in to DockerHub using secrets (replace with your DockerHub credentials)
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: "fit3162"
+          password: 'Gzg[8s!xS=w"<W7;ag3A'
 
+      # Build and push the Docker image for multiple platforms (AMD64, ARM)
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api  # The root directory, assuming your Dockerfile is here
+          platforms: linux/amd64,linux/arm64,windows/amd64  # Build for AMD64 and ARM64
+          push: true  # Push the image to DockerHub after building
+          tags: |
+            fit3162/backend:latest  
+            fit3162/backend:${{ github.sha }}
+
+
+
+  frontend-build-and-deploy-multi-arch:
+    runs-on: ubuntu-latest  # Use an Ubuntu runner
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      # Checkout the repository to access the Dockerfile and source code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Build frontend Docker container
-        working-directory: frontend
-        run: |
-          docker build -t frontend .
+      # Set up Docker Buildx (needed for multi-platform builds)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Log in to DockerHub using secrets (replace with your DockerHub credentials)
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: "fit3162"
+          password: 'Gzg[8s!xS=w"<W7;ag3A'
+
+      # Build and push the Docker image for multiple platforms (AMD64, ARM)
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend  # The root directory, assuming your Dockerfile is here
+          platforms: linux/amd64,linux/arm64,windows/amd64  # Build for AMD64 and ARM64
+          push: true  # Push the image to DockerHub after building
+          tags: |
+            fit3162/frontend:latest
+            fit3162/frontend:${{ github.sha }}

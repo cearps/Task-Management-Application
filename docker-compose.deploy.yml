@@ -9,7 +9,7 @@ services:
       - "5432:5432"
 
   backend:
-    image: "maxjasz/fit3162-19-backend:latest"
+    image: "fit3162/backend:latest"
     ports:
       - "8080:8080"
     depends_on:
@@ -22,7 +22,7 @@ services:
       SERVER_PORT: 8080
 
   frontend:
-    image: "maxjasz/fit3162-19-frontend:latest"
+    image: "fit3162/frontend:latest"
     depends_on:
       - backend
     ports:
