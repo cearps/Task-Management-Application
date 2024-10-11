@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: "postgres:latest"
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: myuser
+    ports:
+      - "5432:5432"
+
+  backend:
+    image: "fit3162/backend:latest"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydatabase
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: password
+      LOGGING_LEVEL_ROOT: "info"
+      SERVER_PORT: 8080
+
+  frontend:
+    image: "fit3162/frontend:latest"
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
