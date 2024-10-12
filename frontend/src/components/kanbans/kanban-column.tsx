@@ -48,7 +48,7 @@ export default function KanbanColumn({
       >
         {provided.placeholder}
         {tasks
-          .filter((task) => task.name !== undefined)
+          .filter((task) => task.name !== undefined && task.name !== "")
           .map((task, index: number) => (
             <KanbanCard
               key={task.id} // Add key prop with task id
