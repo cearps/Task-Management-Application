@@ -61,8 +61,7 @@ export default function KanbanListView() {
         name,
         dueDate,
       }).subscribe({
-        next: (board) => {
-          setKanbanBoards((prevBoards) => [...prevBoards, board]);
+        next: () => {
           setIsModalOpen(false);
           setFormErrors("");
         },
@@ -85,9 +84,6 @@ export default function KanbanListView() {
     if (boardToDelete !== null) {
       KanbanAPI.deleteKanbanBoardObservable(boardToDelete).subscribe({
         next: () => {
-          setKanbanBoards((prevBoards) =>
-            prevBoards.filter((board) => board.id !== boardToDelete)
-          );
           setBoardToDelete(null);
           setIsConfirmModalOpen(false);
         },
