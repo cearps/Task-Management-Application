@@ -165,17 +165,19 @@ export default function KanbanListView() {
         </svg>
       </div>
       <div className="flex flex-wrap flex-col lg:flex-row">
-        {kanbanBoards.map((board: KanbanBoard) => (
-          <BoardCard
-            key={board.id}
-            id={board.id}
-            title={board.name}
-            dueDate={board.dueDate}
-            onDelete={handleDeleteBoard}
-            onEdit={() => handleEditBoard(board)}
-            onAddUser={() => handleAddUser(board)}
-          />
-        ))}
+        {kanbanBoards
+          .filter((board) => board.name !== undefined)
+          .map((board: KanbanBoard) => (
+            <BoardCard
+              key={board.id}
+              id={board.id}
+              title={board.name}
+              dueDate={board.dueDate}
+              onDelete={handleDeleteBoard}
+              onEdit={() => handleEditBoard(board)}
+              onAddUser={() => handleAddUser(board)}
+            />
+          ))}
       </div>
 
       {/* AddBoardForm Modal */}
