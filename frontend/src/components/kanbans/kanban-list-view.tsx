@@ -162,7 +162,12 @@ export default function KanbanListView() {
       </div>
       <div className="flex flex-wrap flex-col lg:flex-row">
         {kanbanBoards
-          .filter((board) => board.name !== undefined && board.name !== "")
+          .filter(
+            (board) =>
+              board.name !== undefined &&
+              board.name !== "" &&
+              board.name !== null
+          )
           .map((board: KanbanBoard) => (
             <BoardCard
               key={board.id}
