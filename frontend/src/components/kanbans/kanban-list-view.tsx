@@ -61,8 +61,7 @@ export default function KanbanListView() {
         name,
         dueDate,
       }).subscribe({
-        next: (board) => {
-          setKanbanBoards((prevBoards) => [...prevBoards, board]);
+        next: () => {
           setIsModalOpen(false);
           setFormErrors("");
         },
@@ -85,9 +84,6 @@ export default function KanbanListView() {
     if (boardToDelete !== null) {
       KanbanAPI.deleteKanbanBoardObservable(boardToDelete).subscribe({
         next: () => {
-          setKanbanBoards((prevBoards) =>
-            prevBoards.filter((board) => board.id !== boardToDelete)
-          );
           setBoardToDelete(null);
           setIsConfirmModalOpen(false);
         },
@@ -165,17 +161,24 @@ export default function KanbanListView() {
         </svg>
       </div>
       <div className="flex flex-wrap flex-col lg:flex-row">
-        {kanbanBoards.map((board: KanbanBoard) => (
-          <BoardCard
-            key={board.id}
-            id={board.id}
-            title={board.name}
-            dueDate={board.dueDate}
-            onDelete={handleDeleteBoard}
-            onEdit={() => handleEditBoard(board)}
-            onAddUser={() => handleAddUser(board)}
-          />
-        ))}
+        {kanbanBoards
+          .filter(
+            (board) =>
+              board.name !== undefined &&
+              board.name !== "" &&
+              board.name !== null
+          )
+          .map((board: KanbanBoard) => (
+            <BoardCard
+              key={board.id}
+              id={board.id}
+              title={board.name}
+              dueDate={board.dueDate}
+              onDelete={handleDeleteBoard}
+              onEdit={() => handleEditBoard(board)}
+              onAddUser={() => handleAddUser(board)}
+            />
+          ))}
       </div>
 
       {/* AddBoardForm Modal */}

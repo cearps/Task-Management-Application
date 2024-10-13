@@ -47,15 +47,20 @@ export default function KanbanColumn({
         }}
       >
         {provided.placeholder}
-        {tasks.map((task, index: number) => (
-          <KanbanCard
-            key={task.id} // Add key prop with task id
-            task={task}
-            setActiveTaskMethod={setActiveTaskMethod}
-            currentUser={currentUser}
-            position={index} // Add position prop with the index
-          />
-        ))}
+        {tasks
+          .filter(
+            (task) =>
+              task.name !== undefined && task.name !== "" && task.name !== null
+          )
+          .map((task, index: number) => (
+            <KanbanCard
+              key={task.id} // Add key prop with task id
+              task={task}
+              setActiveTaskMethod={setActiveTaskMethod}
+              currentUser={currentUser}
+              position={index} // Add position prop with the index
+            />
+          ))}
       </div>
     </div>
   );
