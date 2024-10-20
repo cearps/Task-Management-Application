@@ -9,5 +9,5 @@ RUN npm install
 
 COPY . .
 
-ENV REACT_APP_API_URL=http://localhost:8080
+ENV REACT_APP_API_PORT=8080
 CMD ["npm", "run", "dev"]
