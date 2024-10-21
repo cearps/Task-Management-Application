@@ -23,7 +23,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-
+/**
+ * Acknowledgements:
+ * ChatGPT (https://chatgpt.com/) was used to assist in writing test
+ * cases. The test cases were further edited manually for correctness, brevity and
+ * coverage of cases in the code
+ */
 class BoardControllerTest {
 
     @InjectMocks
@@ -87,7 +92,7 @@ class BoardControllerTest {
         // Arrange
         Long boardId = 1L;
         BoardResponse mockBoardResponse = new BoardResponse(boardId, "Board Name", "Description", null, null, null, null);
-        when(boardService.getBoardByIdAndUserNew(boardId, currentUser.getId())).thenReturn(mockBoardResponse);
+        when(boardService.getBoardByIdAndUser(boardId, currentUser.getId())).thenReturn(mockBoardResponse);
 
         // Act
         ResponseEntity<BoardResponse> response = boardController.getBoardById(boardId);
@@ -95,7 +100,7 @@ class BoardControllerTest {
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockBoardResponse, response.getBody());
-        verify(boardService).getBoardByIdAndUserNew(boardId, currentUser.getId());
+        verify(boardService).getBoardByIdAndUser(boardId, currentUser.getId());
     }
 
     @Test
