@@ -14,7 +14,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+/**
+ * Acknowledgements:
+ * ChatGPT (https://chatgpt.com/) was used to assist in writing test
+ * cases. The test cases were further edited manually for correctness, brevity and
+ * coverage of cases in the code
+ */
 class BoardResponseTest {
 
     private Board boardMock;

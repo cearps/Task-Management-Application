@@ -17,7 +17,12 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+/**
+ * Acknowledgements:
+ * ChatGPT (https://chatgpt.com/) was used to assist in writing test
+ * cases. The test cases were further edited manually for correctness, brevity and
+ * coverage of cases in the code
+ */
 class BoardServiceTests {
 
     @Mock
@@ -64,35 +69,6 @@ class BoardServiceTests {
     }
 
     @Test
-    void getBoardByIdAndUser_ShouldReturnBoard_WhenFound() {
-        // Arrange: Mock the board retrieval
-        when(boardRepository.findByIdAndUserId(1L, mockUser.getId())).thenReturn(Optional.of(mockBoard));
-
-        // Act: Call the method
-        BoardResponse result = boardService.getBoardByIdAndUser(1L, mockUser.getId());
-
-        // Assert: Verify that the correct board is returned
-        assertNotNull(result);
-        assertEquals(new BoardResponse(mockBoard), result);
-
-        verify(boardRepository, times(1)).findByIdAndUserId(1L, mockUser.getId());
-    }
-
-    @Test
-    void getBoardByIdAndUser_ShouldThrowException_WhenBoardNotFound() {
-        // Arrange: Simulate board not being found
-        when(boardRepository.findByIdAndUserId(1L, mockUser.getId())).thenReturn(Optional.empty());
-
-        // Act & Assert: Ensure EntityNotFoundException is thrown
-        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () ->
-                boardService.getBoardByIdAndUser(1L, mockUser.getId()));
-
-        assertEquals("Board not found with id 1", thrown.getMessage());
-
-        verify(boardRepository, times(1)).findByIdAndUserId(1L, mockUser.getId());
-    }
-
-    @Test
     void getBoardByIdAndUserNew_ShouldReturnBoard_WhenUserBoardExists() {
         // Arrange: Set up UserBoard and mock board retrieval
         UserBoard mockUserBoard = new UserBoard();
@@ -106,7 +82,7 @@ class BoardServiceTests {
         when(boardRepository.findById(1L)).thenReturn(Optional.of(mockBoard));
 
         // Act: Call the method
-        BoardResponse result = boardService.getBoardByIdAndUserNew(1L, mockUser.getId());
+        BoardResponse result = boardService.getBoardByIdAndUser(1L, mockUser.getId());
 
         // Assert: Verify that the correct board is returned
         assertNotNull(result);
@@ -122,7 +98,7 @@ class BoardServiceTests {
 
         // Act & Assert: Ensure EntityNotFoundException is thrown
         EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () ->
-                boardService.getBoardByIdAndUserNew(1L, mockUser.getId()));
+                boardService.getBoardByIdAndUser(1L, mockUser.getId()));
 
         assertEquals("Board not found with id 1", thrown.getMessage());
 

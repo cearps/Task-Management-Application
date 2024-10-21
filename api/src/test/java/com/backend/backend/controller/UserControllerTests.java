@@ -14,7 +14,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+/**
+ * Acknowledgements:
+ * ChatGPT (https://chatgpt.com/) was used to assist in writing test
+ * cases. The test cases were further edited manually for correctness, brevity and
+ * coverage of cases in the code
+ */
 class UserControllerTest {
 
     private UserController userController;
