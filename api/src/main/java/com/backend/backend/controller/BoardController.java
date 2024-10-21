@@ -55,7 +55,7 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         log.info("User {} is searching for kanban with id {} START", currentUser.getUserTag(), id);
-        BoardResponse boardResponse = boardService.getBoardByIdAndUserNew(id, currentUser.getId());
+        BoardResponse boardResponse = boardService.getBoardByIdAndUser(id, currentUser.getId());
         log.info("User {} is searching for kanban with id {} SUCCESS", currentUser.getUserTag(), id);
         return ResponseEntity.ok(boardResponse);
     }
