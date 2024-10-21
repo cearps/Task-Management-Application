@@ -32,15 +32,6 @@ public class BoardService {
         return new BoardResponse(board);
     }
 
-    public BoardResponse getBoardByIdAndUser(Long boardId, Long userId) {
-        Board board = boardRepository.findByIdAndUserId(boardId, userId)
-                .orElseThrow(() -> new EntityNotFoundException("Board not found with id " + boardId.toString()));
-
-        BoardResponse response = new BoardResponse(board);
-        return response;
-
-    }
-
     public BoardResponse getBoardByIdAndUserNew(Long boardId, Long userId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new EntityNotFoundException("Board not found with id " + boardId.toString()));
