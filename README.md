@@ -1,4 +1,4 @@
-# FIT3162
+# Task Management Application
 
 This repo contains the project files for our task management application built as part of FIT3162.
 
