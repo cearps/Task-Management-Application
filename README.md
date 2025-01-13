@@ -2,7 +2,7 @@
 
 Source code for containerised + cloud native task management app.
 Built as part of unit FIT3162 at Monash University.
-![image](https://github.com/user-attachments/assets/412e2051-8a1c-447f-a14c-de9c1ada23e9)
+![image](https://github.com/user-attachments/assets/a5734ce6-e40e-44fb-a694-301fa79d5b1b)
 ![image](https://github.com/user-attachments/assets/bf8ab055-7447-46b4-ba37-e44809299dc6)
 
 
