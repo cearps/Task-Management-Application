@@ -1,29 +1,36 @@
 # Task Management Application
 
-This repo contains the project files for our task management application built as part of FIT3162.
+Source code for containerised + cloud native task management app.
+Built as part of unit FIT3162 at Monash University.
+![image](https://github.com/user-attachments/assets/a5734ce6-e40e-44fb-a694-301fa79d5b1b)
+![image](https://github.com/user-attachments/assets/bf8ab055-7447-46b4-ba37-e44809299dc6)
 
-## File structure
+
+## Setup:
+
+Prerequisites:
+- docker
+
+`./scripts/fullstack-start.sh`
+
+Access the UI on:                http://localhost:80/ <br>
+Access the API on:  http://localhost:8080/actuator/health
+
+## Architecture
 
 |- api - Contains the Java Spring backend Code.<br>
 |- db: startup sql scripts for postgres container<br>
 |- frontend: Typescript/React UI + API mock for testing.<br>
 |- scripts: tooling scripts
 
-## Running the containerised application:
-
-
-`./scripts/start-containers.sh`
-
-Will start three containers:
+Containers:
 - frontend nginx
 - backend java 21 spring app
 - backend postgres db
 
-Access the nginx on:                http://localhost:80/ <br>
-Check the backend server is up at:  http://localhost:8080/actuator/health
+![image](https://github.com/user-attachments/assets/0e4dd2e2-2c75-4139-b84f-d40bb9b62216)
 
-
-## TODO
+## Contribution
 
 Refer to: https://trello.com/b/xkcOj1Bp/pre-semester
 
